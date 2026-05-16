@@ -1,0 +1,28 @@
+{
+  "name": "squad-admin-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "clean": "pnpm -r exec rimraf dist .next node_modules || true",
+    "db:generate": "pnpm --filter @squad-admin/database prisma:generate",
+    "db:migrate": "pnpm --filter @squad-admin/database prisma:migrate",
+    "db:deploy": "pnpm --filter @squad-admin/database prisma:deploy",
+    "db:studio": "pnpm --filter @squad-admin/database prisma:studio",
+    "db:reset": "pnpm --filter @squad-admin/database prisma:reset",
+    "backend:dev": "pnpm --filter @squad-admin/backend dev",
+    "backend:build": "pnpm --filter @squad-admin/backend build",
+    "bot:dev": "pnpm --filter @squad-admin/bot dev",
+    "bot:build": "pnpm --filter @squad-admin/bot build",
+    "frontend:dev": "pnpm --filter @squad-admin/frontend dev",
+    "frontend:build": "pnpm --filter @squad-admin/frontend build",
+    "import:bans": "pnpm --filter @squad-admin/backend import:bans",
+    "import:admins": "pnpm --filter @squad-admin/backend import:admins"
+  },
+  "devDependencies": {
+    "turbo": "^2.6.1",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+.next
+.env
+.env.*
+!.env.example
+*.log
+logs
+.DS_Store
+pnpm-lock.yaml
+.turbo

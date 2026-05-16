@@ -1,0 +1,42 @@
+{
+  "name": "@squad-admin/backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --noEmitOnError false",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "import:bans": "tsx src/scripts/import-bans.ts",
+    "import:admins": "tsx src/scripts/import-admins.ts Admins.cfg",
+    "redis:sessions": "node -e \"console.log('docker exec -it squad_admin_redis redis-cli KEYS steam-auth:*')\""
+  },
+  "dependencies": {
+    "@squad-admin/database": "workspace:*",
+    "@squad-admin/shared": "workspace:*",
+    "axios": "^1.16.1",
+    "connect-redis": "^9.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "passport": "^0.7.0",
+    "passport-steam": "^1.0.18",
+    "redis": "^5.12.1",
+    "ssh2": "^1.17.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
+    "@types/passport": "^1.0.17",
+    "@types/passport-steam": "^1.0.6",
+    "@types/pg": "^8.20.0",
+    "@types/ssh2": "^1.15.5",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  },
+  "private": true
+}

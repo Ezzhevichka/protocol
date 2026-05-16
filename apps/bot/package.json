@@ -1,0 +1,30 @@
+{
+  "name": "@squad-admin/bot",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --outDir dist",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "chokidar": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "squad-rcon": "^1.1.8",
+    "ssh2": "^1.17.0",
+    "zod": "^3.24.1",
+    "@squad-admin/shared": "workspace:*",
+    "@squad-admin/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/ssh2": "^1.15.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "private": true
+}
