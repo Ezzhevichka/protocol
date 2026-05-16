@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+:root {
+  /* GLOBAL */
+  --white: #FFFFFF;
+  --gray: #808080;
+
+  /* BACKGROUND */
+  --background: #070B12;
+  --background-light: #262626;
+  --background-dark: #020202;
+
+  /* BORDER */
+  --border-dark: #1A1A1A;
+
+  /* OTHERS */
+  --health-green: #00FF90;
+  --health-red: #EB1010;
+  --auto-seed-green: #4ECB71;
+  --discord-purple: #5662F6;
+  --vip-yellow: #FFDE00;
+  --white-primary: #F6F6FE;
+  --gray-disabled: #737373;
+  --gray-disabled-light: #999999;
+  --discord-purple-secondary: #6C78F9;
+  --discord-purple-light: #A2A9F6;
+  --header-nav-text: #E8E8FC;
+  --fraction-card-bg: #04070B;
+  --fraction-card-pill-bg: #070B12;
+  --fraction-card-pill-border: #18181B;
+  --fraction-card-text-muted: #DAE3F1;
+  --fraction-card-text-primary: #FAFAFA;
+  --fraction-team-players-bg: #27272A;
+  --fraction-team-players-border: #3F3F47;
+  --squad-card-bg: #04070B;
+  --squad-card-border-default: #142438;
+  --squad-card-border-cmd: #997400;
+  --squad-card-header-bg: #152338;
+  --squad-card-badge-default: #52525C;
+  --squad-card-badge-cmd: #CC9B00;
+  --squad-card-players-border: #18181B;
+  --squad-card-players-bg-default: #1D2D49;
+  --squad-card-players-bg-cmd: #0E1725;
+  --squad-card-divider: #142438;
+  --player-card-divider: #142438;
+  --player-card-text: #FAFAFA;
+  --player-card-caption: #808080;
+  --player-card-role: #009BFE;
+  --player-card-hash: #07A2FF;
+  --fraction-composite-bg: #04070B;
+  --fraction-composite-divider: #121E30;
+  --fraction-composite-title: #FFFFFF;
+
+  /* SERVER LEVEL */
+  --server-level-empty: #CCCCCC;
+  --server-level-empty-muted: #CCCCCCB3;
+  --server-level-frog: #7ED957;
+  --server-level-frog-muted: #7ED957B3;
+  --server-level-casual: #C9B458;
+  --server-level-casual-muted: #C9B458B3;
+  --server-level-sweaty: #ED8529;
+  --server-level-sweaty-muted: #E67E22B3;
+  --server-level-nightmare: #C0392B;
+  --server-level-nightmare-muted: #C0392BB3;
+
+  /* BUTTON KIT */
+  --button-text-white-default: #FAFAFA;
+  --button-text-white-hover: #D9D9D9;
+  --button-text-disabled: #A1A1A1;
+  --button-text-dark: #0E1625;
+  --button-text-secondary-disabled: #4D4D4D;
+
+  --button-disabled-bg: #4D4D4D;
+  --button-disabled-border: #4D4D4D;
+  --button-secondary-neutral-disabled-border: #737373;
+  --button-discord-disabled-bg: #B8BEF9;
+  --button-discord-disabled-text: #F6F6FE;
+
+  --button-primary-accent-default: #1D4AFF;
+  --button-primary-accent-hover: #002FEB;
+  --button-primary-neutral-default: #292B2F;
+  --button-primary-neutral-hover: #303236;
+  --button-primary-positive-default: #4BB34B;
+  --button-primary-vip-default: #FFDE00;
+  --button-primary-vip-hover: #E5C800;
+  --button-primary-discord-default: #5865F2;
+  --button-primary-discord-hover: #4B59F1;
+  --button-secondary-neutral-default: #F2F2F2;
+  --button-primary-positive-hover-bg-image: linear-gradient(90deg, #FFFFFF00 0%, #FFFFFF0D 61.058%, #4BB34B 100%), linear-gradient(90deg, #4BB34B 0%, #4BB34B 100%);
+  --button-primary-positive-hover-shadow: 0 0 10px 3px #4BB34BA6;
+  --button-primary-vip-hover-bg-image: linear-gradient(90deg, #FFFFFF00 0%, #FFFFFF80 61.058%, #FFDE00 100%), linear-gradient(90deg, #E5C800 0%, #E5C800 100%);
+  --button-primary-vip-hover-shadow: 0 0 10px 5px #E5C8004D;
+  --button-tertiary-neutral-disabled: #737373;
+
+  --leading-normal: 17px;
+}
+
+@theme inline {
+  /* BACKGROUND */
+  --color-background: var(--background);
+  --color-background-light: var(--background-light);
+  --color-background-dark: var(--background-dark);
+
+  /* BORDER */
+  --color-border-dark: var(--border-dark);
+  --color-border-discord-purple: var(--discord-purple-secondary);
+  --color-border-discord-light: var(--discord-purple-light);
+  --color-border-disabled-light: var(--gray-disabled-light);
+  --color-border-white: var(--white);
+  --color-border-gray: var(--gray);
+
+  /* SERVER STATUS */
+  --color-server-status-green: var(--health-green);
+  --color-server-status-red: var(--health-red);
+  --color-server-level-empty: var(--server-level-empty);
+  --color-server-level-empty-muted: var(--server-level-empty-muted);
+  --color-server-level-frog: var(--server-level-frog);
+  --color-server-level-frog-muted: var(--server-level-frog-muted);
+  --color-server-level-casual: var(--server-level-casual);
+  --color-server-level-casual-muted: var(--server-level-casual-muted);
+  --color-server-level-sweaty: var(--server-level-sweaty);
+  --color-server-level-sweaty-muted: var(--server-level-sweaty-muted);
+  --color-server-level-nightmare: var(--server-level-nightmare);
+  --color-server-level-nightmare-muted: var(--server-level-nightmare-muted);
+
+  /* ICONS */
+  --color-icon-auto-seed-green: var(--auto-seed-green);
+  --color-icon-discord-purple: var(--discord-purple);
+  --color-icon-vip-yellow: var(--vip-yellow);
+
+  /* TEXT */
+  --color-white-primary: var(--white-primary);
+  --color-disabled: var(--gray-disabled);
+  --color-disabled-light: var(--gray-disabled-light);
+  --color-discord-purple-secondary: var(--discord-purple-secondary);
+  --color-purple-light: var(--discord-purple-light);
+  --color-vip-yellow: var(--vip-yellow);
+  --color-header-nav-text: var(--header-nav-text);
+  --color-fraction-card-bg: var(--fraction-card-bg);
+  --color-fraction-card-pill-bg: var(--fraction-card-pill-bg);
+  --color-fraction-card-pill-border: var(--fraction-card-pill-border);
+  --color-fraction-card-text-muted: var(--fraction-card-text-muted);
+  --color-fraction-card-text-primary: var(--fraction-card-text-primary);
+  --color-fraction-team-players-bg: var(--fraction-team-players-bg);
+  --color-fraction-team-players-border: var(--fraction-team-players-border);
+  --color-squad-card-bg: var(--squad-card-bg);
+  --color-squad-card-border-default: var(--squad-card-border-default);
+  --color-squad-card-border-cmd: var(--squad-card-border-cmd);
+  --color-squad-card-header-bg: var(--squad-card-header-bg);
+  --color-squad-card-badge-default: var(--squad-card-badge-default);
+  --color-squad-card-badge-cmd: var(--squad-card-badge-cmd);
+  --color-squad-card-players-border: var(--squad-card-players-border);
+  --color-squad-card-players-bg-default: var(--squad-card-players-bg-default);
+  --color-squad-card-players-bg-cmd: var(--squad-card-players-bg-cmd);
+  --color-squad-card-divider: var(--squad-card-divider);
+  --color-player-card-divider: var(--player-card-divider);
+  --color-player-card-text: var(--player-card-text);
+  --color-player-card-caption: var(--player-card-caption);
+  --color-player-card-role: var(--player-card-role);
+  --color-player-card-hash: var(--player-card-hash);
+  --color-fraction-composite-bg: var(--fraction-composite-bg);
+  --color-fraction-composite-divider: var(--fraction-composite-divider);
+  --color-fraction-composite-title: var(--fraction-composite-title);
+
+  --font-manrope: var(--font-manrope);
+  --spacing: 1px;
+  --leading-normal: 17px;
+}
+
+body {
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* SERVER LEVEL COLOR CLASSES (single source via CSS vars above) */
+.server-level-empty {
+  color: var(--server-level-empty);
+}
+
+.server-level-empty-muted {
+  color: var(--server-level-empty-muted);
+}
+
+.server-level-frog {
+  color: var(--server-level-frog);
+}
+
+.server-level-frog-muted {
+  color: var(--server-level-frog-muted);
+}
+
+.server-level-casual {
+  color: var(--server-level-casual);
+}
+
+.server-level-casual-muted {
+  color: var(--server-level-casual-muted);
+}
+
+.server-level-sweaty {
+  color: var(--server-level-sweaty);
+}
+
+.server-level-sweaty-muted {
+  color: var(--server-level-sweaty-muted);
+}
+
+.server-level-nightmare {
+  color: var(--server-level-nightmare);
+}
+
+.server-level-nightmare-muted {
+  color: var(--server-level-nightmare-muted);
+}
+

@@ -1,0 +1,1 @@
+export { openInNewTab } from './openInNewTab';
