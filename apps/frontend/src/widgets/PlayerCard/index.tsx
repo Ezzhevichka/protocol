@@ -2,7 +2,8 @@ import Image from "next/image";
 import { resolveKitIcon } from "shared/constants";
 import { resolveKitIconSize } from "shared/constants";
 import { Text } from "shared/ui";
-import { PlayerCardProps } from "./model";
+
+import type { PlayerCardProps } from "./model";
 
 const PLAYER_CARD_COLORS = {
   divider: "var(--player-card-divider, #142438)",

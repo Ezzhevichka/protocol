@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
+
 import { formatHours, formatPercentages, serverLevelData } from "./lib";
-import { ServerStateProps } from "./model";
+import type { ServerStateProps } from "./model";
 
 export const ServerState = ({
   hoursAmount,

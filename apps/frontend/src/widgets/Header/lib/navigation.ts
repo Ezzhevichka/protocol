@@ -1,4 +1,4 @@
-import { HeaderMenuItem } from "../model";
+import type { HeaderMenuItem } from "../model";
 
 export const navigation: HeaderMenuItem[] = [
     {

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { ButtonHTMLAttributes, PropsWithChildren, ReactNode } from "react";
+import type { ButtonHTMLAttributes, PropsWithChildren, ReactNode } from "react";
 import "./styles.css";
 
 export enum ButtonVariant {

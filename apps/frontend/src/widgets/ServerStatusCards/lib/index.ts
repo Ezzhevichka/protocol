@@ -1,4 +1,4 @@
-import { ServerStatusServer, ServerStatusState } from "../model";
+import type { ServerStatusServer, ServerStatusState } from "../model";
 
 export const SERVER_SLOTS = 4;
 

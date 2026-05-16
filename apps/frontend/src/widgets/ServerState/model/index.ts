@@ -1,4 +1,6 @@
-export type { ServerLevelType } from "shared/types";
+import type { ServerLevelType } from "shared/types";
+
+export type { ServerLevelType };
 
 export type ServerLevelInfo = {
   label: string;
@@ -10,7 +12,7 @@ export type ServerLevelInfo = {
 export type ServerStateProps = {
   hoursAmount: number | string;
   openProfilePercentages: number | string;
-  level?: import("shared/types").ServerLevelType;
+  level?: ServerLevelType;
   title?: string;
   className?: string;
 };

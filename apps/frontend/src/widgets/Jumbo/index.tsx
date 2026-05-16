@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { openInNewTab } from "shared/lib";
 import { Button, ButtonAppearance, ButtonSize, ButtonVariant } from "shared/ui";
-import { JumboProps } from "./model";
+
+import type { JumboProps } from "./model";
 
 const JUMBO_COLORS = {
   overlay: "rgba(0, 0, 0, 0.65)",

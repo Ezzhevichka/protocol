@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
 import { PlayerCard } from "widgets/PlayerCard";
+
 import { formatSquadPlayersCount, normalizeSquadPlayers } from "./lib";
-import { SquadCardProps } from "./model";
+import type { SquadCardProps } from "./model";
 
 const SQUAD_COLORS = {
   background: "var(--squad-card-bg, #04070B)",
