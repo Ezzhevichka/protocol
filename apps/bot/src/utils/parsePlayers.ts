@@ -1,13 +1,13 @@
-// import type { SquadPlayer } from "@squad-admin/shared";
+import type { SquadPlayer } from "@squad-admin/shared";
 
-export function parsePlayers(raw: string): any[] {
+export function parsePlayers(raw: string): SquadPlayer[] {
   return raw
     .split(/\r?\n/)
     .map(parsePlayerLine)
-    .filter((player): player is any => player !== null);
+    .filter((player): player is SquadPlayer => player !== null);
 }
 
-function parsePlayerLine(line: string): any | null {
+function parsePlayerLine(line: string): SquadPlayer | null {
   const trimmed = line.trim();
 
   if (!trimmed) {

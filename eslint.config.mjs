@@ -76,6 +76,10 @@ export default [
       globals: {
         ...globals.browser,
       },
+        parserOptions: {
+          projectService: true,
+          tsconfigRootDir: __dirname,
+        },
     },
 
     rules: {

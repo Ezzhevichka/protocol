@@ -18,7 +18,7 @@ export const navigation: HeaderMenuItem[] = [
     {
         id: "login",
         label: "Войти",
-        href: "/",
+        href: `${process.env.NEXT_PUBLIC_API_URL}/auth/steam`,
         icon: "/general/steam.svg",
         iconOverlay: "/general/steam_overlay.svg",
         iconAlt: "Иконка входа через Steam",
