@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "lint": "turbo lint",
     "clean": "pnpm -r exec rimraf dist .next node_modules || true",
     "db:generate": "pnpm --filter @squad-admin/database prisma:generate",
     "db:migrate": "pnpm --filter @squad-admin/database prisma:migrate",

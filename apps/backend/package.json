@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc --noEmitOnError false",
+    "lint": "eslint src",
     "start": "node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
@@ -35,8 +36,10 @@
     "@types/passport-steam": "^1.0.6",
     "@types/pg": "^8.20.0",
     "@types/ssh2": "^1.15.5",
+    "eslint": "^9",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8"
   },
   "private": true
 }
