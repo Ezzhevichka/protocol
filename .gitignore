@@ -9,6 +9,8 @@ logs
 .DS_Store
 pnpm-lock.yaml
 .turbo
+/packages/database/src/generated/
+next-env.d.ts
 
 #Нейронки
 CLAUDE.md
