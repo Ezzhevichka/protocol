@@ -1,4 +1,4 @@
-import { ServerLevelInfo, ServerLevelType } from "../model";
+import type { ServerLevelInfo, ServerLevelType } from "../model";
 
 export const serverLevelData: Record<ServerLevelType, ServerLevelInfo> = {
   empty: {

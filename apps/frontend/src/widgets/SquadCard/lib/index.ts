@@ -1,4 +1,4 @@
-import { SquadPlayer } from "../model";
+import type { SquadPlayer } from "../model";
 
 export const SQUAD_SIZE = 9;
 

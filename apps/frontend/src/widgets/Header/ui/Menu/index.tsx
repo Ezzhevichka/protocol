@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { HeaderMenuItem } from "../../model";
+
+import type { HeaderMenuItem } from "../../model";
 
 type MenuProps = {
     items: HeaderMenuItem[];

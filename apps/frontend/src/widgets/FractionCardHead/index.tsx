@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
+
 import { formatFractionHours, formatPlayersAmount } from "./lib";
-import { FractionCardHeadProps } from "./model";
+import type { FractionCardHeadProps } from "./model";
 
 export const FractionCardHead = ({
   playersAmount,

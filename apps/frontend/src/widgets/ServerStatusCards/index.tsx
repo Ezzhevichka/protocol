@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
+
 import { mapServersToSlots, resolveServerBySlot, SERVER_SLOTS } from "./lib";
-import { ServerStatusCardsProps, ServerStatusState } from "./model";
+import type { ServerStatusCardsProps, ServerStatusState } from "./model";
 
 const CARD_STATE_STYLES: Record<
   ServerStatusState,

@@ -1,5 +1,5 @@
 // components/Text/Text.tsx
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 
 interface TextProps<T extends ElementType = 'p'> {
   /** HTML тег или React компонент для рендеринга */

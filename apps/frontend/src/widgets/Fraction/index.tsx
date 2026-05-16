@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
+
 import { formatPlayersAmount } from "./lib";
-import { FractionProps } from "./model";
+import type { FractionProps } from "./model";
 
 const Flag = ({ src, size }: { src: string; size: "large" | "small" }) => {
   if (size === "small") {

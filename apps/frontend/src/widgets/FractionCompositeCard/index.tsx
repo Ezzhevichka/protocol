@@ -3,7 +3,8 @@ import { Fraction } from "widgets/Fraction";
 import { FractionCardHead } from "widgets/FractionCardHead";
 import { PlayerCard } from "widgets/PlayerCard";
 import { SquadCard } from "widgets/SquadCard";
-import { FractionCompositeCardProps } from "./model";
+
+import type { FractionCompositeCardProps } from "./model";
 
 const FRACTION_COMPOSITE_COLORS = {
   background: "var(--fraction-composite-bg, #04070B)",

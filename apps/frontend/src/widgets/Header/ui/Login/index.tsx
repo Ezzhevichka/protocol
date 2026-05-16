@@ -3,7 +3,8 @@
 import Image from "next/image"
 import { openInNewTab } from "shared/lib"
 import { Button, Text } from "shared/ui"
-import { HeaderNavigationWithoutComponent } from "../../model";
+
+import type { HeaderNavigationWithoutComponent } from "../../model";
 
 export const Login = ({ label, url, icon }: HeaderNavigationWithoutComponent) => {
     const handleOnClick = () => openInNewTab(url);

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
-import { StatCardData, StatsProps } from "./model";
+
+import type { StatCardData, StatsProps } from "./model";
 
 const STATS_COLORS = {
   title: "#FAFAFA",

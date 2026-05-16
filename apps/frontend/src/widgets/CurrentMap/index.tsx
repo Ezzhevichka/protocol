@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Text } from "shared/ui";
-import { CurrentMapProps } from "./model";
+
+import type { CurrentMapProps } from "./model";
 
 export const CurrentMap = ({
   mapName,

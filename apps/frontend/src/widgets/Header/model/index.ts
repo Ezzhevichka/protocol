@@ -1,4 +1,4 @@
-import { JSX } from "react"
+import type { JSX } from "react"
 
 // Legacy types kept for old header item components.
 export type HeaderNavigation = {
