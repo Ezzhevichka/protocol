@@ -47,6 +47,13 @@ model User {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  // autoseed back-relations
+  agentDevices      AgentDevice[]
+  seedSessions      SeedSession[]
+  ratingProfile     SeedRatingProfile?
+  ratingEvents      SeedRatingEvent[]
+  seedMinuteLedgers SeedMinuteLedger[]
 }
 
 model Player {
@@ -210,4 +217,268 @@ model PlayerPrivilege {
   @@index([eosId])
   @@index([nickname])
   @@index([groupId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTOSEED — enums
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum AgentStatus {
+  CONNECTED
+  DISCONNECTED
+  REVOKED
+  OUTDATED
+}
+
+enum SessionStatus {
+  QUEUED
+  ASSIGNED
+  LAUNCHING
+  SEEDING
+  SWITCHING
+  FINISHED
+  CANCELLED
+  ERROR
+  AGENT_OFFLINE
+}
+
+enum SessionSource {
+  WEBSITE
+  LOCAL_AGENT
+  ADMIN
+}
+
+enum ServerSelectionMode {
+  AUTO_ALL
+  SELECTED_SERVERS
+  SINGLE_SERVER
+}
+
+enum PostCompletionAction {
+  NONE
+  CLOSE_GAME
+  CLOSE_GAME_AND_SHUTDOWN_PC
+}
+
+enum TargetStatus {
+  PENDING
+  ASSIGNED
+  SEEDED
+  ALREADY_SEEDED
+  SKIPPED
+  FAILED
+}
+
+enum SeedCommandType {
+  CONNECT_SERVER
+  SWITCH_SERVER
+  FINISH_SESSION
+  PING
+}
+
+enum SeedCommandStatus {
+  PENDING
+  SENT
+  ACKED
+  FAILED
+}
+
+enum RatingEventType {
+  MINUTE_SEEDED
+  SERVER_COMPLETED
+  BONUS
+  ADMIN_ADJUSTMENT
+  PENALTY
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTOSEED — models
+// ─────────────────────────────────────────────────────────────────────────────
+
+model AgentDevice {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  tokenHash       String      @unique
+  status          AgentStatus @default(DISCONNECTED)
+  lastHeartbeatAt DateTime?
+  agentVersion    String?
+  platform        String?
+  osVersion       String?
+  createdAt       DateTime    @default(now())
+  revokedAt       DateTime?
+
+  seedSessions  SeedSession[]
+  agentCommands AgentSeedCommand[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([lastHeartbeatAt])
+}
+
+model SquadServerSeed {
+  id              String    @id @default(uuid())
+  serverId        Int       @unique
+  name            String
+  ip              String
+  gamePort        Int
+  queryPort       Int
+  seedThreshold   Int       @default(60)
+  lowerHysteresis Int       @default(55)
+  priority        Int       @default(100)
+  enabled         Boolean   @default(true)
+  lastPlayers     Int?
+  lastMaxPlayers  Int?
+  lastMap         String?
+  lastQueryAt     DateTime?
+  lastQueryError  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  seedSessions      SeedSession[]
+  sessionTargets    SeedSessionTarget[]
+  serverMetrics     ServerMetricSeed[]
+  ratingEvents      SeedRatingEvent[]
+  seedMinuteLedgers SeedMinuteLedger[]
+
+  @@index([enabled])
+  @@index([priority])
+}
+
+model SeedSession {
+  id                     String               @id @default(uuid())
+  userId                 String
+  user                   User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agentDeviceId          String
+  agentDevice            AgentDevice          @relation(fields: [agentDeviceId], references: [id], onDelete: Cascade)
+  source                 SessionSource        @default(WEBSITE)
+  mode                   ServerSelectionMode  @default(AUTO_ALL)
+  maxServersToSeed       Int?
+  postCompletionAction   PostCompletionAction @default(NONE)
+  shutdownDelaySeconds   Int                  @default(120)
+  skipUnavailableServers Boolean              @default(true)
+  seededCount            Int                  @default(0)
+  ratingPointsEarned     Int                  @default(0)
+  ratingMinutesEarned    Int                  @default(0)
+  status                 SessionStatus        @default(QUEUED)
+  currentServerId        String?
+  currentServer          SquadServerSeed?     @relation(fields: [currentServerId], references: [id])
+  startedAt              DateTime             @default(now())
+  finishedAt             DateTime?
+  lastSwitchAt           DateTime?
+  errorMessage           String?
+
+  targets           SeedSessionTarget[]
+  agentCommands     AgentSeedCommand[]
+  ratingEvents      SeedRatingEvent[]
+  seedMinuteLedgers SeedMinuteLedger[]
+
+  @@index([userId])
+  @@index([agentDeviceId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+model SeedSessionTarget {
+  id            String          @id @default(uuid())
+  seedSessionId String
+  seedSession   SeedSession     @relation(fields: [seedSessionId], references: [id], onDelete: Cascade)
+  serverId      String
+  server        SquadServerSeed @relation(fields: [serverId], references: [id])
+  status        TargetStatus    @default(PENDING)
+  assignedAt    DateTime?
+  seededAt      DateTime?
+  skippedAt     DateTime?
+  failReason    String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([seedSessionId])
+  @@index([serverId])
+  @@index([status])
+}
+
+model ServerMetricSeed {
+  id         String          @id @default(uuid())
+  serverId   String
+  server     SquadServerSeed @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  players    Int
+  maxPlayers Int
+  map        String?
+  queriedAt  DateTime        @default(now())
+  error      String?
+
+  @@index([serverId])
+  @@index([queriedAt])
+}
+
+model AgentSeedCommand {
+  id            String            @id @default(uuid())
+  agentDeviceId String
+  agentDevice   AgentDevice       @relation(fields: [agentDeviceId], references: [id], onDelete: Cascade)
+  sessionId     String?
+  session       SeedSession?      @relation(fields: [sessionId], references: [id])
+  type          SeedCommandType
+  payload       Json
+  status        SeedCommandStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  sentAt        DateTime?
+  ackedAt       DateTime?
+  error         String?
+
+  @@index([agentDeviceId])
+  @@index([sessionId])
+  @@index([status])
+}
+
+model SeedRatingProfile {
+  id                       String   @id @default(uuid())
+  userId                   String   @unique
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalPoints              Int      @default(0)
+  totalSeedMinutes         Int      @default(0)
+  totalSeededServers       Int      @default(0)
+  currentSeasonPoints      Int      @default(0)
+  currentSeasonSeedMinutes Int      @default(0)
+  updatedAt                DateTime @updatedAt
+}
+
+model SeedRatingEvent {
+  id            String           @id @default(uuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seedSessionId String?
+  session       SeedSession?     @relation(fields: [seedSessionId], references: [id])
+  serverId      String?
+  server        SquadServerSeed? @relation(fields: [serverId], references: [id])
+  type          RatingEventType
+  points        Int
+  minutes       Int?
+  multiplier    Float?
+  reason        String?
+  createdAt     DateTime         @default(now())
+
+  @@index([userId])
+  @@index([seedSessionId])
+  @@index([createdAt])
+}
+
+model SeedMinuteLedger {
+  id            String          @id @default(uuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seedSessionId String
+  session       SeedSession     @relation(fields: [seedSessionId], references: [id], onDelete: Cascade)
+  serverId      String
+  server        SquadServerSeed @relation(fields: [serverId], references: [id])
+  minuteBucket  DateTime
+  pointsAwarded Int
+  multiplier    Float           @default(1.0)
+  createdAt     DateTime        @default(now())
+
+  @@unique([userId, seedSessionId, serverId, minuteBucket])
+  @@index([userId])
+  @@index([seedSessionId])
+  @@index([minuteBucket])
 }

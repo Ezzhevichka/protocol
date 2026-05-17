@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { AuthUser } from "shared/types";
 
 import { UserProfile } from "../UserProfile";
+import { AutoSeedModal } from "../AutoSeedModal";
 
 import type { HeaderMenuItem } from "../../model";
 
@@ -70,7 +71,9 @@ export const Menu = ({ items, user }: MenuProps) => {
                 {items.map((item) => (
                     <li key={item.id}>
                         {item.id === "login" && user ? (
-                            <UserProfile user={user} />
+                            <UserProfile initialUser={user} />
+                        ) : item.id === "autoSeed" ? (
+                            <AutoSeedModal item={item} />
                         ) : (
                             <a
                                 href={item.href}

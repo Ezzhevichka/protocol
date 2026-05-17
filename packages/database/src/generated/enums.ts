@@ -52,3 +52,98 @@ export const PlayerSessionStatus = {
 } as const
 
 export type PlayerSessionStatus = (typeof PlayerSessionStatus)[keyof typeof PlayerSessionStatus]
+
+
+export const AgentStatus = {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  REVOKED: 'REVOKED',
+  OUTDATED: 'OUTDATED'
+} as const
+
+export type AgentStatus = (typeof AgentStatus)[keyof typeof AgentStatus]
+
+
+export const SessionStatus = {
+  QUEUED: 'QUEUED',
+  ASSIGNED: 'ASSIGNED',
+  LAUNCHING: 'LAUNCHING',
+  SEEDING: 'SEEDING',
+  SWITCHING: 'SWITCHING',
+  FINISHED: 'FINISHED',
+  CANCELLED: 'CANCELLED',
+  ERROR: 'ERROR',
+  AGENT_OFFLINE: 'AGENT_OFFLINE'
+} as const
+
+export type SessionStatus = (typeof SessionStatus)[keyof typeof SessionStatus]
+
+
+export const SessionSource = {
+  WEBSITE: 'WEBSITE',
+  LOCAL_AGENT: 'LOCAL_AGENT',
+  ADMIN: 'ADMIN'
+} as const
+
+export type SessionSource = (typeof SessionSource)[keyof typeof SessionSource]
+
+
+export const ServerSelectionMode = {
+  AUTO_ALL: 'AUTO_ALL',
+  SELECTED_SERVERS: 'SELECTED_SERVERS',
+  SINGLE_SERVER: 'SINGLE_SERVER'
+} as const
+
+export type ServerSelectionMode = (typeof ServerSelectionMode)[keyof typeof ServerSelectionMode]
+
+
+export const PostCompletionAction = {
+  NONE: 'NONE',
+  CLOSE_GAME: 'CLOSE_GAME',
+  CLOSE_GAME_AND_SHUTDOWN_PC: 'CLOSE_GAME_AND_SHUTDOWN_PC'
+} as const
+
+export type PostCompletionAction = (typeof PostCompletionAction)[keyof typeof PostCompletionAction]
+
+
+export const TargetStatus = {
+  PENDING: 'PENDING',
+  ASSIGNED: 'ASSIGNED',
+  SEEDED: 'SEEDED',
+  ALREADY_SEEDED: 'ALREADY_SEEDED',
+  SKIPPED: 'SKIPPED',
+  FAILED: 'FAILED'
+} as const
+
+export type TargetStatus = (typeof TargetStatus)[keyof typeof TargetStatus]
+
+
+export const SeedCommandType = {
+  CONNECT_SERVER: 'CONNECT_SERVER',
+  SWITCH_SERVER: 'SWITCH_SERVER',
+  FINISH_SESSION: 'FINISH_SESSION',
+  PING: 'PING'
+} as const
+
+export type SeedCommandType = (typeof SeedCommandType)[keyof typeof SeedCommandType]
+
+
+export const SeedCommandStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  ACKED: 'ACKED',
+  FAILED: 'FAILED'
+} as const
+
+export type SeedCommandStatus = (typeof SeedCommandStatus)[keyof typeof SeedCommandStatus]
+
+
+export const RatingEventType = {
+  MINUTE_SEEDED: 'MINUTE_SEEDED',
+  SERVER_COMPLETED: 'SERVER_COMPLETED',
+  BONUS: 'BONUS',
+  ADMIN_ADJUSTMENT: 'ADMIN_ADJUSTMENT',
+  PENALTY: 'PENALTY'
+} as const
+
+export type RatingEventType = (typeof RatingEventType)[keyof typeof RatingEventType]

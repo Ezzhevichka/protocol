@@ -206,6 +206,11 @@ export type UserWhereInput = {
   role?: Prisma.EnumUserRoleNullableFilter<"User"> | $Enums.UserRole | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  agentDevices?: Prisma.AgentDeviceListRelationFilter
+  seedSessions?: Prisma.SeedSessionListRelationFilter
+  ratingProfile?: Prisma.XOR<Prisma.SeedRatingProfileNullableScalarRelationFilter, Prisma.SeedRatingProfileWhereInput> | null
+  ratingEvents?: Prisma.SeedRatingEventListRelationFilter
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -217,6 +222,11 @@ export type UserOrderByWithRelationInput = {
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  agentDevices?: Prisma.AgentDeviceOrderByRelationAggregateInput
+  seedSessions?: Prisma.SeedSessionOrderByRelationAggregateInput
+  ratingProfile?: Prisma.SeedRatingProfileOrderByWithRelationInput
+  ratingEvents?: Prisma.SeedRatingEventOrderByRelationAggregateInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -231,6 +241,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumUserRoleNullableFilter<"User"> | $Enums.UserRole | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  agentDevices?: Prisma.AgentDeviceListRelationFilter
+  seedSessions?: Prisma.SeedSessionListRelationFilter
+  ratingProfile?: Prisma.XOR<Prisma.SeedRatingProfileNullableScalarRelationFilter, Prisma.SeedRatingProfileWhereInput> | null
+  ratingEvents?: Prisma.SeedRatingEventListRelationFilter
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerListRelationFilter
 }, "id" | "steamId">
 
 export type UserOrderByWithAggregationInput = {
@@ -270,6 +285,11 @@ export type UserCreateInput = {
   role?: $Enums.UserRole | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -281,6 +301,11 @@ export type UserUncheckedCreateInput = {
   role?: $Enums.UserRole | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionUncheckedCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -292,6 +317,11 @@ export type UserUpdateInput = {
   role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -303,6 +333,11 @@ export type UserUncheckedUpdateInput = {
   role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUncheckedUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -371,6 +406,11 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -387,6 +427,512 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutAgentDevicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAgentDevicesInput, Prisma.UserUncheckedCreateWithoutAgentDevicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAgentDevicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAgentDevicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAgentDevicesInput, Prisma.UserUncheckedCreateWithoutAgentDevicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAgentDevicesInput
+  upsert?: Prisma.UserUpsertWithoutAgentDevicesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAgentDevicesInput, Prisma.UserUpdateWithoutAgentDevicesInput>, Prisma.UserUncheckedUpdateWithoutAgentDevicesInput>
+}
+
+export type UserCreateNestedOneWithoutSeedSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSeedSessionsInput, Prisma.UserUncheckedCreateWithoutSeedSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSeedSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSeedSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSeedSessionsInput, Prisma.UserUncheckedCreateWithoutSeedSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSeedSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSeedSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSeedSessionsInput, Prisma.UserUpdateWithoutSeedSessionsInput>, Prisma.UserUncheckedUpdateWithoutSeedSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutRatingProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRatingProfileInput, Prisma.UserUncheckedCreateWithoutRatingProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRatingProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRatingProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRatingProfileInput, Prisma.UserUncheckedCreateWithoutRatingProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRatingProfileInput
+  upsert?: Prisma.UserUpsertWithoutRatingProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRatingProfileInput, Prisma.UserUpdateWithoutRatingProfileInput>, Prisma.UserUncheckedUpdateWithoutRatingProfileInput>
+}
+
+export type UserCreateNestedOneWithoutRatingEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRatingEventsInput, Prisma.UserUncheckedCreateWithoutRatingEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRatingEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRatingEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRatingEventsInput, Prisma.UserUncheckedCreateWithoutRatingEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRatingEventsInput
+  upsert?: Prisma.UserUpsertWithoutRatingEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRatingEventsInput, Prisma.UserUpdateWithoutRatingEventsInput>, Prisma.UserUncheckedUpdateWithoutRatingEventsInput>
+}
+
+export type UserCreateNestedOneWithoutSeedMinuteLedgersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedCreateWithoutSeedMinuteLedgersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSeedMinuteLedgersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSeedMinuteLedgersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedCreateWithoutSeedMinuteLedgersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSeedMinuteLedgersInput
+  upsert?: Prisma.UserUpsertWithoutSeedMinuteLedgersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSeedMinuteLedgersInput, Prisma.UserUpdateWithoutSeedMinuteLedgersInput>, Prisma.UserUncheckedUpdateWithoutSeedMinuteLedgersInput>
+}
+
+export type UserCreateWithoutAgentDevicesInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  seedSessions?: Prisma.SeedSessionCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAgentDevicesInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  seedSessions?: Prisma.SeedSessionUncheckedCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAgentDevicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAgentDevicesInput, Prisma.UserUncheckedCreateWithoutAgentDevicesInput>
+}
+
+export type UserUpsertWithoutAgentDevicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAgentDevicesInput, Prisma.UserUncheckedUpdateWithoutAgentDevicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAgentDevicesInput, Prisma.UserUncheckedCreateWithoutAgentDevicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAgentDevicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAgentDevicesInput, Prisma.UserUncheckedUpdateWithoutAgentDevicesInput>
+}
+
+export type UserUpdateWithoutAgentDevicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  seedSessions?: Prisma.SeedSessionUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAgentDevicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  seedSessions?: Prisma.SeedSessionUncheckedUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSeedSessionsInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSeedSessionsInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSeedSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSeedSessionsInput, Prisma.UserUncheckedCreateWithoutSeedSessionsInput>
+}
+
+export type UserUpsertWithoutSeedSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSeedSessionsInput, Prisma.UserUncheckedUpdateWithoutSeedSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSeedSessionsInput, Prisma.UserUncheckedCreateWithoutSeedSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSeedSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSeedSessionsInput, Prisma.UserUncheckedUpdateWithoutSeedSessionsInput>
+}
+
+export type UserUpdateWithoutSeedSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSeedSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRatingProfileInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionCreateNestedManyWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRatingProfileInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionUncheckedCreateNestedManyWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedCreateNestedManyWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRatingProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRatingProfileInput, Prisma.UserUncheckedCreateWithoutRatingProfileInput>
+}
+
+export type UserUpsertWithoutRatingProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRatingProfileInput, Prisma.UserUncheckedUpdateWithoutRatingProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRatingProfileInput, Prisma.UserUncheckedCreateWithoutRatingProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRatingProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRatingProfileInput, Prisma.UserUncheckedUpdateWithoutRatingProfileInput>
+}
+
+export type UserUpdateWithoutRatingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUpdateManyWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRatingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUncheckedUpdateManyWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedUpdateManyWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRatingEventsInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileCreateNestedOneWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRatingEventsInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionUncheckedCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedCreateNestedOneWithoutUserInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRatingEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRatingEventsInput, Prisma.UserUncheckedCreateWithoutRatingEventsInput>
+}
+
+export type UserUpsertWithoutRatingEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRatingEventsInput, Prisma.UserUncheckedUpdateWithoutRatingEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRatingEventsInput, Prisma.UserUncheckedCreateWithoutRatingEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRatingEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRatingEventsInput, Prisma.UserUncheckedUpdateWithoutRatingEventsInput>
+}
+
+export type UserUpdateWithoutRatingEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUpdateOneWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRatingEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUncheckedUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedUpdateOneWithoutUserNestedInput
+  seedMinuteLedgers?: Prisma.SeedMinuteLedgerUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSeedMinuteLedgersInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSeedMinuteLedgersInput = {
+  id?: string
+  steamId: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  profileUrl?: string | null
+  role?: $Enums.UserRole | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedCreateNestedManyWithoutUserInput
+  seedSessions?: Prisma.SeedSessionUncheckedCreateNestedManyWithoutUserInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedCreateNestedOneWithoutUserInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSeedMinuteLedgersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedCreateWithoutSeedMinuteLedgersInput>
+}
+
+export type UserUpsertWithoutSeedMinuteLedgersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedUpdateWithoutSeedMinuteLedgersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedCreateWithoutSeedMinuteLedgersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSeedMinuteLedgersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSeedMinuteLedgersInput, Prisma.UserUncheckedUpdateWithoutSeedMinuteLedgersInput>
+}
+
+export type UserUpdateWithoutSeedMinuteLedgersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSeedMinuteLedgersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  steamId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  agentDevices?: Prisma.AgentDeviceUncheckedUpdateManyWithoutUserNestedInput
+  seedSessions?: Prisma.SeedSessionUncheckedUpdateManyWithoutUserNestedInput
+  ratingProfile?: Prisma.SeedRatingProfileUncheckedUpdateOneWithoutUserNestedInput
+  ratingEvents?: Prisma.SeedRatingEventUncheckedUpdateManyWithoutUserNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  agentDevices: number
+  seedSessions: number
+  ratingEvents: number
+  seedMinuteLedgers: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  agentDevices?: boolean | UserCountOutputTypeCountAgentDevicesArgs
+  seedSessions?: boolean | UserCountOutputTypeCountSeedSessionsArgs
+  ratingEvents?: boolean | UserCountOutputTypeCountRatingEventsArgs
+  seedMinuteLedgers?: boolean | UserCountOutputTypeCountSeedMinuteLedgersArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAgentDevicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentDeviceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSeedSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SeedSessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRatingEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SeedRatingEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSeedMinuteLedgersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SeedMinuteLedgerWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -398,6 +944,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  agentDevices?: boolean | Prisma.User$agentDevicesArgs<ExtArgs>
+  seedSessions?: boolean | Prisma.User$seedSessionsArgs<ExtArgs>
+  ratingProfile?: boolean | Prisma.User$ratingProfileArgs<ExtArgs>
+  ratingEvents?: boolean | Prisma.User$ratingEventsArgs<ExtArgs>
+  seedMinuteLedgers?: boolean | Prisma.User$seedMinuteLedgersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -434,10 +986,26 @@ export type UserSelectScalar = {
 }
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "steamId" | "displayName" | "avatarUrl" | "profileUrl" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  agentDevices?: boolean | Prisma.User$agentDevicesArgs<ExtArgs>
+  seedSessions?: boolean | Prisma.User$seedSessionsArgs<ExtArgs>
+  ratingProfile?: boolean | Prisma.User$ratingProfileArgs<ExtArgs>
+  ratingEvents?: boolean | Prisma.User$ratingEventsArgs<ExtArgs>
+  seedMinuteLedgers?: boolean | Prisma.User$seedMinuteLedgersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
-  objects: {}
+  objects: {
+    agentDevices: Prisma.$AgentDevicePayload<ExtArgs>[]
+    seedSessions: Prisma.$SeedSessionPayload<ExtArgs>[]
+    ratingProfile: Prisma.$SeedRatingProfilePayload<ExtArgs> | null
+    ratingEvents: Prisma.$SeedRatingEventPayload<ExtArgs>[]
+    seedMinuteLedgers: Prisma.$SeedMinuteLedgerPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     steamId: string
@@ -841,6 +1409,11 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  agentDevices<T extends Prisma.User$agentDevicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentDevicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  seedSessions<T extends Prisma.User$seedSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$seedSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeedSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ratingProfile<T extends Prisma.User$ratingProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ratingProfileArgs<ExtArgs>>): Prisma.Prisma__SeedRatingProfileClient<runtime.Types.Result.GetResult<Prisma.$SeedRatingProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ratingEvents<T extends Prisma.User$ratingEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ratingEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeedRatingEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  seedMinuteLedgers<T extends Prisma.User$seedMinuteLedgersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$seedMinuteLedgersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeedMinuteLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -895,6 +1468,10 @@ export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -913,6 +1490,10 @@ export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -930,6 +1511,10 @@ export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which User to fetch.
    */
@@ -979,6 +1564,10 @@ export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where?: Prisma.UserWhereInput
@@ -1026,6 +1615,10 @@ export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which Users to fetch.
    */
@@ -1075,6 +1668,10 @@ export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The data needed to create a User.
    */
   data: Prisma.XOR<Prisma.UserCreateInput, Prisma.UserUncheckedCreateInput>
@@ -1122,6 +1719,10 @@ export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * The data needed to update a User.
    */
@@ -1189,6 +1790,10 @@ export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The filter to search for the User to update in case it exists.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1215,6 +1820,10 @@ export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter which User to delete.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1235,6 +1844,121 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.agentDevices
+ */
+export type User$agentDevicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentDevice
+   */
+  select?: Prisma.AgentDeviceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentDevice
+   */
+  omit?: Prisma.AgentDeviceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentDeviceInclude<ExtArgs> | null
+  where?: Prisma.AgentDeviceWhereInput
+  orderBy?: Prisma.AgentDeviceOrderByWithRelationInput | Prisma.AgentDeviceOrderByWithRelationInput[]
+  cursor?: Prisma.AgentDeviceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentDeviceScalarFieldEnum | Prisma.AgentDeviceScalarFieldEnum[]
+}
+
+/**
+ * User.seedSessions
+ */
+export type User$seedSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SeedSession
+   */
+  select?: Prisma.SeedSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SeedSession
+   */
+  omit?: Prisma.SeedSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SeedSessionInclude<ExtArgs> | null
+  where?: Prisma.SeedSessionWhereInput
+  orderBy?: Prisma.SeedSessionOrderByWithRelationInput | Prisma.SeedSessionOrderByWithRelationInput[]
+  cursor?: Prisma.SeedSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SeedSessionScalarFieldEnum | Prisma.SeedSessionScalarFieldEnum[]
+}
+
+/**
+ * User.ratingProfile
+ */
+export type User$ratingProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SeedRatingProfile
+   */
+  select?: Prisma.SeedRatingProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SeedRatingProfile
+   */
+  omit?: Prisma.SeedRatingProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SeedRatingProfileInclude<ExtArgs> | null
+  where?: Prisma.SeedRatingProfileWhereInput
+}
+
+/**
+ * User.ratingEvents
+ */
+export type User$ratingEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SeedRatingEvent
+   */
+  select?: Prisma.SeedRatingEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SeedRatingEvent
+   */
+  omit?: Prisma.SeedRatingEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SeedRatingEventInclude<ExtArgs> | null
+  where?: Prisma.SeedRatingEventWhereInput
+  orderBy?: Prisma.SeedRatingEventOrderByWithRelationInput | Prisma.SeedRatingEventOrderByWithRelationInput[]
+  cursor?: Prisma.SeedRatingEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SeedRatingEventScalarFieldEnum | Prisma.SeedRatingEventScalarFieldEnum[]
+}
+
+/**
+ * User.seedMinuteLedgers
+ */
+export type User$seedMinuteLedgersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SeedMinuteLedger
+   */
+  select?: Prisma.SeedMinuteLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SeedMinuteLedger
+   */
+  omit?: Prisma.SeedMinuteLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SeedMinuteLedgerInclude<ExtArgs> | null
+  where?: Prisma.SeedMinuteLedgerWhereInput
+  orderBy?: Prisma.SeedMinuteLedgerOrderByWithRelationInput | Prisma.SeedMinuteLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.SeedMinuteLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SeedMinuteLedgerScalarFieldEnum | Prisma.SeedMinuteLedgerScalarFieldEnum[]
+}
+
+/**
  * User without action
  */
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1246,4 +1970,8 @@ export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
 }
