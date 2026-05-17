@@ -60,7 +60,16 @@ export const ModelName = {
   Ban: 'Ban',
   NicknameBlacklist: 'NicknameBlacklist',
   PrivilegeGroup: 'PrivilegeGroup',
-  PlayerPrivilege: 'PlayerPrivilege'
+  PlayerPrivilege: 'PlayerPrivilege',
+  AgentDevice: 'AgentDevice',
+  SquadServerSeed: 'SquadServerSeed',
+  SeedSession: 'SeedSession',
+  SeedSessionTarget: 'SeedSessionTarget',
+  ServerMetricSeed: 'ServerMetricSeed',
+  AgentSeedCommand: 'AgentSeedCommand',
+  SeedRatingProfile: 'SeedRatingProfile',
+  SeedRatingEvent: 'SeedRatingEvent',
+  SeedMinuteLedger: 'SeedMinuteLedger'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -237,6 +246,159 @@ export const PlayerPrivilegeScalarFieldEnum = {
 export type PlayerPrivilegeScalarFieldEnum = (typeof PlayerPrivilegeScalarFieldEnum)[keyof typeof PlayerPrivilegeScalarFieldEnum]
 
 
+export const AgentDeviceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  tokenHash: 'tokenHash',
+  status: 'status',
+  lastHeartbeatAt: 'lastHeartbeatAt',
+  agentVersion: 'agentVersion',
+  platform: 'platform',
+  osVersion: 'osVersion',
+  createdAt: 'createdAt',
+  revokedAt: 'revokedAt'
+} as const
+
+export type AgentDeviceScalarFieldEnum = (typeof AgentDeviceScalarFieldEnum)[keyof typeof AgentDeviceScalarFieldEnum]
+
+
+export const SquadServerSeedScalarFieldEnum = {
+  id: 'id',
+  serverId: 'serverId',
+  name: 'name',
+  ip: 'ip',
+  gamePort: 'gamePort',
+  queryPort: 'queryPort',
+  seedThreshold: 'seedThreshold',
+  lowerHysteresis: 'lowerHysteresis',
+  priority: 'priority',
+  enabled: 'enabled',
+  lastPlayers: 'lastPlayers',
+  lastMaxPlayers: 'lastMaxPlayers',
+  lastMap: 'lastMap',
+  lastQueryAt: 'lastQueryAt',
+  lastQueryError: 'lastQueryError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SquadServerSeedScalarFieldEnum = (typeof SquadServerSeedScalarFieldEnum)[keyof typeof SquadServerSeedScalarFieldEnum]
+
+
+export const SeedSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  agentDeviceId: 'agentDeviceId',
+  source: 'source',
+  mode: 'mode',
+  maxServersToSeed: 'maxServersToSeed',
+  postCompletionAction: 'postCompletionAction',
+  shutdownDelaySeconds: 'shutdownDelaySeconds',
+  skipUnavailableServers: 'skipUnavailableServers',
+  seededCount: 'seededCount',
+  ratingPointsEarned: 'ratingPointsEarned',
+  ratingMinutesEarned: 'ratingMinutesEarned',
+  status: 'status',
+  currentServerId: 'currentServerId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  lastSwitchAt: 'lastSwitchAt',
+  errorMessage: 'errorMessage'
+} as const
+
+export type SeedSessionScalarFieldEnum = (typeof SeedSessionScalarFieldEnum)[keyof typeof SeedSessionScalarFieldEnum]
+
+
+export const SeedSessionTargetScalarFieldEnum = {
+  id: 'id',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  status: 'status',
+  assignedAt: 'assignedAt',
+  seededAt: 'seededAt',
+  skippedAt: 'skippedAt',
+  failReason: 'failReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeedSessionTargetScalarFieldEnum = (typeof SeedSessionTargetScalarFieldEnum)[keyof typeof SeedSessionTargetScalarFieldEnum]
+
+
+export const ServerMetricSeedScalarFieldEnum = {
+  id: 'id',
+  serverId: 'serverId',
+  players: 'players',
+  maxPlayers: 'maxPlayers',
+  map: 'map',
+  queriedAt: 'queriedAt',
+  error: 'error'
+} as const
+
+export type ServerMetricSeedScalarFieldEnum = (typeof ServerMetricSeedScalarFieldEnum)[keyof typeof ServerMetricSeedScalarFieldEnum]
+
+
+export const AgentSeedCommandScalarFieldEnum = {
+  id: 'id',
+  agentDeviceId: 'agentDeviceId',
+  sessionId: 'sessionId',
+  type: 'type',
+  payload: 'payload',
+  status: 'status',
+  createdAt: 'createdAt',
+  sentAt: 'sentAt',
+  ackedAt: 'ackedAt',
+  error: 'error'
+} as const
+
+export type AgentSeedCommandScalarFieldEnum = (typeof AgentSeedCommandScalarFieldEnum)[keyof typeof AgentSeedCommandScalarFieldEnum]
+
+
+export const SeedRatingProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  totalPoints: 'totalPoints',
+  totalSeedMinutes: 'totalSeedMinutes',
+  totalSeededServers: 'totalSeededServers',
+  currentSeasonPoints: 'currentSeasonPoints',
+  currentSeasonSeedMinutes: 'currentSeasonSeedMinutes',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeedRatingProfileScalarFieldEnum = (typeof SeedRatingProfileScalarFieldEnum)[keyof typeof SeedRatingProfileScalarFieldEnum]
+
+
+export const SeedRatingEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  type: 'type',
+  points: 'points',
+  minutes: 'minutes',
+  multiplier: 'multiplier',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type SeedRatingEventScalarFieldEnum = (typeof SeedRatingEventScalarFieldEnum)[keyof typeof SeedRatingEventScalarFieldEnum]
+
+
+export const SeedMinuteLedgerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  minuteBucket: 'minuteBucket',
+  pointsAwarded: 'pointsAwarded',
+  multiplier: 'multiplier',
+  createdAt: 'createdAt'
+} as const
+
+export type SeedMinuteLedgerScalarFieldEnum = (typeof SeedMinuteLedgerScalarFieldEnum)[keyof typeof SeedMinuteLedgerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -251,6 +413,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

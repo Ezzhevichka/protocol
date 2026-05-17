@@ -1,4 +1,7 @@
+import { cookies } from "next/headers";
+
 import type {
+  AuthUser,
   ServerData,
   FractionData,
   StatCard,
@@ -6,12 +9,29 @@ import type {
   ServerStateData,
 } from "shared/types";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
+export async function getMe(): Promise<AuthUser | null> {
+  const cookieStore = await cookies();
+  const res = await fetch(`${API_URL}/me`, {
+    headers: { Cookie: cookieStore.toString() },
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+  const data = await res.json() as { user: AuthUser | null };
+  return data.user;
+}
+
 export async function getServers(): Promise<ServerData[]> {
-  return [
-    { id: 1, state: "pressed", name: "Invasion", playersCount: 100, queueCount: 3 },
-    { id: 2, state: "default", name: "AAS/RAAS", playersCount: 100, queueCount: 9 },
-    { id: 3, state: "default", name: "RU vs UA 24/7", playersCount: "Seed/100" },
-  ];
+  const res = await fetch(`${API_URL}/servers`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const data = await res.json() as { servers: { id: number; name: string }[] };
+  return data.servers.map((s) => ({
+    id: s.id,
+    badge: s.id,
+    name: s.name.replace(/^#\d+\s+/, ""),
+    state: "default" as const,
+  }));
 }
 
 export async function getCurrentMap(): Promise<MapData> {

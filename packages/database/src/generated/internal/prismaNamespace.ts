@@ -393,7 +393,16 @@ export const ModelName = {
   Ban: 'Ban',
   NicknameBlacklist: 'NicknameBlacklist',
   PrivilegeGroup: 'PrivilegeGroup',
-  PlayerPrivilege: 'PlayerPrivilege'
+  PlayerPrivilege: 'PlayerPrivilege',
+  AgentDevice: 'AgentDevice',
+  SquadServerSeed: 'SquadServerSeed',
+  SeedSession: 'SeedSession',
+  SeedSessionTarget: 'SeedSessionTarget',
+  ServerMetricSeed: 'ServerMetricSeed',
+  AgentSeedCommand: 'AgentSeedCommand',
+  SeedRatingProfile: 'SeedRatingProfile',
+  SeedRatingEvent: 'SeedRatingEvent',
+  SeedMinuteLedger: 'SeedMinuteLedger'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "player" | "playerName" | "playerSession" | "playerExternalProfile" | "punishment" | "ban" | "nicknameBlacklist" | "privilegeGroup" | "playerPrivilege"
+    modelProps: "user" | "player" | "playerName" | "playerSession" | "playerExternalProfile" | "punishment" | "ban" | "nicknameBlacklist" | "privilegeGroup" | "playerPrivilege" | "agentDevice" | "squadServerSeed" | "seedSession" | "seedSessionTarget" | "serverMetricSeed" | "agentSeedCommand" | "seedRatingProfile" | "seedRatingEvent" | "seedMinuteLedger"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1162,672 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AgentDevice: {
+      payload: Prisma.$AgentDevicePayload<ExtArgs>
+      fields: Prisma.AgentDeviceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentDeviceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentDeviceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        findFirst: {
+          args: Prisma.AgentDeviceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentDeviceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        findMany: {
+          args: Prisma.AgentDeviceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>[]
+        }
+        create: {
+          args: Prisma.AgentDeviceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        createMany: {
+          args: Prisma.AgentDeviceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentDeviceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>[]
+        }
+        delete: {
+          args: Prisma.AgentDeviceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        update: {
+          args: Prisma.AgentDeviceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentDeviceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentDeviceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentDeviceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentDeviceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDevicePayload>
+        }
+        aggregate: {
+          args: Prisma.AgentDeviceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentDevice>
+        }
+        groupBy: {
+          args: Prisma.AgentDeviceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDeviceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentDeviceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDeviceCountAggregateOutputType> | number
+        }
+      }
+    }
+    SquadServerSeed: {
+      payload: Prisma.$SquadServerSeedPayload<ExtArgs>
+      fields: Prisma.SquadServerSeedFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SquadServerSeedFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SquadServerSeedFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        findFirst: {
+          args: Prisma.SquadServerSeedFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SquadServerSeedFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        findMany: {
+          args: Prisma.SquadServerSeedFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>[]
+        }
+        create: {
+          args: Prisma.SquadServerSeedCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        createMany: {
+          args: Prisma.SquadServerSeedCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SquadServerSeedCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>[]
+        }
+        delete: {
+          args: Prisma.SquadServerSeedDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        update: {
+          args: Prisma.SquadServerSeedUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        deleteMany: {
+          args: Prisma.SquadServerSeedDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SquadServerSeedUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SquadServerSeedUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>[]
+        }
+        upsert: {
+          args: Prisma.SquadServerSeedUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerSeedPayload>
+        }
+        aggregate: {
+          args: Prisma.SquadServerSeedAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSquadServerSeed>
+        }
+        groupBy: {
+          args: Prisma.SquadServerSeedGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SquadServerSeedGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SquadServerSeedCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SquadServerSeedCountAggregateOutputType> | number
+        }
+      }
+    }
+    SeedSession: {
+      payload: Prisma.$SeedSessionPayload<ExtArgs>
+      fields: Prisma.SeedSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeedSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeedSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.SeedSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeedSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        findMany: {
+          args: Prisma.SeedSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>[]
+        }
+        create: {
+          args: Prisma.SeedSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        createMany: {
+          args: Prisma.SeedSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeedSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.SeedSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        update: {
+          args: Prisma.SeedSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.SeedSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeedSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeedSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.SeedSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.SeedSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeedSession>
+        }
+        groupBy: {
+          args: Prisma.SeedSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeedSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    SeedSessionTarget: {
+      payload: Prisma.$SeedSessionTargetPayload<ExtArgs>
+      fields: Prisma.SeedSessionTargetFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeedSessionTargetFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeedSessionTargetFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        findFirst: {
+          args: Prisma.SeedSessionTargetFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeedSessionTargetFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        findMany: {
+          args: Prisma.SeedSessionTargetFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>[]
+        }
+        create: {
+          args: Prisma.SeedSessionTargetCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        createMany: {
+          args: Prisma.SeedSessionTargetCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeedSessionTargetCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>[]
+        }
+        delete: {
+          args: Prisma.SeedSessionTargetDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        update: {
+          args: Prisma.SeedSessionTargetUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        deleteMany: {
+          args: Prisma.SeedSessionTargetDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeedSessionTargetUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeedSessionTargetUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>[]
+        }
+        upsert: {
+          args: Prisma.SeedSessionTargetUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedSessionTargetPayload>
+        }
+        aggregate: {
+          args: Prisma.SeedSessionTargetAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeedSessionTarget>
+        }
+        groupBy: {
+          args: Prisma.SeedSessionTargetGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedSessionTargetGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeedSessionTargetCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedSessionTargetCountAggregateOutputType> | number
+        }
+      }
+    }
+    ServerMetricSeed: {
+      payload: Prisma.$ServerMetricSeedPayload<ExtArgs>
+      fields: Prisma.ServerMetricSeedFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServerMetricSeedFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServerMetricSeedFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        findFirst: {
+          args: Prisma.ServerMetricSeedFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServerMetricSeedFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        findMany: {
+          args: Prisma.ServerMetricSeedFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>[]
+        }
+        create: {
+          args: Prisma.ServerMetricSeedCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        createMany: {
+          args: Prisma.ServerMetricSeedCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServerMetricSeedCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>[]
+        }
+        delete: {
+          args: Prisma.ServerMetricSeedDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        update: {
+          args: Prisma.ServerMetricSeedUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        deleteMany: {
+          args: Prisma.ServerMetricSeedDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServerMetricSeedUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServerMetricSeedUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>[]
+        }
+        upsert: {
+          args: Prisma.ServerMetricSeedUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServerMetricSeedPayload>
+        }
+        aggregate: {
+          args: Prisma.ServerMetricSeedAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServerMetricSeed>
+        }
+        groupBy: {
+          args: Prisma.ServerMetricSeedGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServerMetricSeedGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServerMetricSeedCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServerMetricSeedCountAggregateOutputType> | number
+        }
+      }
+    }
+    AgentSeedCommand: {
+      payload: Prisma.$AgentSeedCommandPayload<ExtArgs>
+      fields: Prisma.AgentSeedCommandFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentSeedCommandFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentSeedCommandFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        findFirst: {
+          args: Prisma.AgentSeedCommandFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentSeedCommandFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        findMany: {
+          args: Prisma.AgentSeedCommandFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>[]
+        }
+        create: {
+          args: Prisma.AgentSeedCommandCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        createMany: {
+          args: Prisma.AgentSeedCommandCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentSeedCommandCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>[]
+        }
+        delete: {
+          args: Prisma.AgentSeedCommandDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        update: {
+          args: Prisma.AgentSeedCommandUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentSeedCommandDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentSeedCommandUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentSeedCommandUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentSeedCommandUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentSeedCommandPayload>
+        }
+        aggregate: {
+          args: Prisma.AgentSeedCommandAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentSeedCommand>
+        }
+        groupBy: {
+          args: Prisma.AgentSeedCommandGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentSeedCommandGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentSeedCommandCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentSeedCommandCountAggregateOutputType> | number
+        }
+      }
+    }
+    SeedRatingProfile: {
+      payload: Prisma.$SeedRatingProfilePayload<ExtArgs>
+      fields: Prisma.SeedRatingProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeedRatingProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeedRatingProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.SeedRatingProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeedRatingProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        findMany: {
+          args: Prisma.SeedRatingProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>[]
+        }
+        create: {
+          args: Prisma.SeedRatingProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        createMany: {
+          args: Prisma.SeedRatingProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeedRatingProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.SeedRatingProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        update: {
+          args: Prisma.SeedRatingProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.SeedRatingProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeedRatingProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeedRatingProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.SeedRatingProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.SeedRatingProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeedRatingProfile>
+        }
+        groupBy: {
+          args: Prisma.SeedRatingProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedRatingProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeedRatingProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedRatingProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    SeedRatingEvent: {
+      payload: Prisma.$SeedRatingEventPayload<ExtArgs>
+      fields: Prisma.SeedRatingEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeedRatingEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeedRatingEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        findFirst: {
+          args: Prisma.SeedRatingEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeedRatingEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        findMany: {
+          args: Prisma.SeedRatingEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>[]
+        }
+        create: {
+          args: Prisma.SeedRatingEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        createMany: {
+          args: Prisma.SeedRatingEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeedRatingEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>[]
+        }
+        delete: {
+          args: Prisma.SeedRatingEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        update: {
+          args: Prisma.SeedRatingEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.SeedRatingEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeedRatingEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeedRatingEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.SeedRatingEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedRatingEventPayload>
+        }
+        aggregate: {
+          args: Prisma.SeedRatingEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeedRatingEvent>
+        }
+        groupBy: {
+          args: Prisma.SeedRatingEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedRatingEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeedRatingEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedRatingEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    SeedMinuteLedger: {
+      payload: Prisma.$SeedMinuteLedgerPayload<ExtArgs>
+      fields: Prisma.SeedMinuteLedgerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeedMinuteLedgerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeedMinuteLedgerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        findFirst: {
+          args: Prisma.SeedMinuteLedgerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeedMinuteLedgerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        findMany: {
+          args: Prisma.SeedMinuteLedgerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>[]
+        }
+        create: {
+          args: Prisma.SeedMinuteLedgerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        createMany: {
+          args: Prisma.SeedMinuteLedgerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeedMinuteLedgerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>[]
+        }
+        delete: {
+          args: Prisma.SeedMinuteLedgerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        update: {
+          args: Prisma.SeedMinuteLedgerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        deleteMany: {
+          args: Prisma.SeedMinuteLedgerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeedMinuteLedgerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeedMinuteLedgerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>[]
+        }
+        upsert: {
+          args: Prisma.SeedMinuteLedgerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeedMinuteLedgerPayload>
+        }
+        aggregate: {
+          args: Prisma.SeedMinuteLedgerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeedMinuteLedger>
+        }
+        groupBy: {
+          args: Prisma.SeedMinuteLedgerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedMinuteLedgerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeedMinuteLedgerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeedMinuteLedgerCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1350,6 +2025,159 @@ export const PlayerPrivilegeScalarFieldEnum = {
 export type PlayerPrivilegeScalarFieldEnum = (typeof PlayerPrivilegeScalarFieldEnum)[keyof typeof PlayerPrivilegeScalarFieldEnum]
 
 
+export const AgentDeviceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  tokenHash: 'tokenHash',
+  status: 'status',
+  lastHeartbeatAt: 'lastHeartbeatAt',
+  agentVersion: 'agentVersion',
+  platform: 'platform',
+  osVersion: 'osVersion',
+  createdAt: 'createdAt',
+  revokedAt: 'revokedAt'
+} as const
+
+export type AgentDeviceScalarFieldEnum = (typeof AgentDeviceScalarFieldEnum)[keyof typeof AgentDeviceScalarFieldEnum]
+
+
+export const SquadServerSeedScalarFieldEnum = {
+  id: 'id',
+  serverId: 'serverId',
+  name: 'name',
+  ip: 'ip',
+  gamePort: 'gamePort',
+  queryPort: 'queryPort',
+  seedThreshold: 'seedThreshold',
+  lowerHysteresis: 'lowerHysteresis',
+  priority: 'priority',
+  enabled: 'enabled',
+  lastPlayers: 'lastPlayers',
+  lastMaxPlayers: 'lastMaxPlayers',
+  lastMap: 'lastMap',
+  lastQueryAt: 'lastQueryAt',
+  lastQueryError: 'lastQueryError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SquadServerSeedScalarFieldEnum = (typeof SquadServerSeedScalarFieldEnum)[keyof typeof SquadServerSeedScalarFieldEnum]
+
+
+export const SeedSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  agentDeviceId: 'agentDeviceId',
+  source: 'source',
+  mode: 'mode',
+  maxServersToSeed: 'maxServersToSeed',
+  postCompletionAction: 'postCompletionAction',
+  shutdownDelaySeconds: 'shutdownDelaySeconds',
+  skipUnavailableServers: 'skipUnavailableServers',
+  seededCount: 'seededCount',
+  ratingPointsEarned: 'ratingPointsEarned',
+  ratingMinutesEarned: 'ratingMinutesEarned',
+  status: 'status',
+  currentServerId: 'currentServerId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  lastSwitchAt: 'lastSwitchAt',
+  errorMessage: 'errorMessage'
+} as const
+
+export type SeedSessionScalarFieldEnum = (typeof SeedSessionScalarFieldEnum)[keyof typeof SeedSessionScalarFieldEnum]
+
+
+export const SeedSessionTargetScalarFieldEnum = {
+  id: 'id',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  status: 'status',
+  assignedAt: 'assignedAt',
+  seededAt: 'seededAt',
+  skippedAt: 'skippedAt',
+  failReason: 'failReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeedSessionTargetScalarFieldEnum = (typeof SeedSessionTargetScalarFieldEnum)[keyof typeof SeedSessionTargetScalarFieldEnum]
+
+
+export const ServerMetricSeedScalarFieldEnum = {
+  id: 'id',
+  serverId: 'serverId',
+  players: 'players',
+  maxPlayers: 'maxPlayers',
+  map: 'map',
+  queriedAt: 'queriedAt',
+  error: 'error'
+} as const
+
+export type ServerMetricSeedScalarFieldEnum = (typeof ServerMetricSeedScalarFieldEnum)[keyof typeof ServerMetricSeedScalarFieldEnum]
+
+
+export const AgentSeedCommandScalarFieldEnum = {
+  id: 'id',
+  agentDeviceId: 'agentDeviceId',
+  sessionId: 'sessionId',
+  type: 'type',
+  payload: 'payload',
+  status: 'status',
+  createdAt: 'createdAt',
+  sentAt: 'sentAt',
+  ackedAt: 'ackedAt',
+  error: 'error'
+} as const
+
+export type AgentSeedCommandScalarFieldEnum = (typeof AgentSeedCommandScalarFieldEnum)[keyof typeof AgentSeedCommandScalarFieldEnum]
+
+
+export const SeedRatingProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  totalPoints: 'totalPoints',
+  totalSeedMinutes: 'totalSeedMinutes',
+  totalSeededServers: 'totalSeededServers',
+  currentSeasonPoints: 'currentSeasonPoints',
+  currentSeasonSeedMinutes: 'currentSeasonSeedMinutes',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeedRatingProfileScalarFieldEnum = (typeof SeedRatingProfileScalarFieldEnum)[keyof typeof SeedRatingProfileScalarFieldEnum]
+
+
+export const SeedRatingEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  type: 'type',
+  points: 'points',
+  minutes: 'minutes',
+  multiplier: 'multiplier',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type SeedRatingEventScalarFieldEnum = (typeof SeedRatingEventScalarFieldEnum)[keyof typeof SeedRatingEventScalarFieldEnum]
+
+
+export const SeedMinuteLedgerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  seedSessionId: 'seedSessionId',
+  serverId: 'serverId',
+  minuteBucket: 'minuteBucket',
+  pointsAwarded: 'pointsAwarded',
+  multiplier: 'multiplier',
+  createdAt: 'createdAt'
+} as const
+
+export type SeedMinuteLedgerScalarFieldEnum = (typeof SeedMinuteLedgerScalarFieldEnum)[keyof typeof SeedMinuteLedgerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1364,6 +2192,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1531,6 +2366,132 @@ export type ListEnumBanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 
 
 /**
+ * Reference to a field of type 'AgentStatus'
+ */
+export type EnumAgentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AgentStatus[]'
+ */
+export type ListEnumAgentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SessionSource'
+ */
+export type EnumSessionSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionSource'>
+    
+
+
+/**
+ * Reference to a field of type 'SessionSource[]'
+ */
+export type ListEnumSessionSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionSource[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ServerSelectionMode'
+ */
+export type EnumServerSelectionModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServerSelectionMode'>
+    
+
+
+/**
+ * Reference to a field of type 'ServerSelectionMode[]'
+ */
+export type ListEnumServerSelectionModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServerSelectionMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PostCompletionAction'
+ */
+export type EnumPostCompletionActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostCompletionAction'>
+    
+
+
+/**
+ * Reference to a field of type 'PostCompletionAction[]'
+ */
+export type ListEnumPostCompletionActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostCompletionAction[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SessionStatus'
+ */
+export type EnumSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SessionStatus[]'
+ */
+export type ListEnumSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TargetStatus'
+ */
+export type EnumTargetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TargetStatus[]'
+ */
+export type ListEnumTargetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SeedCommandType'
+ */
+export type EnumSeedCommandTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeedCommandType'>
+    
+
+
+/**
+ * Reference to a field of type 'SeedCommandType[]'
+ */
+export type ListEnumSeedCommandTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeedCommandType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SeedCommandStatus'
+ */
+export type EnumSeedCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeedCommandStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SeedCommandStatus[]'
+ */
+export type ListEnumSeedCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeedCommandStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RatingEventType'
+ */
+export type EnumRatingEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RatingEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'RatingEventType[]'
+ */
+export type ListEnumRatingEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RatingEventType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1663,6 +2624,15 @@ export type GlobalOmitConfig = {
   nicknameBlacklist?: Prisma.NicknameBlacklistOmit
   privilegeGroup?: Prisma.PrivilegeGroupOmit
   playerPrivilege?: Prisma.PlayerPrivilegeOmit
+  agentDevice?: Prisma.AgentDeviceOmit
+  squadServerSeed?: Prisma.SquadServerSeedOmit
+  seedSession?: Prisma.SeedSessionOmit
+  seedSessionTarget?: Prisma.SeedSessionTargetOmit
+  serverMetricSeed?: Prisma.ServerMetricSeedOmit
+  agentSeedCommand?: Prisma.AgentSeedCommandOmit
+  seedRatingProfile?: Prisma.SeedRatingProfileOmit
+  seedRatingEvent?: Prisma.SeedRatingEventOmit
+  seedMinuteLedger?: Prisma.SeedMinuteLedgerOmit
 }
 
 /* Types for Logging */

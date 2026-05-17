@@ -67,3 +67,48 @@ export type PrivilegeGroup = Prisma.PrivilegeGroupModel
  * 
  */
 export type PlayerPrivilege = Prisma.PlayerPrivilegeModel
+/**
+ * Model AgentDevice
+ * 
+ */
+export type AgentDevice = Prisma.AgentDeviceModel
+/**
+ * Model SquadServerSeed
+ * 
+ */
+export type SquadServerSeed = Prisma.SquadServerSeedModel
+/**
+ * Model SeedSession
+ * 
+ */
+export type SeedSession = Prisma.SeedSessionModel
+/**
+ * Model SeedSessionTarget
+ * 
+ */
+export type SeedSessionTarget = Prisma.SeedSessionTargetModel
+/**
+ * Model ServerMetricSeed
+ * 
+ */
+export type ServerMetricSeed = Prisma.ServerMetricSeedModel
+/**
+ * Model AgentSeedCommand
+ * 
+ */
+export type AgentSeedCommand = Prisma.AgentSeedCommandModel
+/**
+ * Model SeedRatingProfile
+ * 
+ */
+export type SeedRatingProfile = Prisma.SeedRatingProfileModel
+/**
+ * Model SeedRatingEvent
+ * 
+ */
+export type SeedRatingEvent = Prisma.SeedRatingEventModel
+/**
+ * Model SeedMinuteLedger
+ * 
+ */
+export type SeedMinuteLedger = Prisma.SeedMinuteLedgerModel

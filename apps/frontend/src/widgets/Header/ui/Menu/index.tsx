@@ -1,9 +1,15 @@
 import Image from "next/image";
 
+import type { AuthUser } from "shared/types";
+
+import { UserProfile } from "../UserProfile";
+import { AutoSeedModal } from "../AutoSeedModal";
+
 import type { HeaderMenuItem } from "../../model";
 
 type MenuProps = {
     items: HeaderMenuItem[];
+    user?: AuthUser | null;
 };
 
 const Icon = ({ item }: { item: HeaderMenuItem }) => {
@@ -58,23 +64,29 @@ const Icon = ({ item }: { item: HeaderMenuItem }) => {
     );
 };
 
-export const Menu = ({ items }: MenuProps) => {
+export const Menu = ({ items, user }: MenuProps) => {
     return (
         <nav aria-label="Основное меню" className="shrink-0">
             <ul className="flex items-center justify-end gap-12">
                 {items.map((item) => (
                     <li key={item.id}>
-                        <a
-                            href={item.href}
-                            target={item.external ? "_blank" : undefined}
-                            rel={item.external ? "noreferrer noopener" : undefined}
-                            className="flex items-center gap-8 p-8 transition-opacity hover:opacity-80"
-                        >
-                            <Icon item={item} />
-                            <span className="font-manrope text-[16px] font-medium leading-22 whitespace-nowrap text-header-nav-text">
-                                {item.label}
-                            </span>
-                        </a>
+                        {item.id === "login" && user ? (
+                            <UserProfile initialUser={user} />
+                        ) : item.id === "autoSeed" ? (
+                            <AutoSeedModal item={item} />
+                        ) : (
+                            <a
+                                href={item.href}
+                                target={item.external ? "_blank" : undefined}
+                                rel={item.external ? "noreferrer noopener" : undefined}
+                                className="flex items-center gap-8 p-8 transition-opacity hover:opacity-80"
+                            >
+                                <Icon item={item} />
+                                <span className="font-manrope text-[16px] font-medium leading-22 whitespace-nowrap text-header-nav-text">
+                                    {item.label}
+                                </span>
+                            </a>
+                        )}
                     </li>
                 ))}
             </ul>

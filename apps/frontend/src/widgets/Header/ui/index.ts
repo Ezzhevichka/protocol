@@ -1,5 +1,7 @@
 export { AutoSeed } from './AutoSeed';
+export { AutoSeedModal } from './AutoSeedModal';
 export { Discord } from './Discord';
 export { BuyVip } from './BuyVip';
 export { Login } from './Login';
 export { Menu } from './Menu';
+export { UserProfile } from './UserProfile';

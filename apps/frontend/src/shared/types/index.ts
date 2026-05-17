@@ -1,3 +1,14 @@
+/* ── Auth ───────────────────────────────────────────────────── */
+
+export type AuthUser = {
+  id: string;
+  steamId: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+  profileUrl: string | null;
+  role: string | null;
+};
+
 /* ── Domain Types ──────────────────────────────────────────── */
 
 export type Player = {
