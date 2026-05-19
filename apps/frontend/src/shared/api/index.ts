@@ -1,4 +1,26 @@
-import type { ServerData, FractionData, StatCard, MapData, ServerStateData } from 'shared/types';
+import { cookies } from 'next/headers';
+
+import type {
+    AuthUser,
+    ServerData,
+    FractionData,
+    StatCard,
+    MapData,
+    ServerStateData,
+} from 'shared/types';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+
+export async function getMe(): Promise<AuthUser | null> {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/me`, {
+        headers: { Cookie: cookieStore.toString() },
+        cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const data = await res.json() as { user: AuthUser | null };
+    return data.user;
+}
 
 export async function getServers(): Promise<ServerData[]> {
     return [
