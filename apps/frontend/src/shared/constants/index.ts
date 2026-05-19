@@ -1,2 +1,2 @@
-export { resolveKitIcon } from "./kitIcons";
-export { resolveKitIconSize } from "./kitIcons";
+export { resolveKitIcon } from './kitIcons';
+export { resolveKitIconSize } from './kitIcons';

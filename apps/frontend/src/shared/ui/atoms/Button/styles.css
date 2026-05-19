@@ -10,7 +10,11 @@
   color: var(--btn-text, var(--button-text-white-default));
   background-image: var(--btn-bg-image, none);
   box-shadow: var(--btn-shadow, none);
-  transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-kit-size-s {
@@ -31,21 +35,21 @@
 .btn-kit-text-s {
   font-size: 14px;
   line-height: 22px;
-  letter-spacing: .28px;
+  letter-spacing: 0.28px;
   font-weight: 500;
 }
 
 .btn-kit-text-m {
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: .32px;
+  letter-spacing: 0.32px;
   font-weight: 500;
 }
 
 .btn-kit-text-l {
   font-size: 16px;
   line-height: 22px;
-  letter-spacing: -.43px;
+  letter-spacing: -0.43px;
   font-weight: 500;
 }
 

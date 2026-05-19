@@ -1,10 +1,10 @@
 'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import type { AuthUser } from "shared/types";
+import type { AuthUser } from 'shared/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 type UserProfileProps = {
     user: AuthUser;
@@ -12,7 +12,7 @@ type UserProfileProps = {
 
 export const UserProfile = ({ user }: UserProfileProps) => {
     const handleLogout = async () => {
-        await fetch(`${API_URL}/auth/logout`, { method: "POST", credentials: "include" });
+        await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
         window.location.reload();
     };
 
@@ -21,7 +21,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
             {user.avatarUrl && (
                 <Image
                     src={user.avatarUrl}
-                    alt={user.displayName ?? "avatar"}
+                    alt={user.displayName ?? 'avatar'}
                     width={32}
                     height={32}
                     className="rounded-full"
