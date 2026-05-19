@@ -23,11 +23,36 @@ export async function getMe(): Promise<AuthUser | null> {
 }
 
 export async function getServers(): Promise<ServerData[]> {
-  return [
-    { id: 1, state: "pressed", name: "Invasion", playersCount: 100, queueCount: 3 },
-    { id: 2, state: "default", name: "AAS/RAAS", playersCount: 100, queueCount: 9 },
-    { id: 3, state: "default", name: "RU vs UA 24/7", playersCount: "Seed/100" },
-  ];
+  const cookieStore = await cookies();
+  const cookie = cookieStore.toString();
+
+  const res = await fetch(`${API_URL}/servers`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const data = await res.json() as { servers: { id: number; name: string }[] };
+
+  const playersData = await Promise.all(
+    data.servers.map(async (s) => {
+      const r = await fetch(`${API_URL}/servers/${s.id}/players`, {
+        headers: cookie ? { Cookie: cookie } : {},
+        cache: "no-store",
+      });
+      if (!r.ok) return { id: s.id, playersCount: 0 };
+      const d = await r.json() as { playersCount: number; maxPlayers: number; queueCount: number };
+      return { id: s.id, playersCount: d.playersCount, maxPlayers: d.maxPlayers, queueCount: d.queueCount };
+    })
+  );
+
+  const playerMap = Object.fromEntries(playersData.map((p) => [p.id, p]));
+
+  return data.servers.map((s) => ({
+    id: s.id,
+    badge: s.id,
+    name: s.name.replace(/^#\d+\s+/, ""),
+    state: "default" as const,
+    playersCount: playerMap[s.id]?.playersCount ?? 0,
+    maxPlayers: playerMap[s.id]?.maxPlayers ?? 100,
+    queueCount: playerMap[s.id]?.queueCount ?? 0,
+  }));
 }
 
 export async function getCurrentMap(): Promise<MapData> {

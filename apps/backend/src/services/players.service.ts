@@ -21,15 +21,19 @@ export async function getPlayersByServerId(serverId: number) {
     squads: data.squads,
   });
 
+  const serverInfo = data.server as any;
+
   return {
     serverId: server.id,
     serverName: server.name,
 
     playersCount: data.players.length,
     squadsCount: data.squads.length,
+    maxPlayers: serverInfo?.maxPlayers ?? 100,
+    queueCount: (serverInfo?.publicQueue ?? 0) + (serverInfo?.reserveQueue ?? 0),
 
     players: data.players,
-    server: data.server as any,
+    server: serverInfo,
     squads: data.squads,
     teams,
   };

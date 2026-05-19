@@ -17,26 +17,26 @@ const CARD_STATE_STYLES: Record<
   }
 > = {
   default: {
-    cardBackground: "#0E1625",
-    cardBorder: "none",
+    cardBackground: "rgba(14, 22, 37, 0.55)",
+    cardBorder: "1px solid rgba(255,255,255,0.07)",
     dotColor: "#00FF90",
     textColor: "#FAFAFA",
-    badgeBackground: "#52525C",
+    badgeBackground: "rgba(82,82,92,0.7)",
     badgeText: "#FAFAFA",
     playersIcon: "/general/fraction_people.svg",
   },
   pressed: {
-    cardBackground: "#1C2E4A",
+    cardBackground: "rgba(28, 46, 74, 0.6)",
     cardBorder: "2px solid #2A446F",
     dotColor: "#00FF90",
     textColor: "#FAFAFA",
-    badgeBackground: "#52525C",
+    badgeBackground: "rgba(82,82,92,0.7)",
     badgeText: "#FAFAFA",
     playersIcon: "/general/fraction_people.svg",
   },
   disabled: {
-    cardBackground: "#4D4D4D",
-    cardBorder: "none",
+    cardBackground: "rgba(77,77,77,0.4)",
+    cardBorder: "1px solid rgba(255,255,255,0.05)",
     dotColor: "#EB1010",
     textColor: "#A1A1A1",
     badgeBackground: "transparent",
@@ -66,7 +66,7 @@ export const ServerStatusCards = ({
         {title}
       </Text>
 
-      <div className="flex w-full min-w-1296 items-center gap-24 overflow-x-auto pb-4">
+      <div className="flex w-full items-center gap-24 py-[16px]">
         {resolvedServers.map((server) => {
           const styles = CARD_STATE_STYLES[server.state];
           const isDisabled = server.state === "disabled";
@@ -77,7 +77,11 @@ export const ServerStatusCards = ({
               type="button"
               disabled={isDisabled}
               onClick={server.onClick}
-              className={`flex w-306 shrink-0 flex-col items-start overflow-hidden rounded-lg px-16 py-10 text-left ${isDisabled ? "cursor-default" : "cursor-pointer"}`}
+              className={`flex w-306 shrink-0 flex-col items-start rounded-lg px-16 py-10 text-left transition-all duration-200 ${
+                isDisabled
+                  ? "cursor-default"
+                  : "cursor-pointer hover:-translate-y-[3px] hover:scale-[1.02] hover:brightness-110 hover:shadow-[0_4px_24px_rgba(0,255,144,0.08)]"
+              }`}
               style={{
                 backgroundColor: styles.cardBackground,
                 border: styles.cardBorder,
@@ -92,7 +96,7 @@ export const ServerStatusCards = ({
 
                   <div className="flex min-w-0 items-center gap-8">
                     <div
-                      className="flex items-center justify-center rounded px-10 py-2"
+                      className="flex shrink-0 items-center justify-center rounded px-10 py-2"
                       style={{ backgroundColor: styles.badgeBackground }}
                     >
                       <Text
@@ -109,7 +113,7 @@ export const ServerStatusCards = ({
                     <Text
                       as="p"
                       weight="semibold"
-                      className="max-w-200 font-manrope text-[20px] leading-32 tracking-[0.4px] whitespace-nowrap"
+                      className="min-w-0 font-manrope text-[14px] leading-20 tracking-[0.2px]"
                       style={{ color: styles.textColor }}
                     >
                       {server.name}
@@ -131,8 +135,8 @@ export const ServerStatusCards = ({
 
                   <Text
                     as="p"
-                    weight="semibold"
-                    className="min-w-0 flex-1 font-manrope text-[20px] leading-32 tracking-[0.4px]"
+                    weight="medium"
+                    className="min-w-0 flex-1 font-manrope text-[13px] leading-20 tracking-[0.2px]"
                     style={{ color: styles.textColor }}
                   >
                     {server.playersLabel}

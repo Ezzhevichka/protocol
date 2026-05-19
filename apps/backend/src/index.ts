@@ -49,7 +49,7 @@ app.use("/auth", authRoutes);
 app.use("/me", requireAuth, meRoutes);
 app.use("/bans", requireAuth, bansRoutes);
 app.use("/players", requireAuth, playersRoutes);
-app.use("/servers", requireAuth, serversRoutes);
+app.use("/servers", serversRoutes);
 app.use("/privileges", requireAuth, privilegesRoutes);
 app.use("/remote-bot", requireAuth, remoteBotRoutes);
 app.use("/nickname-blacklist", requireAuth, nicknameBlacklistRoutes);
