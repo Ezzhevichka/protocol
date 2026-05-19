@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "pm2 start ecosystem.config.cjs",
     "build": "tsc --outDir dist",
-    "lint": "eslint src",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -24,6 +26,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "@types/ssh2": "^1.15.5",
+    "async-mutex": "0.5.0",
     "eslint": "^9",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",

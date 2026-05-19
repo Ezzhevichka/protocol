@@ -1,7 +1,7 @@
-import { Logo } from "shared/ui";
+import { Logo } from 'shared/ui';
 
-import { navigation } from "./lib";
-import { Menu } from "./ui";
+import { navigation } from './lib';
+import { Menu } from './ui';
 
 export const Header = () => {
     return (

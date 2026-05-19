@@ -1,13 +1,13 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-import type { HeaderMenuItem } from "../../model";
+import type { HeaderMenuItem } from '../../model';
 
 type MenuProps = {
     items: HeaderMenuItem[];
 };
 
 const Icon = ({ item }: { item: HeaderMenuItem }) => {
-    if (item.id === "events") {
+    if (item.id === 'events') {
         return (
             <span className="relative h-24 w-24 shrink-0 overflow-hidden">
                 <Image
@@ -21,7 +21,7 @@ const Icon = ({ item }: { item: HeaderMenuItem }) => {
         );
     }
 
-    if (item.id === "autoSeed") {
+    if (item.id === 'autoSeed') {
         return (
             <span className="relative h-24 w-24 shrink-0 overflow-hidden">
                 <Image
@@ -66,8 +66,8 @@ export const Menu = ({ items }: MenuProps) => {
                     <li key={item.id}>
                         <a
                             href={item.href}
-                            target={item.external ? "_blank" : undefined}
-                            rel={item.external ? "noreferrer noopener" : undefined}
+                            target={item.external ? '_blank' : undefined}
+                            rel={item.external ? 'noreferrer noopener' : undefined}
                             className="flex items-center gap-8 p-8 transition-opacity hover:opacity-80"
                         >
                             <Icon item={item} />

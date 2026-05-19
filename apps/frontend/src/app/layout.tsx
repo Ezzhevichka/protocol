@@ -1,32 +1,30 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
-import "./globals.css";
-import { Header } from "widgets/Header";
+import './globals.css';
+import { Header } from 'widgets/Header';
 
 const manrope = Manrope({
-  subsets: [ 'latin', 'cyrillic' ],
-  weight: [ '200', '300', '400', '500', '600', '700', '800' ],
-  variable: '--font-manrope',
-})
+    subsets: ['latin', 'cyrillic'],
+    weight: ['200', '300', '400', '500', '600', '700', '800'],
+    variable: '--font-manrope',
+});
 
 export const metadata: Metadata = {
-  title: "PROTOCOL",
-  description: "Squad Server Protocol - Official site",
+    title: 'PROTOCOL',
+    description: 'Squad Server Protocol - Official site',
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="ru">
-      <body
-        className={`${manrope.variable} ${manrope.variable} antialiased`}
-      >
-        <Header />
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang="ru">
+            <body className={`${manrope.variable} ${manrope.variable} antialiased`}>
+                <Header />
+                {children}
+            </body>
+        </html>
+    );
 }

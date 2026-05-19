@@ -2,94 +2,98 @@
 
 :root {
   /* GLOBAL */
-  --white: #FFFFFF;
+  --white: #ffffff;
   --gray: #808080;
 
   /* BACKGROUND */
-  --background: #070B12;
+  --background: #070b12;
   --background-light: #262626;
   --background-dark: #020202;
 
   /* BORDER */
-  --border-dark: #1A1A1A;
+  --border-dark: #1a1a1a;
 
   /* OTHERS */
-  --health-green: #00FF90;
-  --health-red: #EB1010;
-  --auto-seed-green: #4ECB71;
-  --discord-purple: #5662F6;
-  --vip-yellow: #FFDE00;
-  --white-primary: #F6F6FE;
+  --health-green: #00ff90;
+  --health-red: #eb1010;
+  --auto-seed-green: #4ecb71;
+  --discord-purple: #5662f6;
+  --vip-yellow: #ffde00;
+  --white-primary: #f6f6fe;
   --gray-disabled: #737373;
   --gray-disabled-light: #999999;
-  --discord-purple-secondary: #6C78F9;
-  --discord-purple-light: #A2A9F6;
-  --header-nav-text: #E8E8FC;
-  --fraction-card-bg: #04070B;
-  --fraction-card-pill-bg: #070B12;
-  --fraction-card-pill-border: #18181B;
-  --fraction-card-text-muted: #DAE3F1;
-  --fraction-card-text-primary: #FAFAFA;
-  --fraction-team-players-bg: #27272A;
-  --fraction-team-players-border: #3F3F47;
-  --squad-card-bg: #04070B;
+  --discord-purple-secondary: #6c78f9;
+  --discord-purple-light: #a2a9f6;
+  --header-nav-text: #e8e8fc;
+  --fraction-card-bg: #04070b;
+  --fraction-card-pill-bg: #070b12;
+  --fraction-card-pill-border: #18181b;
+  --fraction-card-text-muted: #dae3f1;
+  --fraction-card-text-primary: #fafafa;
+  --fraction-team-players-bg: #27272a;
+  --fraction-team-players-border: #3f3f47;
+  --squad-card-bg: #04070b;
   --squad-card-border-default: #142438;
   --squad-card-border-cmd: #997400;
   --squad-card-header-bg: #152338;
-  --squad-card-badge-default: #52525C;
-  --squad-card-badge-cmd: #CC9B00;
-  --squad-card-players-border: #18181B;
-  --squad-card-players-bg-default: #1D2D49;
-  --squad-card-players-bg-cmd: #0E1725;
+  --squad-card-badge-default: #52525c;
+  --squad-card-badge-cmd: #cc9b00;
+  --squad-card-players-border: #18181b;
+  --squad-card-players-bg-default: #1d2d49;
+  --squad-card-players-bg-cmd: #0e1725;
   --squad-card-divider: #142438;
   --player-card-divider: #142438;
-  --player-card-text: #FAFAFA;
+  --player-card-text: #fafafa;
   --player-card-caption: #808080;
-  --player-card-role: #009BFE;
-  --player-card-hash: #07A2FF;
-  --fraction-composite-bg: #04070B;
-  --fraction-composite-divider: #121E30;
-  --fraction-composite-title: #FFFFFF;
+  --player-card-role: #009bfe;
+  --player-card-hash: #07a2ff;
+  --fraction-composite-bg: #04070b;
+  --fraction-composite-divider: #121e30;
+  --fraction-composite-title: #ffffff;
 
   /* SERVER LEVEL */
-  --server-level-empty: #CCCCCC;
-  --server-level-empty-muted: #CCCCCCB3;
-  --server-level-frog: #7ED957;
-  --server-level-frog-muted: #7ED957B3;
-  --server-level-casual: #C9B458;
-  --server-level-casual-muted: #C9B458B3;
-  --server-level-sweaty: #ED8529;
-  --server-level-sweaty-muted: #E67E22B3;
-  --server-level-nightmare: #C0392B;
-  --server-level-nightmare-muted: #C0392BB3;
+  --server-level-empty: #cccccc;
+  --server-level-empty-muted: #ccccccb3;
+  --server-level-frog: #7ed957;
+  --server-level-frog-muted: #7ed957b3;
+  --server-level-casual: #c9b458;
+  --server-level-casual-muted: #c9b458b3;
+  --server-level-sweaty: #ed8529;
+  --server-level-sweaty-muted: #e67e22b3;
+  --server-level-nightmare: #c0392b;
+  --server-level-nightmare-muted: #c0392bb3;
 
   /* BUTTON KIT */
-  --button-text-white-default: #FAFAFA;
-  --button-text-white-hover: #D9D9D9;
-  --button-text-disabled: #A1A1A1;
-  --button-text-dark: #0E1625;
-  --button-text-secondary-disabled: #4D4D4D;
+  --button-text-white-default: #fafafa;
+  --button-text-white-hover: #d9d9d9;
+  --button-text-disabled: #a1a1a1;
+  --button-text-dark: #0e1625;
+  --button-text-secondary-disabled: #4d4d4d;
 
-  --button-disabled-bg: #4D4D4D;
-  --button-disabled-border: #4D4D4D;
+  --button-disabled-bg: #4d4d4d;
+  --button-disabled-border: #4d4d4d;
   --button-secondary-neutral-disabled-border: #737373;
-  --button-discord-disabled-bg: #B8BEF9;
-  --button-discord-disabled-text: #F6F6FE;
+  --button-discord-disabled-bg: #b8bef9;
+  --button-discord-disabled-text: #f6f6fe;
 
-  --button-primary-accent-default: #1D4AFF;
-  --button-primary-accent-hover: #002FEB;
-  --button-primary-neutral-default: #292B2F;
+  --button-primary-accent-default: #1d4aff;
+  --button-primary-accent-hover: #002feb;
+  --button-primary-neutral-default: #292b2f;
   --button-primary-neutral-hover: #303236;
-  --button-primary-positive-default: #4BB34B;
-  --button-primary-vip-default: #FFDE00;
-  --button-primary-vip-hover: #E5C800;
-  --button-primary-discord-default: #5865F2;
-  --button-primary-discord-hover: #4B59F1;
-  --button-secondary-neutral-default: #F2F2F2;
-  --button-primary-positive-hover-bg-image: linear-gradient(90deg, #FFFFFF00 0%, #FFFFFF0D 61.058%, #4BB34B 100%), linear-gradient(90deg, #4BB34B 0%, #4BB34B 100%);
-  --button-primary-positive-hover-shadow: 0 0 10px 3px #4BB34BA6;
-  --button-primary-vip-hover-bg-image: linear-gradient(90deg, #FFFFFF00 0%, #FFFFFF80 61.058%, #FFDE00 100%), linear-gradient(90deg, #E5C800 0%, #E5C800 100%);
-  --button-primary-vip-hover-shadow: 0 0 10px 5px #E5C8004D;
+  --button-primary-positive-default: #4bb34b;
+  --button-primary-vip-default: #ffde00;
+  --button-primary-vip-hover: #e5c800;
+  --button-primary-discord-default: #5865f2;
+  --button-primary-discord-hover: #4b59f1;
+  --button-secondary-neutral-default: #f2f2f2;
+  --button-primary-positive-hover-bg-image:
+    linear-gradient(90deg, #ffffff00 0%, #ffffff0d 61.058%, #4bb34b 100%),
+    linear-gradient(90deg, #4bb34b 0%, #4bb34b 100%);
+  --button-primary-positive-hover-shadow: 0 0 10px 3px #4bb34ba6;
+  --button-primary-vip-hover-bg-image:
+    linear-gradient(90deg, #ffffff00 0%, #ffffff80 61.058%, #ffde00 100%),
+    linear-gradient(90deg, #e5c800 0%, #e5c800 100%);
+  --button-primary-vip-hover-shadow: 0 0 10px 5px #e5c8004d;
   --button-tertiary-neutral-disabled: #737373;
 
   --leading-normal: 17px;
@@ -212,4 +216,3 @@ body {
 .server-level-nightmare-muted {
   color: var(--server-level-nightmare-muted);
 }
-

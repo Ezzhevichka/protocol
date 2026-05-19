@@ -1,10 +1,10 @@
-import type { User as UserType } from "@squad-admin/database";
+import type { User as UserType } from '@squad-admin/database';
 
 declare global {
-  namespace Express {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface User extends UserType {}
-  }
+    namespace Express {
+
+        interface User extends UserType {}
+    }
 }
 
 export {};
