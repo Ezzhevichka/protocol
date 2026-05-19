@@ -1,5 +1,5 @@
 declare global {
-    type Nullable<T> = T | null
+    type Nullable<T> = T | null;
 }
 
-declare module "*.css";
+declare module '*.css';
