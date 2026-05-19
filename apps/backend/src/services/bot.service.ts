@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import type { SquadServerConfig } from '../config/servers';
+import type { SquadServerConfig } from './servers.service';
 import { AppError } from '../errors/app-error';
 
 function unwrapAxiosError(error: unknown, serverId: number): never {

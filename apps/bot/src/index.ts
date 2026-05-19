@@ -7,6 +7,7 @@ import { env } from './config';
 import { startLogBanEnforcementJob } from './jobs/log-ban-enforcement.job';
 import { botAuth } from './middleware/auth.middleware';
 import { errorMiddleware } from './middleware/error.middleware';
+import serverRoutes from './routes/server.routes';
 import commandRoutes from './routes/command.routes';
 import kickRoutes from './routes/kick.routes';
 import playersRoutes from './routes/players.routes';
@@ -22,6 +23,7 @@ app.get('/health', (_req, res) => {
     res.json({ ok: true });
 });
 
+app.use('/server', botAuth, serverRoutes);
 app.use('/players', botAuth, playersRoutes);
 app.use('/kick', botAuth, kickRoutes);
 app.use('/command', botAuth, commandRoutes);

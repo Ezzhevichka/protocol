@@ -393,7 +393,8 @@ export const ModelName = {
   Ban: 'Ban',
   NicknameBlacklist: 'NicknameBlacklist',
   PrivilegeGroup: 'PrivilegeGroup',
-  PlayerPrivilege: 'PlayerPrivilege'
+  PlayerPrivilege: 'PlayerPrivilege',
+  SquadServer: 'SquadServer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "player" | "playerName" | "playerSession" | "playerExternalProfile" | "punishment" | "ban" | "nicknameBlacklist" | "privilegeGroup" | "playerPrivilege"
+    modelProps: "user" | "player" | "playerName" | "playerSession" | "playerExternalProfile" | "punishment" | "ban" | "nicknameBlacklist" | "privilegeGroup" | "playerPrivilege" | "squadServer"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SquadServer: {
+      payload: Prisma.$SquadServerPayload<ExtArgs>
+      fields: Prisma.SquadServerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SquadServerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SquadServerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        findFirst: {
+          args: Prisma.SquadServerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SquadServerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        findMany: {
+          args: Prisma.SquadServerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>[]
+        }
+        create: {
+          args: Prisma.SquadServerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        createMany: {
+          args: Prisma.SquadServerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SquadServerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>[]
+        }
+        delete: {
+          args: Prisma.SquadServerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        update: {
+          args: Prisma.SquadServerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        deleteMany: {
+          args: Prisma.SquadServerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SquadServerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SquadServerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>[]
+        }
+        upsert: {
+          args: Prisma.SquadServerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SquadServerPayload>
+        }
+        aggregate: {
+          args: Prisma.SquadServerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSquadServer>
+        }
+        groupBy: {
+          args: Prisma.SquadServerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SquadServerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SquadServerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SquadServerCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1348,6 +1423,16 @@ export const PlayerPrivilegeScalarFieldEnum = {
 } as const
 
 export type PlayerPrivilegeScalarFieldEnum = (typeof PlayerPrivilegeScalarFieldEnum)[keyof typeof PlayerPrivilegeScalarFieldEnum]
+
+
+export const SquadServerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SquadServerScalarFieldEnum = (typeof SquadServerScalarFieldEnum)[keyof typeof SquadServerScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1663,6 +1748,7 @@ export type GlobalOmitConfig = {
   nicknameBlacklist?: Prisma.NicknameBlacklistOmit
   privilegeGroup?: Prisma.PrivilegeGroupOmit
   playerPrivilege?: Prisma.PlayerPrivilegeOmit
+  squadServer?: Prisma.SquadServerOmit
 }
 
 /* Types for Logging */

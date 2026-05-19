@@ -60,7 +60,8 @@ export const ModelName = {
   Ban: 'Ban',
   NicknameBlacklist: 'NicknameBlacklist',
   PrivilegeGroup: 'PrivilegeGroup',
-  PlayerPrivilege: 'PlayerPrivilege'
+  PlayerPrivilege: 'PlayerPrivilege',
+  SquadServer: 'SquadServer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -235,6 +236,16 @@ export const PlayerPrivilegeScalarFieldEnum = {
 } as const
 
 export type PlayerPrivilegeScalarFieldEnum = (typeof PlayerPrivilegeScalarFieldEnum)[keyof typeof PlayerPrivilegeScalarFieldEnum]
+
+
+export const SquadServerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SquadServerScalarFieldEnum = (typeof SquadServerScalarFieldEnum)[keyof typeof SquadServerScalarFieldEnum]
 
 
 export const SortOrder = {

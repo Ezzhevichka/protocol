@@ -177,6 +177,7 @@ export default [
       '**/*.config.js',
       '**/*.config.cjs',
       '**/*.config.mjs',
+      '**/next-env.d.ts',
     ],
   },
 
@@ -270,7 +271,7 @@ export default [
   },
 
   {
-    files: ['apps/backend/**/*.{ts,js}', 'apps/bot/**/*.{ts,js}'],
+    files: ['apps/backend/src/**/*.{ts,js}', 'apps/bot/src/**/*.{ts,js}'],
     languageOptions: {
       globals: {
         ...globals.node,

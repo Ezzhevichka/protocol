@@ -4,7 +4,7 @@ import { prisma } from '@squad-admin/database';
 import { kickPlayerOnBot, listPlayersFromBot } from './bot.service';
 import { isNicknameBlacklisted } from './nickname-blacklist.service';
 import { upsertPlayerIdentity } from './player-identity.service';
-import { squadServers } from '../config/servers';
+import { listSquadServerConfigs } from './servers.service';
 import type { CreateBanInput, RevokeBanInput } from '../schemas/bans.schema';
 import { activeBanWhere, banMatchesPlayer } from '../utils/ban';
 import { normalizeBanTarget, normalizeEosId, normalizeSteamId } from '../utils/normalize';
@@ -123,7 +123,7 @@ export async function createBan(input: CreateBanInput) {
     }
 
     const kickResults = await Promise.allSettled(
-        squadServers.map(async (server) => {
+        (await listSquadServerConfigs()).map(async (server) => {
             const { players } = await listPlayersFromBot(server);
             const matched = players.filter((player) =>
                 createdBans.some((ban) => banMatchesPlayer(ban, player))
@@ -141,14 +141,15 @@ export async function createBan(input: CreateBanInput) {
         })
     );
 
+    const servers = await listSquadServerConfigs();
+
     return {
         ban: createdBans[0],
         bans: createdBans,
         kickResults: kickResults.map((result, index) => {
-            const server = squadServers[index];
             if (result.status === 'fulfilled') return result.value;
             return {
-                serverId: server.id,
+                serverId: servers[index].id,
                 matched: 0,
                 kickedSteamIds: [],
                 error: result.reason instanceof Error ? result.reason.message : String(result.reason),

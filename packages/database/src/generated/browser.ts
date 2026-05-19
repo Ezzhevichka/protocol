@@ -67,3 +67,8 @@ export type PrivilegeGroup = Prisma.PrivilegeGroupModel
  * 
  */
 export type PlayerPrivilege = Prisma.PlayerPrivilegeModel
+/**
+ * Model SquadServer
+ * 
+ */
+export type SquadServer = Prisma.SquadServerModel

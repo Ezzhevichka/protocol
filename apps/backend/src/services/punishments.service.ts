@@ -2,7 +2,7 @@ import { prisma } from '@squad-admin/database';
 
 import { warnPlayerOnBot } from './bot.service';
 import { upsertPlayerIdentity } from './player-identity.service';
-import { getSquadServer } from '../config/servers';
+import { getSquadServerConfig } from './servers.service';
 
 export async function listWarns(query?: string) {
     const q = query?.trim();
@@ -64,7 +64,7 @@ export async function createWarn(input: {
     } | null = null;
 
     if (input.steamId) {
-        const server = getSquadServer(input.serverId);
+        const server = await getSquadServerConfig(input.serverId);
 
         if (!server) {
             delivery = {

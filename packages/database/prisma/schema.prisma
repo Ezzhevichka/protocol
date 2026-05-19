@@ -211,3 +211,11 @@ model PlayerPrivilege {
   @@index([nickname])
   @@index([groupId])
 }
+
+model SquadServer {
+  id        Int      @id
+  name      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

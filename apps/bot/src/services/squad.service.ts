@@ -11,6 +11,26 @@ function normalizePlayer(player: TPlayer): SquadPlayer {
     };
 }
 
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return String(error);
+}
+
+export async function getServerInfo() {
+    try {
+        const server = await withRcon(async (rcon) => {
+            return rcon.getServerInfo();
+        });
+
+        return server;
+    } catch (error) {
+        console.log('[getServerInfo] RCON error:', error);
+    }
+}
+
 export async function listPlayers() {
     return withRcon(async (rcon) => {
         try {
@@ -18,7 +38,6 @@ export async function listPlayers() {
                 rcon.getListPlayers(),
                 rcon.getListSquads(),
             ]);
-            const server = await rcon.getServerInfo();
 
             const players = playersRaw.map(normalizePlayer).filter((player) => player.steamId);
             const squads = squadsRaw.map((squad: any) => ({
@@ -30,7 +49,7 @@ export async function listPlayers() {
                 raw: squad,
             }));
 
-            return { raw: null, players, squads, server };
+            return { raw: null, players, squads };
         } finally {
             await rcon.close();
         }
