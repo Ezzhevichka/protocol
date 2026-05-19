@@ -66,7 +66,7 @@ export async function getCurrentMap(): Promise<MapData> {
 export async function getServerState(): Promise<ServerStateData> {
     return {
         level: 'sweaty',
-        hoursAmount: 12800,
+        hoursAmount: 1000,
         openProfilePercentages: 88,
     };
 }

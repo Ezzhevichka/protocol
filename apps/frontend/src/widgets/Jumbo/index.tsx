@@ -7,8 +7,8 @@ import { Button, ButtonAppearance, ButtonSize, ButtonVariant } from 'shared/ui';
 import type { JumboProps } from './model';
 
 const JUMBO_COLORS = {
-    overlay: 'rgba(0, 0, 0, 0.65)',
-    tagline: '#FAFAFA',
+  overlay: "rgba(0, 0, 0, 0.35)",
+  tagline: "#FAFAFA",
 } as const;
 
 export const Jumbo = ({
@@ -51,11 +51,11 @@ export const Jumbo = ({
             </p>
 
             {/* CTA buttons */}
-            <div className="absolute left-1/2 top-534 flex w-710 -translate-x-1/2 items-center gap-24">
+            <div className="absolute left-1/2 top-440 flex w-710 -translate-x-1/2 items-center gap-24">
                 <Button
                     variant={ButtonVariant.Primary}
                     appearance={ButtonAppearance.Discord}
-                    size={ButtonSize.L}
+                    size={ButtonSize.M}
                     className="w-270"
                     onClick={discordUrl ? () => openInNewTab(discordUrl) : undefined}
                 >
@@ -64,7 +64,7 @@ export const Jumbo = ({
                 <Button
                     variant={ButtonVariant.Primary}
                     appearance={ButtonAppearance.Vip}
-                    size={ButtonSize.L}
+                    size={ButtonSize.M}
                     className="flex-1"
                     onClick={vipUrl ? () => openInNewTab(vipUrl) : undefined}
                 >

@@ -52,6 +52,7 @@ export type ServerData = {
     playersCount?: number | string;
     queueCount?: number;
     maxPlayers?: number;
+    currentLayer?: string | null;
     onClick?: () => void;
 };
 
