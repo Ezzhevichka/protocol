@@ -1,10 +1,10 @@
 import { listPlayersFromBot } from './bot.service';
 import { groupPlayersByTeams } from './player-grouping.service';
 import { syncPlayerIdentities } from './player-identity.service';
-import { getSquadServer } from '../config/servers';
+import { getSquadServerConfig } from './servers.service';
 
 export async function getPlayersByServerId(serverId: number) {
-    const server = getSquadServer(serverId);
+    const server = await getSquadServerConfig(serverId);
 
     if (!server) {
         const error = new Error('SERVER_NOT_FOUND');

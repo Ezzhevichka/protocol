@@ -34,23 +34,73 @@ export function tailRemoteLogOverSsh(config: RemoteTailConfig, onLine: LineHandl
                     return;
                 }
 
-                stream.on('data', async (chunk: Buffer) => {
+                let buffer = '';
+                let processing = Promise.resolve();
+
+                stream.on('data', (chunk: Buffer) => {
                     buffer += chunk.toString('utf8');
+
                     const lines = buffer.split(/\r?\n/);
                     buffer = lines.pop() ?? '';
 
                     for (const line of lines) {
                         const trimmed = line.trim();
-                        if (trimmed) await onLine(trimmed);
+
+                        if (!trimmed) {
+                            continue;
+                        }
+
+                        processing = processing.then(() => onLine(trimmed)).catch((lineError: unknown) => {
+                            console.error('SSH_TAIL_LINE_HANDLER_FAILED', {
+                                line: trimmed,
+                                error: lineError instanceof Error ? lineError.message : String(lineError),
+                            });
+                        });
                     }
                 });
 
                 stream.stderr.on('data', (chunk: Buffer) => {
                     const text = chunk.toString('utf8').trim();
-                    if (text) console.error('SSH_TAIL_STDERR', text);
+
+                    if (!text) {
+                        return;
+                    }
+
+                    const ignoredTailMessages = [
+                        'file truncated',
+                        'has been replaced',
+                        'following new file',
+                    ];
+
+                    if (ignoredTailMessages.some((message) => text.includes(message))) {
+                        console.log('SSH_TAIL_INFO', text);
+                        return;
+                    }
+
+                    console.error('SSH_TAIL_STDERR', text);
                 });
 
-                stream.on('close', () => client.end());
+                stream.on('close', async () => {
+                    try {
+                        if (buffer.trim()) {
+                            await onLine(buffer.trim());
+                        }
+
+                        await processing;
+                    } catch (closeError) {
+                        console.error(
+                            'SSH_TAIL_CLOSE_HANDLER_FAILED',
+                            closeError instanceof Error ? closeError.message : String(closeError)
+                        );
+                    } finally {
+                        client.end();
+                    }
+                });
+
+                stream.on('error', (streamError: Error) => {
+                    console.error('SSH_TAIL_STREAM_FAILED', streamError.message);
+                    client.end();
+                });
             });
         });
 

@@ -23,6 +23,10 @@ export async function getMe(): Promise<AuthUser | null> {
 }
 
 export async function getServers(): Promise<ServerData[]> {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/servers`, { headers: { Cookie: cookieStore.toString() }, method: 'GET', credentials: 'include' });
+    const data = await res.json();
+    console.log(data);
     return [
         { id: 1, state: 'pressed', name: 'Invasion', playersCount: 100, queueCount: 3 },
         { id: 2, state: 'default', name: 'AAS/RAAS', playersCount: 100, queueCount: 9 },

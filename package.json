@@ -24,7 +24,9 @@
     "import:bans": "pnpm --filter @squad-admin/backend import:bans",
     "import:admins": "pnpm --filter @squad-admin/backend import:admins",
     "check:commit": "pnpm lint && pnpm build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "clean:win": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Get-ChildItem -Path . -Include node_modules,dist,build,.next,.turbo,coverage,.cache -Recurse -Directory | Remove-Item -Recurse -Force\"",
+    "clean:mac": "find . \\( -name node_modules -o -name dist -o -name build -o -name .next -o -name .turbo -o -name coverage -o -name .cache \\) -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
     "@conarti/eslint-plugin-feature-sliced": "^1.0.5",
