@@ -53,6 +53,9 @@ export type ServerData = {
     queueCount?: number;
     maxPlayers?: number;
     currentLayer?: string | null;
+    nextLayer?: string | null;
+    teamOne?: string;
+    teamTwo?: string;
     onClick?: () => void;
 };
 

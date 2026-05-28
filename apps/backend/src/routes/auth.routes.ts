@@ -10,7 +10,7 @@ router.get('/steam', passport.authenticate('steam'));
 router.get(
     '/steam/return',
     passport.authenticate('steam', { failureRedirect: `${env.frontendUrl}/?auth=failed` }),
-    (_req, res) => res.redirect(`${env.frontendUrl}`)
+    (req, res) => req.session.save(() => res.redirect(env.frontendUrl))
 );
 
 router.post('/logout', (req, res) => {

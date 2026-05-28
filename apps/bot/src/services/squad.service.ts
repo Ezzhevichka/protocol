@@ -8,6 +8,15 @@ function normalizePlayer(player: TPlayer): SquadPlayer {
         steamId: player.steamID,
         eosId: player.eosID,
         name: player.name,
+        raw: {
+            steamID: player.steamID,
+            eosID: player.eosID,
+            name: player.name,
+            teamID: player.teamID,
+            squadID: player.squadID,
+            isLeader: player.isLeader,
+            role: player.role,
+        },
     };
 }
 
@@ -33,26 +42,20 @@ export async function getServerInfo() {
 
 export async function listPlayers() {
     return withRcon(async (rcon) => {
-        try {
-            const [playersRaw, squadsRaw] = await Promise.all([
-                rcon.getListPlayers(),
-                rcon.getListSquads(),
-            ]);
+        const playersRaw = await rcon.getListPlayers();
+        const squadsRaw = await rcon.getListSquads();
 
-            const players = playersRaw.map(normalizePlayer).filter((player) => player.steamId);
-            const squads = squadsRaw.map((squad: any) => ({
-                squadId: String(squad.squadID ?? squad.squadId ?? squad.id ?? ''),
-                teamId: String(squad.teamID ?? squad.teamId ?? 'unknown'),
-                name: String(squad.name ?? squad.squadName ?? `Squad ${squad.squadID ?? squad.id ?? ''}`),
-                size: squad.size ?? squad.playerCount ?? null,
-                locked: Boolean(squad.locked ?? false),
-                raw: squad,
-            }));
+        const players = playersRaw.map(normalizePlayer).filter((player) => player.steamId);
+        const squads = squadsRaw.map((squad: any) => ({
+            squadId: String(squad.squadID ?? squad.squadId ?? squad.id ?? ''),
+            teamId: String(squad.teamID ?? squad.teamId ?? 'unknown'),
+            name: String(squad.name ?? squad.squadName ?? `Squad ${squad.squadID ?? squad.id ?? ''}`),
+            size: squad.size ?? squad.playerCount ?? null,
+            locked: Boolean(squad.locked ?? false),
+            raw: squad,
+        }));
 
-            return { raw: null, players, squads };
-        } finally {
-            await rcon.close();
-        }
+        return { raw: null, players, squads };
     });
 }
 
@@ -78,31 +81,19 @@ export async function sendCommand(command: string) {
     }
 
     return withRcon(async (rcon) => {
-        try {
-            const result = await rcon.execute(command);
-            return { ok: true, result };
-        } finally {
-            await rcon.close();
-        }
+        const result = await rcon.execute(command);
+        return { ok: true, result };
     });
 }
 
 export async function warnPlayer(steamId: string, message: string) {
     return withRcon(async (rcon) => {
-        try {
-            const safeMessage = message
-                .replace(/[\r\n"]/g, ' ')
-                .trim()
-                .slice(0, 180);
+        const safeMessage = message
+            .replace(/[\r\n"]/g, ' ')
+            .trim()
+            .slice(0, 180);
 
-            const result = await rcon.execute(`AdminWarn ${steamId} ${safeMessage}`);
-
-            return {
-                ok: true,
-                result,
-            };
-        } finally {
-            await rcon.close();
-        }
+        const result = await rcon.execute(`AdminWarn ${steamId} ${safeMessage}`);
+        return { ok: true, result };
     });
 }

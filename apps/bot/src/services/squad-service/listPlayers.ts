@@ -8,29 +8,32 @@ function normalizePlayer(player: TPlayer): SquadPlayer {
         steamId: player.steamID,
         eosId: player.eosID,
         name: player.name,
+        raw: {
+            steamID: player.steamID,
+            eosID: player.eosID,
+            name: player.name,
+            teamID: player.teamID,
+            squadID: player.squadID,
+            isLeader: player.isLeader,
+            role: player.role,
+        },
     };
 }
 
 export const listPlayers = async () =>
     withRcon(async (rcon) => {
-        try {
-            const [playersRaw, squadsRaw] = await Promise.all([
-                rcon.getListPlayers(),
-                rcon.getListSquads(),
-            ]);
-            const server = await rcon.getServerInfo();
+        const playersRaw = await rcon.getListPlayers();
+        const squadsRaw = await rcon.getListSquads();
+        const server = await rcon.getServerInfo();
 
-            const players = playersRaw.map(normalizePlayer).filter((player) => player.steamId);
-            const squads = squadsRaw.map((squad: TSquad) => ({
-                squadId: squad.squadID,
-                teamId: squad.teamID,
-                name: squad.squadName,
-                size: squad.size,
-                locked: squad.locked,
-            }));
+        const players = playersRaw.map(normalizePlayer).filter((player) => player.steamId);
+        const squads = squadsRaw.map((squad: TSquad) => ({
+            squadId: squad.squadID,
+            teamId: squad.teamID,
+            name: squad.squadName,
+            size: squad.size,
+            locked: squad.locked,
+        }));
 
-            return { raw: null, players, squads, server };
-        } finally {
-            await rcon.close();
-        }
+        return { raw: null, players, squads, server };
     });

@@ -3,7 +3,7 @@ import { Rcon } from 'squad-rcon';
 
 import { env } from '../config';
 
-const RCON_COMMAND_TIMEOUT_MS = 1500;
+const RCON_COMMAND_TIMEOUT_MS = 8000;
 
 const rconMutex = new Mutex();
 

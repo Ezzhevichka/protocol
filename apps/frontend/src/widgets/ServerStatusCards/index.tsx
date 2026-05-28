@@ -55,20 +55,8 @@ export const ServerStatusCards = ({
   });
 
   return (
-    <div
-      className={`relative overflow-hidden rounded-xl ${className}`}
-      style={{
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        background: "rgba(255, 255, 255, 0.03)",
-        border: "1px solid rgba(255, 255, 255, 0.08)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
-      }}
-    >
-<<<<<<< Updated upstream
-=======
+    <div className={`relative overflow-hidden ${className}`}>
       {/* top highlight */}
->>>>>>> Stashed changes
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent)" }}
@@ -97,10 +85,7 @@ export const ServerStatusCards = ({
                 WebkitBackdropFilter: "blur(12px)",
               }}
             >
-<<<<<<< Updated upstream
-=======
               {/* Row 1: dot + server name */}
->>>>>>> Stashed changes
               <div className="flex w-full items-center gap-8">
                 <span
                   className="size-8 shrink-0 rounded-full"
@@ -114,10 +99,7 @@ export const ServerStatusCards = ({
                 </span>
               </div>
 
-<<<<<<< Updated upstream
-=======
               {/* Row 2: people icon + players badge */}
->>>>>>> Stashed changes
               <div className="flex items-center gap-8">
                 <Image
                   src={styles.playersIcon}

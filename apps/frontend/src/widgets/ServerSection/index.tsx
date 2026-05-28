@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ServerStatusCards } from "widgets/ServerStatusCards";
+import { GLASS_STYLE } from "shared/lib";
+import { Button, ButtonAppearance, ButtonSize, ButtonVariant } from "shared/ui";
+import type { ServerData, ServerStateData } from "shared/types";
 import { CurrentMap } from "widgets/CurrentMap";
 import { resolveMapImage } from "widgets/CurrentMap/lib";
 import { serverLevelData, formatHours, formatPercentages } from "widgets/ServerState/lib";
-import { Button, ButtonAppearance, ButtonSize, ButtonVariant } from "shared/ui";
-import type { ServerData, ServerStateData } from "shared/types";
+import { ServerStatusCards } from "widgets/ServerStatusCards";
 
 type ServerSectionProps = {
   servers: ServerData[];
@@ -29,34 +30,56 @@ export const ServerSection = ({ servers, serverState }: ServerSectionProps) => {
   const mapImage = resolveMapImage(selected?.currentLayer);
 
   return (
-    <>
+    <div className="rounded-xl overflow-hidden" style={GLASS_STYLE}>
+      {/* ── Server cards ─────────────────────────────────────────── */}
       <ServerStatusCards servers={serversWithClick} />
 
-      <div className="mt-26 h-px bg-fraction-composite-divider" />
+      {/* ── Divider ──────────────────────────────────────────────── */}
+      <div className="h-px bg-white/[0.06]" />
 
-      {/* ── Bottom info bar ─────────────────────────────────────── */}
-      <div className="mt-30 flex items-center gap-x-24">
+      {/* ── Bottom info bar ──────────────────────────────────────── */}
+      <div className="flex items-center gap-x-24 px-16 py-16">
 
         {/* Left — current map */}
         <CurrentMap
           mapName={selected?.currentLayer ?? "—"}
           imageSrc={mapImage}
+          nextMapName={selected?.nextLayer ?? null}
+          nextImageSrc={resolveMapImage(selected?.nextLayer)}
         />
 
-        {/* Center — server name + layer (takes remaining space) */}
-        <div className="flex flex-1 flex-col gap-y-4">
-          <span className="text-[15px] font-bold leading-tight text-white">
-            {selected?.name ?? "—"}
-          </span>
-          <span className="text-[12px] font-medium text-[rgba(255,255,255,0.38)]">
-            {selected?.currentLayer ?? "—"}
-          </span>
+        <div className="h-32 w-px shrink-0 bg-white/10" />
+
+        {/* Center — stats */}
+        <div className="flex flex-1 items-center justify-center">
+          <div className="flex items-center gap-x-24">
+            <div className="flex flex-col items-center gap-y-2">
+              <span className="text-[11px] font-medium uppercase tracking-widest text-[rgba(255,255,255,0.35)]">
+                Игроки
+              </span>
+              <span className="text-[20px] font-bold text-white">
+                {selected?.playersCount ?? 0}
+                <span className="text-[14px] font-medium text-[rgba(255,255,255,0.38)]">
+                  /{selected?.maxPlayers ?? 100}
+                </span>
+              </span>
+            </div>
+
+            <div className="h-32 w-px bg-white/10" />
+
+            <div className="flex flex-col items-center gap-y-2">
+              <span className="text-[11px] font-medium uppercase tracking-widest text-[rgba(255,255,255,0.35)]">
+                Очередь
+              </span>
+              <span className="text-[20px] font-bold text-white">
+                {selected?.queueCount ?? 0}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Right group — level indicator + connect button */}
+        {/* Right — level pill + connect button */}
         <div className="flex items-center gap-x-24 shrink-0">
-
-          {/* Level indicator pill */}
           <div
             className={`${levelData.titleClassName} flex h-[46px] items-center gap-x-10 rounded-[8px] border px-16`}
             style={{
@@ -89,7 +112,6 @@ export const ServerSection = ({ servers, serverState }: ServerSectionProps) => {
             </span>
           </div>
 
-          {/* Connect button */}
           <Button
             variant={ButtonVariant.Primary}
             appearance={ButtonAppearance.Positive}
@@ -100,6 +122,6 @@ export const ServerSection = ({ servers, serverState }: ServerSectionProps) => {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };

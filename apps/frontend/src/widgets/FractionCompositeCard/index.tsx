@@ -1,19 +1,13 @@
+import { GLASS_STYLE } from 'shared/lib';
 import { Text } from 'shared/ui';
 import { Fraction } from 'widgets/Fraction';
-import { FractionCardHead } from 'widgets/FractionCardHead';
 import { PlayerCard } from 'widgets/PlayerCard';
 import { SquadCard } from 'widgets/SquadCard';
 
 import type { FractionCompositeCardProps } from './model';
 
-const FRACTION_COMPOSITE_COLORS = {
-    background: 'var(--fraction-composite-bg, #04070B)',
-    sectionDivider: 'var(--fraction-composite-divider, #121E30)',
-    notSquadTitle: 'var(--fraction-composite-title, #FFFFFF)',
-} as const;
-
 export const FractionCompositeCard = ({
-    hoursAmount,
+    hoursAmount: _hoursAmount,
     fractionName,
     playersAmount,
     flag,
@@ -23,11 +17,9 @@ export const FractionCompositeCard = ({
 }: FractionCompositeCardProps) => {
     return (
         <section
-            className={`w-636 overflow-hidden rounded-lg ${className}`}
-            style={{ backgroundColor: FRACTION_COMPOSITE_COLORS.background }}
+            className={`w-636 overflow-hidden rounded-xl ${className}`}
+            style={GLASS_STYLE}
         >
-            <FractionCardHead hoursAmount={hoursAmount} playersAmount={playersAmount} variant="default" />
-
             <div className="flex w-full flex-col gap-30 p-20">
                 <Fraction
                     playersAmount={playersAmount}
@@ -53,25 +45,18 @@ export const FractionCompositeCard = ({
                 </div>
             </div>
 
-            <div className="flex h-166 w-full flex-col gap-16 p-20">
+            <div className="flex w-full flex-col gap-16 p-20">
                 <div className="flex w-full items-center gap-20">
-                    <div
-                        className="h-px flex-1"
-                        style={{ backgroundColor: FRACTION_COMPOSITE_COLORS.sectionDivider }}
-                    />
+                    <div className="h-px flex-1 bg-white/10" />
                     <Text
                         as="p"
                         size="base"
                         weight="medium"
-                        className="w-149 text-center font-manrope tracking-[0.32px]"
-                        style={{ color: FRACTION_COMPOSITE_COLORS.notSquadTitle }}
+                        className="w-149 text-center font-manrope tracking-[0.32px] text-white"
                     >
                         Игроки без сквада
                     </Text>
-                    <div
-                        className="h-px flex-1"
-                        style={{ backgroundColor: FRACTION_COMPOSITE_COLORS.sectionDivider }}
-                    />
+                    <div className="h-px flex-1 bg-white/10" />
                 </div>
 
                 <div className="grid w-full grid-cols-2">

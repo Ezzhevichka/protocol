@@ -12,48 +12,110 @@ import type {
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 export async function getMe(): Promise<AuthUser | null> {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/me`, {
-        headers: { Cookie: cookieStore.toString() },
-        cache: 'no-store',
-    });
-    if (!res.ok) return null;
-    const data = await res.json() as { user: AuthUser | null };
-    return data.user;
+    try {
+        const cookieStore = await cookies();
+        const res = await fetch(`${API_URL}/me`, {
+            headers: { Cookie: cookieStore.toString() },
+            cache: 'no-store',
+        });
+        if (!res.ok) return null;
+        const data = await res.json() as { user: AuthUser | null };
+        return data.user;
+    } catch {
+        return null;
+    }
 }
 
+type RawServer = {
+    id: number;
+    name: string;
+    active?: boolean;
+    currentLayer?: string | null;
+    nextLayer?: string | null;
+    maxPlayers?: number;
+    publicQueue?: number;
+    reserveQueue?: number;
+    playerCount?: number;
+    teamOne?: string;
+    teamTwo?: string;
+};
+
 export async function getServers(): Promise<ServerData[]> {
-    const cookieStore = await cookies();
-    const cookie = cookieStore.toString();
-
-    const res = await fetch(`${API_URL}/servers`, { cache: 'no-store' });
+    let res: Response;
+    try {
+        res = await fetch(`${API_URL}/servers`, { cache: 'no-store' });
+    } catch {
+        return [];
+    }
     if (!res.ok) return [];
-    const data = await res.json() as { servers: { id: number; name: string }[] };
-
-    const playersData = await Promise.all(
-        data.servers.map(async (s) => {
-            const r = await fetch(`${API_URL}/servers/${s.id}/players`, {
-                headers: cookie ? { Cookie: cookie } : {},
-                cache: 'no-store',
-            });
-            if (!r.ok) return { id: s.id, playersCount: 0 };
-            const d = await r.json() as { playersCount: number; maxPlayers: number; queueCount: number; currentLayer: string | null };
-            return { id: s.id, playersCount: d.playersCount, maxPlayers: d.maxPlayers, queueCount: d.queueCount, currentLayer: d.currentLayer };
-        })
-    );
-
-    const playerMap = Object.fromEntries(playersData.map((p) => [p.id, p]));
+    const data = await res.json() as { servers: RawServer[] };
 
     return data.servers.map((s) => ({
         id: s.id,
         badge: s.id,
         name: s.name.replace(/^#\d+\s+/, ''),
-        state: 'default' as const,
-        playersCount: playerMap[s.id]?.playersCount ?? 0,
-        maxPlayers: playerMap[s.id]?.maxPlayers ?? 100,
-        queueCount: playerMap[s.id]?.queueCount ?? 0,
-        currentLayer: playerMap[s.id]?.currentLayer ?? null,
+        state: s.active === false ? ('disabled' as const) : ('default' as const),
+        playersCount: s.playerCount ?? 0,
+        maxPlayers: s.maxPlayers ?? 100,
+        queueCount: (s.publicQueue ?? 0) + (s.reserveQueue ?? 0),
+        currentLayer: s.currentLayer ?? null,
+        nextLayer: s.nextLayer ?? null,
+        teamOne: s.teamOne,
+        teamTwo: s.teamTwo,
     }));
+}
+
+/* ── Server players ─────────────────────────────────────────── */
+
+type RawLivePlayer = {
+    steamId: string;
+    eosId: string;
+    name: string;
+    raw?: {
+        teamID?: string;
+        squadID?: string;
+        isLeader?: boolean;
+        role?: string;
+    };
+};
+
+type RawLiveSquad = {
+    squadId: string;
+    teamId: string;
+    name: string;
+    size: number | null;
+    locked: boolean;
+};
+
+export type LiveTeam = {
+    teamId: string;
+    squads: Array<{
+        squad: RawLiveSquad;
+        players: RawLivePlayer[];
+    }>;
+    unassigned: RawLivePlayer[];
+};
+
+export type ServerPlayersData = {
+    serverId: number;
+    serverName: string;
+    playersCount: number;
+    squadsCount: number;
+    maxPlayers: number;
+    queueCount: number;
+    currentLayer: string | null;
+    nextLayer: string | null;
+    teams: LiveTeam[];
+};
+
+export async function getServerPlayers(serverId: number): Promise<ServerPlayersData | null> {
+    try {
+        const res = await fetch(`${API_URL}/servers/${serverId}/players`, { cache: 'no-store' });
+        if (!res.ok) return null;
+        return res.json() as Promise<ServerPlayersData>;
+    } catch {
+        return null;
+    }
 }
 
 export async function getCurrentMap(): Promise<MapData> {
