@@ -7,7 +7,7 @@ import { Button, ButtonAppearance, ButtonSize, ButtonVariant } from 'shared/ui';
 import type { JumboProps } from './model';
 
 const JUMBO_COLORS = {
-  tagline: "#FAFAFA",
+    tagline: '#FAFAFA',
 } as const;
 
 export const Jumbo = ({

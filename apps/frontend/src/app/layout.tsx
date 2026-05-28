@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
-import { Header } from 'widgets/Header';
 import { ReactNode } from 'react';
 
 const manrope = Manrope({
@@ -27,7 +26,6 @@ export default function RootLayout({
                 className={`${manrope.variable} antialiased`}
             >
                 <Providers>
-                    <Header />
                     {children}
                 </Providers>
             </body>

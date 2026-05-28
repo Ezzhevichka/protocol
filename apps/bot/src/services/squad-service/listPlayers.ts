@@ -32,7 +32,7 @@ export const listPlayers = async () =>
             teamId: squad.teamID,
             name: squad.squadName,
             size: squad.size,
-            locked: squad.locked,
+            locked: String(squad.locked).toLowerCase() === 'true',
         }));
 
         return { raw: null, players, squads, server };

@@ -1,12 +1,13 @@
 /* ── Auth ───────────────────────────────────────────────────── */
 
 export type AuthUser = {
-  id: string;
-  steamId: string;
-  displayName: string | null;
-  avatarUrl: string | null;
-  profileUrl: string | null;
-  role: string | null;
+    id: string;
+    steamId: string;
+    displayName: string | null;
+    avatarUrl: string | null;
+    profileUrl: string | null;
+    role: string | null;
+    isAdmin?: boolean;
 };
 
 /* ── Domain Types ──────────────────────────────────────────── */

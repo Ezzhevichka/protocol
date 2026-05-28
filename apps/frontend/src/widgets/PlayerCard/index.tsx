@@ -47,7 +47,7 @@ export const PlayerCard = ({
     return (
         <div
             className={`flex items-center gap-6 px-10 ${isExtended ? 'py-2' : 'h-44'} ${className}`}
-            style={showDivider ? { borderBottom: "1px solid rgba(255,255,255,0.06)" } : undefined}
+            style={showDivider ? { borderBottom: '1px solid rgba(255,255,255,0.06)' } : undefined}
         >
             <span className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden">
                 <Image

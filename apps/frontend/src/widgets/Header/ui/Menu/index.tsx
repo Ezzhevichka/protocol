@@ -9,6 +9,7 @@ import type { HeaderMenuItem } from '../../model';
 type MenuProps = {
     items: HeaderMenuItem[];
     user?: AuthUser | null;
+    isAdmin?: boolean;
 };
 
 const Icon = ({ item }: { item: HeaderMenuItem }) => {
@@ -63,10 +64,20 @@ const Icon = ({ item }: { item: HeaderMenuItem }) => {
     );
 };
 
-export const Menu = ({ items, user }: MenuProps) => {
+export const Menu = ({ items, user, isAdmin }: MenuProps) => {
     return (
         <nav aria-label="Основное меню" className="shrink-0">
             <ul className="flex items-center justify-end gap-12">
+                {isAdmin && (
+                    <li>
+                        <a
+                            href="/admin"
+                            className="flex items-center gap-8 rounded-lg border border-amber-500/30 bg-amber-500/10 px-12 py-6 font-manrope text-[14px] font-semibold text-amber-400 transition-all hover:border-amber-500/60 hover:bg-amber-500/20"
+                        >
+                            Admin Tools
+                        </a>
+                    </li>
+                )}
                 {items.map((item) => (
                     <li key={item.id}>
                         {item.id === 'login' && user ? (

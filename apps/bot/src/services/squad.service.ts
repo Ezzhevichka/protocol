@@ -51,7 +51,7 @@ export async function listPlayers() {
             teamId: String(squad.teamID ?? squad.teamId ?? 'unknown'),
             name: String(squad.name ?? squad.squadName ?? `Squad ${squad.squadID ?? squad.id ?? ''}`),
             size: squad.size ?? squad.playerCount ?? null,
-            locked: Boolean(squad.locked ?? false),
+            locked: String(squad.locked).toLowerCase() === 'true',
             raw: squad,
         }));
 

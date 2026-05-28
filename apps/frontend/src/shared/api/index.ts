@@ -19,8 +19,9 @@ export async function getMe(): Promise<AuthUser | null> {
             cache: 'no-store',
         });
         if (!res.ok) return null;
-        const data = await res.json() as { user: AuthUser | null };
-        return data.user;
+        const data = await res.json() as { user: AuthUser | null; isAdmin: boolean };
+        if (!data.user) return null;
+        return { ...data.user, isAdmin: data.isAdmin };
     } catch {
         return null;
     }

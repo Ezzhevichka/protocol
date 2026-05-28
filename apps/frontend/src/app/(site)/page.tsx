@@ -1,13 +1,13 @@
-import { getServers, getServerPlayers, getServerState, getTopStats } from "shared/api";
-import type { LiveTeam } from "shared/api";
-import { resolveFactionFlag, resolveFactionName, parseKitFromRole } from "shared/lib";
-import { FractionCompositeCard } from "widgets/FractionCompositeCard";
-import { Jumbo } from "widgets/Jumbo";
-import { ServerSection } from "widgets/ServerSection";
-import { Stats } from "widgets/Stats";
+import { getServers, getServerPlayers, getServerState, getTopStats } from 'shared/api';
+import type { LiveTeam } from 'shared/api';
+import { resolveFactionFlag, resolveFactionName, parseKitFromRole } from 'shared/lib';
+import { FractionCompositeCard } from 'widgets/FractionCompositeCard';
+import { Jumbo } from 'widgets/Jumbo';
+import { ServerSection } from 'widgets/ServerSection';
+import { Stats } from 'widgets/Stats';
 
 function buildFraction(teamId: string | undefined, team: LiveTeam | undefined) {
-    const squadsPlayers = team?.squads.flatMap(s => s.players) ?? [];
+    const squadsPlayers = team?.squads.flatMap((s) => s.players) ?? [];
     const unassigned = team?.unassigned ?? [];
 
     return {

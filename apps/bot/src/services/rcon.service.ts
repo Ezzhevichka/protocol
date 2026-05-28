@@ -4,6 +4,7 @@ import { Rcon } from 'squad-rcon';
 import { env } from '../config';
 
 const RCON_COMMAND_TIMEOUT_MS = 8000;
+const RCON_CONNECT_TIMEOUT_MS = 10_000;
 
 const rconMutex = new Mutex();
 
@@ -47,6 +48,7 @@ async function getRcon() {
 async function resetRcon() {
     const oldClient = client;
     client = null;
+    connecting = null;
 
     if (!oldClient) {
         return;
@@ -79,7 +81,14 @@ async function withPromiseTimeout<T>(
 
 export async function withRcon<T>(task: (rcon: Rcon) => Promise<T>): Promise<T> {
     return rconMutex.runExclusive(async () => {
-        const rcon = await getRcon();
+        let rcon: Rcon;
+
+        try {
+            rcon = await withPromiseTimeout(getRcon(), RCON_CONNECT_TIMEOUT_MS, 'RCON connect timeout');
+        } catch (error) {
+            await resetRcon();
+            throw error;
+        }
 
         try {
             return await withPromiseTimeout(task(rcon), RCON_COMMAND_TIMEOUT_MS, 'RCON command timeout');
