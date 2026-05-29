@@ -1,46 +1,54 @@
-import type { SquadEvent } from '../../core/events/types';
-import { checkBanBySteamId } from '../../services/backend.service';
-import { kickPlayer, listPlayers } from '../../services/squad.service';
+import { sendPlayerConnected } from 'services/backend-service';
+import { kickPlayer } from 'services/squad-service';
+import { HandlePlayerConnectedAction, PlayerEvent } from 'types/parserEvents';
 
 const recentlyHandled = new Map<string, number>();
 
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const RECENTLY_HANDLED_TTL_MS = 15_000;
 
 function isRecentlyHandled(steamId: string) {
-    const now = Date.now();
-    const last = recentlyHandled.get(steamId);
-    if (last && now - last < 15000) return true;
-    recentlyHandled.set(steamId, now);
-    return false;
+  const now = Date.now();
+  const last = recentlyHandled.get(steamId);
+
+  if (last && now - last < RECENTLY_HANDLED_TTL_MS) {
+    return true;
+  }
+
+  recentlyHandled.set(steamId, now);
+  return false;
 }
 
-async function findOnlinePlayer(steamId: string) {
-    // TODO: уюрать эту хуйню, что за цикл, сделать просто проверку в базе, если бот отправил событие
-    for (let attempt = 1; attempt <= 10; attempt++) {
-        const { players } = await listPlayers();
-        const player = players.find((item) => item.steamId === steamId);
-        if (player) return player;
-        await sleep(1000);
+function cleanupRecentlyHandled() {
+  const now = Date.now();
+
+  for (const [steamId, handledAt] of recentlyHandled.entries()) {
+    if (now - handledAt > RECENTLY_HANDLED_TTL_MS) {
+      recentlyHandled.delete(steamId);
     }
-    return null;
+  }
 }
 
-export async function banEnforcementHandler(event: SquadEvent) {
-    if (event.type !== 'PLAYER_CONNECTED') return;
-    if (isRecentlyHandled(event.steamId)) return;
+export async function banEnforcementHandler(event: PlayerEvent) {
+  if (event.type !== 'PLAYER_CONNECTED') {
+    return;
+  }
 
-    const player = await findOnlinePlayer(event.steamId);
-    const name = player?.name ?? event.name ?? null;
-    const eosId = player?.eosId ?? event.eosId ?? null;
+  if (isRecentlyHandled(event.steamId)) {
+    return;
+  }
 
-    const banStatus = await checkBanBySteamId({ steamId: event.steamId, eosId, name });
-    if (!banStatus.isBanned) return;
+  cleanupRecentlyHandled();
 
-    await kickPlayer(
-        event.steamId,
-        banStatus.activeBan?.reason
-      ?? (banStatus.nicknameBlacklisted ? 'Nickname is blacklisted' : 'Banned')
-    );
+  const decision = await sendPlayerConnected({
+    steamId: event.steamId,
+    serverId: Number(process.env.SERVER_ID),
+    eosId: event.eosId ?? null,
+    name: event.name ?? null,
+  });
+
+  if (decision.action !== HandlePlayerConnectedAction.KICK) {
+    return;
+  }
+
+  await kickPlayer(event.steamId, decision.reason);
 }

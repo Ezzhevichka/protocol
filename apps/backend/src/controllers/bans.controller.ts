@@ -1,39 +1,33 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 
+import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { SessionAuthGuard } from '../guards/session-auth.guard';
+import { createBanSchema, revokeBanSchema } from '../schemas/bans.schema';
 import { createBan, getBanStatusBySteamId, listBans, revokeBan } from '../services/bans.service';
 
-export async function listBansController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const bans = await listBans(req.query.status as string | undefined);
-        res.json({ bans });
-    } catch (error) {
-        next(error);
-    }
-}
+@Controller('bans')
+@UseGuards(SessionAuthGuard)
+export class BansController {
+  @Get()
+  async list(@Query('status') status?: string) {
+    return { bans: await listBans(status) };
+  }
 
-export async function checkBanController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const result = await getBanStatusBySteamId(String(req.params.steamId));
-        res.json(result);
-    } catch (error) {
-        next(error);
-    }
-}
+  @Get('check/:steamId')
+  async check(@Param('steamId') steamId: string) {
+    return getBanStatusBySteamId(steamId);
+  }
 
-export async function createBanController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const result = await createBan(req.body);
-        res.status(201).json(result);
-    } catch (error) {
-        next(error);
-    }
-}
+  @Post()
+  async create(@Body(new ZodValidationPipe(createBanSchema)) body: unknown) {
+    return createBan(body as never);
+  }
 
-export async function revokeBanController(req: Request, res: Response, next: NextFunction) {
-    try {
-        const ban = await revokeBan(String(req.params.banId), req.body);
-        res.json({ ban });
-    } catch (error) {
-        next(error);
-    }
+  @Post(':banId/revoke')
+  async revoke(
+    @Param('banId') banId: string,
+    @Body(new ZodValidationPipe(revokeBanSchema)) body: unknown
+  ) {
+    return { ban: await revokeBan(banId, body as never) };
+  }
 }

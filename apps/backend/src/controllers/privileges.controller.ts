@@ -1,67 +1,58 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 
+import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { SessionAuthGuard } from '../guards/session-auth.guard';
 import {
-    createPrivilege,
-    deletePrivilege,
-    listPrivilegeGroups,
-    listPrivileges,
-    updatePrivilege,
-    updatePrivilegeGroup,
+  createPrivilegeSchema,
+  updatePrivilegeGroupSchema,
+  updatePrivilegeSchema,
+} from '../schemas/privileges.schema';
+import {
+  createPrivilege,
+  deletePrivilege,
+  listPrivilegeGroups,
+  listPrivileges,
+  updatePrivilege,
+  updatePrivilegeGroup,
 } from '../services/privileges.service';
 
-export async function listPrivilegeGroupsController(
-    _req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    try {
-        res.json({ groups: await listPrivilegeGroups() });
-    } catch (error) {
-        next(error);
-    }
-}
+@Controller('privileges')
+@UseGuards(SessionAuthGuard)
+export class PrivilegesController {
+  @Get('groups')
+  async groups() {
+    return { groups: await listPrivilegeGroups() };
+  }
 
-export async function updatePrivilegeGroupController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    try {
-        res.json({ group: await updatePrivilegeGroup(String(req.params.id), req.body) });
-    } catch (error) {
-        next(error);
-    }
-}
+  @Patch('groups/:id')
+  async updateGroup(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(updatePrivilegeGroupSchema)) body: unknown
+  ) {
+    return { group: await updatePrivilegeGroup(id, body as never) };
+  }
 
-export async function listPrivilegesController(_req: Request, res: Response, next: NextFunction) {
-    try {
-        res.json({ privileges: await listPrivileges() });
-    } catch (error) {
-        next(error);
-    }
-}
+  @Get('players')
+  async players() {
+    return { privileges: await listPrivileges() };
+  }
 
-export async function createPrivilegeController(req: Request, res: Response, next: NextFunction) {
-    try {
-        res.status(201).json({ privilege: await createPrivilege(req.body) });
-    } catch (error) {
-        next(error);
-    }
-}
+  @Post('players')
+  async create(@Body(new ZodValidationPipe(createPrivilegeSchema)) body: unknown) {
+    return { privilege: await createPrivilege(body as never) };
+  }
 
-export async function updatePrivilegeController(req: Request, res: Response, next: NextFunction) {
-    try {
-        res.json({ privilege: await updatePrivilege(String(req.params.id), req.body) });
-    } catch (error) {
-        next(error);
-    }
-}
+  @Patch('players/:id')
+  async update(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(updatePrivilegeSchema)) body: unknown
+  ) {
+    return { privilege: await updatePrivilege(id, body as never) };
+  }
 
-export async function deletePrivilegeController(req: Request, res: Response, next: NextFunction) {
-    try {
-        await deletePrivilege(String(req.params.id));
-        res.json({ ok: true });
-    } catch (error) {
-        next(error);
-    }
+  @Delete('players/:id')
+  async delete(@Param('id') id: string) {
+    await deletePrivilege(id);
+    return { ok: true };
+  }
 }
