@@ -1,95 +1,47 @@
-import { Mutex } from 'async-mutex';
-import { Rcon } from 'squad-rcon';
+import { createRconApi, type RconApi, type RconExecuteOptions } from './rcon';
+import { isConnectionResetError } from './rcon/errors';
 
-import { env } from '../config';
+let api: RconApi | null = null;
+let generation = 0;
 
-const RCON_COMMAND_TIMEOUT_MS = 1500;
+const getRcon = () => {
+  if (!api) {
+    api = createRconApi();
+  }
+  return api;
+};
 
-const rconMutex = new Mutex();
+const resetRcon = async (target?: RconApi) => {
+  generation += 1;
+  const current = target ?? api;
 
-let client: Rcon | null = null;
-let connecting: Promise<Rcon> | null = null;
+  if (target && api !== target) {
+    await target.close().catch(() => undefined);
+    return;
+  }
 
-async function createRcon() {
-    const rcon = new Rcon({
-        id: env.serverId,
-        host: env.rconHost!,
-        port: Number(env.rconPort),
-        password: env.rconPassword!,
-        autoReconnect: false,
-        logEnabled: false,
-    });
+  api = null;
+  await current?.close().catch(() => undefined);
+};
 
-    await rcon.init();
+export const withRcon = async <T>(
+  task: (rcon: RconApi) => Promise<T>,
+  options?: RconExecuteOptions & { resetOnError?: boolean }
+): Promise<T> => {
+  const currentGeneration = generation;
+  const rcon = getRcon();
 
-    return rcon;
-}
-
-async function getRcon() {
-    if (client) {
-        return client;
+  try {
+    if (currentGeneration !== generation) {
+      throw new Error('RCON generation changed before command execution');
     }
+    return await task(rcon);
+  } catch (error) {
+    const shouldReset = options?.resetOnError ?? isConnectionResetError(error);
+    if (shouldReset) { await resetRcon(rcon); }
+    throw error;
+  }
+};
 
-    if (!connecting) {
-        connecting = createRcon()
-            .then((rcon) => {
-                client = rcon;
-                return rcon;
-            })
-            .finally(() => {
-                connecting = null;
-            });
-    }
-
-    return connecting;
-}
-
-async function resetRcon() {
-    const oldClient = client;
-    client = null;
-
-    if (!oldClient) {
-        return;
-    }
-
-    try {
-        await oldClient.close();
-    } catch {
-    // ignore close errors
-    }
-}
-
-async function withPromiseTimeout<T>(
-    promise: Promise<T>,
-    timeoutMs: number,
-    message: string
-): Promise<T> {
-    let timeout: NodeJS.Timeout;
-
-    const timeoutPromise = new Promise<never>((_, reject) => {
-        timeout = setTimeout(() => {
-            reject(new Error(message));
-        }, timeoutMs);
-    });
-
-    return Promise.race([promise, timeoutPromise]).finally(() => {
-        clearTimeout(timeout);
-    });
-}
-
-export async function withRcon<T>(task: (rcon: Rcon) => Promise<T>): Promise<T> {
-    return rconMutex.runExclusive(async () => {
-        const rcon = await getRcon();
-
-        try {
-            return await withPromiseTimeout(task(rcon), RCON_COMMAND_TIMEOUT_MS, 'RCON command timeout');
-        } catch (error) {
-            await resetRcon();
-            throw error;
-        }
-    });
-}
-
-export async function closeRcon() {
-    await resetRcon();
-}
+export const getRconHealth = () => getRcon().health();
+export const closeRcon = async () => resetRcon();

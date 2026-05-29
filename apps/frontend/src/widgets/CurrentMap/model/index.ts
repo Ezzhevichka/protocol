@@ -1,5 +1,5 @@
 export type CurrentMapProps = {
-    mapName: string;
-    imageSrc?: string;
-    className?: string;
+  mapName: string;
+  imageSrc?: string;
+  className?: string;
 };

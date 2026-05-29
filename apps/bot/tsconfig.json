@@ -10,7 +10,17 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": false,
     "sourceMap": false,
-    "removeComments": true
+    "removeComments": true,
+    "paths": {
+      "events/*": ["./src/events/*"],
+      "jobs/*": ["./src/jobs/*"],
+      "middleware/*": ["./src/middleware/*"],
+      "routes/*": ["./src/routes/*"],
+      "schemas/*": ["./src/schemas/*"],
+      "services/*": ["./src/services/*"],
+      "types/*": ["./src/types/*"],
+      "utils/*": ["./src/utils/*"]
+    },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "logs"]

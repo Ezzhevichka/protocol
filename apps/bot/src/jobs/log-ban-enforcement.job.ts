@@ -1,40 +1,39 @@
-import { env } from '../config';
-import { emitSquadEvent, registerEventHandler } from '../core/events/event-bus';
-import { banEnforcementHandler } from '../events/handlers/ban-enforcement.handler';
-import { playerSessionHandler } from '../events/handlers/player-session.handler';
-import { parseSquadLogLine } from '../events/parsers';
-import { tailLocalLogFile } from '../services/log-tail.service';
-import { tailRemoteLogOverSsh } from '../services/remote-ssh-tail.service';
+import { banEnforcementHandler, playerSessionHandler, playerSnapshotHandler } from 'events/handlers';
+import { tailLocalLogFile } from 'services/log-tail.service';
+import { tailRemoteLogOverSsh } from 'services/remote-ssh-tail.service';
+import { emitPlayerEvent, registerEventHandler } from 'utils/event-bus';
+import { parseSquadLogLine } from 'utils/parsers';
 
 let started = false;
 
 async function handleLine(line: string) {
-    const event = parseSquadLogLine(line);
-    if (!event) return;
+  const event = parseSquadLogLine(line);
+  if (!event) { return; }
 
-    await emitSquadEvent(event);
+  await emitPlayerEvent(event);
 }
 
 export function startLogBanEnforcementJob() {
-    if (started) return;
-    started = true;
+  if (started) { return; }
+  started = true;
 
-    registerEventHandler(playerSessionHandler);
-    registerEventHandler(banEnforcementHandler);
+  registerEventHandler(playerSnapshotHandler);
+  registerEventHandler(playerSessionHandler);
+  registerEventHandler(banEnforcementHandler);
 
-    if (env.logTailMode === 'local') {
-        tailLocalLogFile(env.squadLogPath!, handleLine);
-        return;
-    }
+  if (process.env.LOG_TAIL_MODE === 'local') {
+    tailLocalLogFile(process.env.SQUAD_LOG_PATH!, handleLine);
+    return;
+  }
 
-    tailRemoteLogOverSsh(
-        {
-            host: env.sshHost!,
-            port: env.sshPort,
-            username: env.sshUsername!,
-            password: env.sshPassword!,
-            path: env.squadLogPath!,
-        },
-        handleLine
-    );
+  tailRemoteLogOverSsh(
+    {
+      host: process.env.SSH_HOST ?? '',
+      port: Number(process.env.SSH_PORT),
+      username: process.env.SSH_USERNAME!,
+      password: process.env.SSH_PASSWORD!,
+      path: process.env.SQUAD_LOG_PATH!,
+    },
+    handleLine
+  );
 }

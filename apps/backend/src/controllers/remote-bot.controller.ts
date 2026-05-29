@@ -1,17 +1,19 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Controller, Post, UseGuards } from '@nestjs/common';
 
+import { SessionAuthGuard } from '../guards/session-auth.guard';
 import { restartRemoteBot } from '../services/remote-bot.service';
 
-export async function restartRemoteBotController(_req: Request, res: Response, next: NextFunction) {
-    try {
-        const result = await restartRemoteBot();
+@Controller('remote-bot')
+@UseGuards(SessionAuthGuard)
+export class RemoteBotController {
+  @Post('restart')
+  async restart() {
+    const result = await restartRemoteBot();
 
-        res.json({
-            ok: true,
-            stdout: result.stdout,
-            stderr: result.stderr,
-        });
-    } catch (error) {
-        next(error);
-    }
+    return {
+      ok: true,
+      stdout: result.stdout,
+      stderr: result.stderr,
+    };
+  }
 }

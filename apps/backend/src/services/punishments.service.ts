@@ -5,93 +5,93 @@ import { upsertPlayerIdentity } from './player-identity.service';
 import { getSquadServerConfig } from './servers.service';
 
 export async function listWarns(query?: string) {
-    const q = query?.trim();
-    return prisma.punishment.findMany({
-        where: {
-            type: 'WARN',
-            ...(q
-                ? {
-                    OR: [
-                        { steamId: { contains: q } },
-                        { eosId: { contains: q } },
-                        { nickname: { contains: q, mode: 'insensitive' } },
-                        { reason: { contains: q, mode: 'insensitive' } },
-                    ],
-                }
-                : {}),
-        },
-        include: { player: true },
-        orderBy: { createdAt: 'desc' },
-    });
+  const q = query?.trim();
+  return prisma.punishment.findMany({
+    where: {
+      type: 'WARN',
+      ...(q
+        ? {
+          OR: [
+            { steamId: { contains: q } },
+            { eosId: { contains: q } },
+            { nickname: { contains: q, mode: 'insensitive' } },
+            { reason: { contains: q, mode: 'insensitive' } },
+          ],
+        }
+        : {}),
+    },
+    include: { player: true },
+    orderBy: { createdAt: 'desc' },
+  });
 }
 
 export async function createWarn(input: {
-    serverId: number;
-    steamId?: string;
-    eosId?: string | null;
-    nickname?: string | null;
-    reason: string;
-    createdById?: string | null;
-    createdByName?: string | null;
+  serverId: number;
+  steamId?: string;
+  eosId?: string | null;
+  nickname?: string | null;
+  reason: string;
+  createdById?: string | null;
+  createdByName?: string | null;
 }) {
-    let playerId: string | null = null;
-    if (input.steamId) {
-        const player = await upsertPlayerIdentity({
-            steamId: input.steamId,
-            eosId: input.eosId,
-            name: input.nickname,
-        });
-        playerId = player.id;
-    }
-
-    const punishment = await prisma.punishment.create({
-        data: {
-            type: 'WARN',
-            playerId,
-            steamId: input.steamId ?? null,
-            eosId: input.eosId ?? null,
-            nickname: input.nickname ?? null,
-            reason: input.reason,
-            createdById: input.createdById ?? null,
-            createdByName: input.createdByName ?? null,
-        },
+  let playerId: string | null = null;
+  if (input.steamId) {
+    const player = await upsertPlayerIdentity({
+      steamId: input.steamId,
+      eosId: input.eosId,
+      name: input.nickname,
     });
+    playerId = player.id;
+  }
 
-    let delivery: {
-        ok: boolean;
-        error?: string;
-        result?: unknown;
-    } | null = null;
+  const punishment = await prisma.punishment.create({
+    data: {
+      type: 'WARN',
+      playerId,
+      steamId: input.steamId ?? null,
+      eosId: input.eosId ?? null,
+      nickname: input.nickname ?? null,
+      reason: input.reason,
+      createdById: input.createdById ?? null,
+      createdByName: input.createdByName ?? null,
+    },
+  });
 
-    if (input.steamId) {
-        const server = await getSquadServerConfig(input.serverId);
+  let delivery: {
+    ok: boolean;
+    error?: string;
+    result?: unknown;
+  } | null = null;
 
-        if (!server) {
-            delivery = {
-                ok: false,
-                error: 'SERVER_NOT_FOUND',
-            };
-        } else {
-            try {
-                const message = `WARN: ${input.reason}`;
+  if (input.steamId) {
+    const server = await getSquadServerConfig(input.serverId);
 
-                const result = await warnPlayerOnBot(server, input.steamId, message);
+    if (!server) {
+      delivery = {
+        ok: false,
+        error: 'SERVER_NOT_FOUND',
+      };
+    } else {
+      try {
+        const message = `WARN: ${input.reason}`;
 
-                delivery = {
-                    ok: true,
-                    result,
-                };
-            } catch (error) {
-                delivery = {
-                    ok: false,
-                    error: error instanceof Error ? error.message : 'WARN_DELIVERY_FAILED',
-                };
-            }
-        }
+        const result = await warnPlayerOnBot(server, input.steamId, message);
+
+        delivery = {
+          ok: true,
+          result,
+        };
+      } catch (error) {
+        delivery = {
+          ok: false,
+          error: error instanceof Error ? error.message : 'WARN_DELIVERY_FAILED',
+        };
+      }
     }
+  }
 
-    return {
-        punishment,
-        delivery,
-    };
+  return {
+    punishment,
+    delivery,
+  };
 }

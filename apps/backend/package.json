@@ -16,6 +16,8 @@
     "redis:sessions": "node -e \"console.log('docker exec -it squad_admin_redis redis-cli KEYS steam-auth:*')\""
   },
   "dependencies": {
+    "@nestjs/common": "^11.1.24",
+    "@nestjs/core": "^11.1.24",
     "@squad-admin/database": "workspace:*",
     "@squad-admin/shared": "workspace:*",
     "axios": "^1.16.1",
@@ -27,6 +29,7 @@
     "passport": "^0.7.0",
     "passport-steam": "^1.0.18",
     "redis": "^5.12.1",
+    "reflect-metadata": "^0.2.2",
     "ssh2": "^1.17.0",
     "zod": "^4.4.3"
   },

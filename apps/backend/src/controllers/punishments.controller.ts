@@ -1,19 +1,20 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 
+import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { SessionAuthGuard } from '../guards/session-auth.guard';
+import { createWarnSchema } from '../schemas/punishments.schema';
 import { createWarn, listWarns } from '../services/punishments.service';
 
-export async function listWarnsController(req: Request, res: Response, next: NextFunction) {
-    try {
-        res.json({ warns: await listWarns(typeof req.query.q === 'string' ? req.query.q : undefined) });
-    } catch (error) {
-        next(error);
-    }
-}
+@Controller('punishments')
+@UseGuards(SessionAuthGuard)
+export class PunishmentsController {
+  @Get('warns')
+  async warns(@Query('q') q?: string) {
+    return { warns: await listWarns(q) };
+  }
 
-export async function createWarnController(req: Request, res: Response, next: NextFunction) {
-    try {
-        res.status(201).json({ warn: await createWarn(req.body) });
-    } catch (error) {
-        next(error);
-    }
+  @Post('warns')
+  async createWarn(@Body(new ZodValidationPipe(createWarnSchema)) body: unknown) {
+    return { warn: await createWarn(body as never) };
+  }
 }

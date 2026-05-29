@@ -1,23 +1,23 @@
 export const formatFractionHours = (hoursAmount: number | string) => {
-    if (typeof hoursAmount !== 'number') {
-        return hoursAmount;
-    }
+  if (typeof hoursAmount !== 'number') {
+    return hoursAmount;
+  }
 
-    const [wholePart, fractionPart = ''] = hoursAmount.toString().split('.');
-    const groupedWholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    const trimmedFractionPart = fractionPart.replace(/0+$/, '');
+  const [wholePart, fractionPart = ''] = hoursAmount.toString().split('.');
+  const groupedWholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const trimmedFractionPart = fractionPart.replace(/0+$/, '');
 
-    if (!trimmedFractionPart) {
-        return groupedWholePart;
-    }
+  if (!trimmedFractionPart) {
+    return groupedWholePart;
+  }
 
-    return `${groupedWholePart}.${trimmedFractionPart}`;
+  return `${groupedWholePart}.${trimmedFractionPart}`;
 };
 
 export const formatPlayersAmount = (playersAmount: number | string) => {
-    if (typeof playersAmount === 'number') {
-        return playersAmount.toString();
-    }
+  if (typeof playersAmount === 'number') {
+    return playersAmount.toString();
+  }
 
-    return playersAmount;
+  return playersAmount;
 };

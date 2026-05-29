@@ -1,36 +1,24 @@
-import { listPlayersFromBot } from './bot.service';
-import { groupPlayersByTeams } from './player-grouping.service';
-import { syncPlayerIdentities } from './player-identity.service';
-import { getSquadServerConfig } from './servers.service';
+import { buildPlayersResponse } from './player-snapshot.service';
+import { getSquadServerConfig, listSquadServerConfigs } from './servers.service';
+import { AppError } from '../errors/app-error';
 
 export async function getPlayersByServerId(serverId: number) {
-    const server = await getSquadServerConfig(serverId);
+  const server = await getSquadServerConfig(serverId);
 
-    if (!server) {
-        const error = new Error('SERVER_NOT_FOUND');
-        error.name = 'SERVER_NOT_FOUND';
-        throw error;
-    }
+  if (!server) {
+    throw new AppError(404, 'SERVER_NOT_FOUND', 'Сервер не найден');
+  }
 
-    const data = await listPlayersFromBot(server);
+  return buildPlayersResponse(server.id, server.name);
+}
 
-    await syncPlayerIdentities(data.players);
+export async function getDefaultPlayers() {
+  const servers = await listSquadServerConfigs();
+  const server = servers[0];
 
-    const teams = groupPlayersByTeams({
-        players: data.players,
-        squads: data.squads,
-    });
+  if (!server) {
+    throw new AppError(404, 'SERVER_NOT_FOUND', 'Сервер не найден');
+  }
 
-    return {
-        serverId: server.id,
-        serverName: server.name,
-
-        playersCount: data.players.length,
-        squadsCount: data.squads.length,
-
-        players: data.players,
-        server: data.server,
-        squads: data.squads,
-        teams,
-    };
+  return buildPlayersResponse(server.id, server.name);
 }

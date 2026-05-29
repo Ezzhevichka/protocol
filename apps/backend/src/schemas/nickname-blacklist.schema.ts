@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
 export const createNicknameBlacklistSchema = z.object({
-    nickname: z.string().min(1),
+  nickname: z.string().min(1),
 });

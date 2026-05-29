@@ -1,44 +1,30 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 
+import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { SessionAuthGuard } from '../guards/session-auth.guard';
+import { createNicknameBlacklistSchema } from '../schemas/nickname-blacklist.schema';
 import {
-    addNicknameToBlacklist,
-    listNicknameBlacklist,
-    removeNicknameFromBlacklist,
+  addNicknameToBlacklist,
+  listNicknameBlacklist,
+  removeNicknameFromBlacklist,
 } from '../services/nickname-blacklist.service';
 
-export async function listNicknameBlacklistController(
-    _req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    try {
-        res.json({ nicknames: await listNicknameBlacklist() });
-    } catch (error) {
-        next(error);
-    }
-}
+@Controller('nickname-blacklist')
+@UseGuards(SessionAuthGuard)
+export class NicknameBlacklistController {
+  @Get()
+  async list() {
+    return { nicknames: await listNicknameBlacklist() };
+  }
 
-export async function addNicknameBlacklistController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    try {
-        res.status(201).json({ item: await addNicknameToBlacklist(req.body.nickname) });
-    } catch (error) {
-        next(error);
-    }
-}
+  @Post()
+  async add(@Body(new ZodValidationPipe(createNicknameBlacklistSchema)) body: { nickname: string }) {
+    return { item: await addNicknameToBlacklist(body.nickname) };
+  }
 
-export async function removeNicknameBlacklistController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    try {
-        await removeNicknameFromBlacklist(String(req.params.id));
-        res.json({ ok: true });
-    } catch (error) {
-        next(error);
-    }
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    await removeNicknameFromBlacklist(id);
+    return { ok: true };
+  }
 }

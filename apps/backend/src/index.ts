@@ -1,64 +1,40 @@
 import 'dotenv/config';
+import 'reflect-metadata';
 
-import cors from 'cors';
-import express from 'express';
+import { NestFactory } from '@nestjs/core';
 
+import { AppModule } from './app.module';
 import { env } from './config/env';
+import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { startExpireBansJob } from './jobs/expire-bans.job';
 import { redisClient } from './lib';
-import { requireAuth } from './middleware/auth.middleware';
-import { errorMiddleware } from './middleware/error.middleware';
 import { sessionMiddleware } from './middleware/session.middleware';
 import passport from './passport';
-import authRoutes from './routes/auth.routes';
-import bansRoutes from './routes/bans.routes';
-import internalRoutes from './routes/internal.routes';
-import meRoutes from './routes/me.routes';
-import nicknameBlacklistRoutes from './routes/nickname-blacklist.routes';
-import playersRoutes from './routes/players.routes';
-import privilegesRoutes from './routes/privileges.routes';
-import punishmentsRoutes from './routes/punishments.routes';
-import remoteBotRoutes from './routes/remote-bot.routes';
-import serversRoutes from './routes/servers.routes';
 
-const app = express();
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
 
-app.use(
-    cors({
-        origin: env.frontendUrl,
-        credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
-    })
-);
+  app.enableCors({
+    origin: env.frontendUrl,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
 
-redisClient.connect().catch(console.error);
+  redisClient.connect().catch(console.error);
 
-app.use(express.json());
-app.use(sessionMiddleware);
+  app.use(sessionMiddleware);
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
-app.use(passport.initialize());
-app.use(passport.session());
+  startExpireBansJob();
 
-app.get('/health', (_req, res) => {
-    res.json({ ok: true });
-});
+  await app.listen(env.port);
+  console.log(`Backend running on port ${env.port}`);
+}
 
-app.use('/auth', authRoutes);
-app.use('/me', requireAuth, meRoutes);
-app.use('/bans', requireAuth, bansRoutes);
-app.use('/players', requireAuth, playersRoutes);
-app.use('/servers', requireAuth, serversRoutes);
-app.use('/privileges', requireAuth, privilegesRoutes);
-app.use('/remote-bot', requireAuth, remoteBotRoutes);
-app.use('/nickname-blacklist', requireAuth, nicknameBlacklistRoutes);
-app.use('/punishments', requireAuth, punishmentsRoutes);
-app.use('/internal', internalRoutes);
-
-app.use(errorMiddleware);
-
-startExpireBansJob();
-
-app.listen(env.port, () => {
-    console.log(`Backend running on port ${env.port}`);
+bootstrap().catch((error) => {
+  console.error('BACKEND_BOOTSTRAP_FAILED', error);
+  process.exit(1);
 });
