@@ -35,8 +35,12 @@ export const serverLevelData: Record<ServerLevelType, ServerLevelInfo> = {
 
 export const formatHours = (hoursAmount: number | string) => {
   if (typeof hoursAmount === 'number') {
-    const formattedHours = hoursAmount.toFixed(3).replace(/\.?0+$/, '');
-    return `${formattedHours}ч`;
+    if (hoursAmount >= 1000) {
+      const k = hoursAmount / 1000;
+      const formatted = k % 1 === 0 ? k.toFixed(0) : k.toFixed(1).replace(/\.0$/, '');
+      return `${formatted}к ч.`;
+    }
+    return `${hoursAmount}ч`;
   }
 
   return hoursAmount;

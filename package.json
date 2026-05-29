@@ -15,6 +15,7 @@
     "db:deploy": "pnpm --filter @squad-admin/database prisma:deploy",
     "db:studio": "pnpm --filter @squad-admin/database prisma:studio",
     "db:reset": "pnpm --filter @squad-admin/database prisma:reset",
+    "db:seed": "pnpm --filter @squad-admin/database seed",
     "backend:dev": "pnpm --filter @squad-admin/backend dev",
     "backend:build": "pnpm --filter @squad-admin/backend build",
     "bot:dev": "pnpm --filter @squad-admin/bot dev",

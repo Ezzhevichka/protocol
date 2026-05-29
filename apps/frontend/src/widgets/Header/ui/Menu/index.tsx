@@ -8,6 +8,7 @@ import type { AuthUser } from 'shared/types';
 type MenuProps = {
   items: HeaderMenuItem[];
   user?: AuthUser | null;
+  isAdmin?: boolean;
 };
 
 function Icon({ item }: { item: HeaderMenuItem }) {

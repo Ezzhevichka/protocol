@@ -7,6 +7,7 @@ export type AuthUser = {
   avatarUrl: string | null;
   profileUrl: string | null;
   role: string | null;
+  isAdmin?: boolean;
 };
 
 /* ── Domain Types ──────────────────────────────────────────── */
@@ -52,6 +53,10 @@ export type ServerData = {
   playersCount?: number | string;
   queueCount?: number;
   maxPlayers?: number;
+  currentLayer?: string | null;
+  nextLayer?: string | null;
+  teamOne?: string;
+  teamTwo?: string;
   onClick?: () => void;
 };
 

@@ -4,9 +4,9 @@
 
 | Тип | Описание |
 |-----|----------|
-| **Session** | Steam OAuth сессия. Cookie `sid` + Redis. Применяется ко всем `/me`, `/bans`, `/players`, `/servers`, `/privileges`, `/punishments`, `/nickname-blacklist`, `/remote-bot` |
+| **Session** | Steam OAuth сессия. Cookie `sid` + Redis. Применяется к `/me`, `/bans`, `/players`, `/privileges`, `/punishments`, `/nickname-blacklist`, `/remote-bot` |
 | **InternalToken** | Bearer токен в заголовке `Authorization`. Значение из `INTERNAL_BOT_TOKEN`. Применяется к `/internal/*` |
-| **Нет** | `/auth/*`, `/health` |
+| **Нет** | `/auth/*`, `/health`, `/servers/*` |
 
 ---
 
@@ -67,45 +67,99 @@
 
 ## `/servers`
 
+Маршруты **публичные** — авторизация не требуется.
+
 | Метод | Путь | Авторизация |
 |-------|------|-------------|
-| GET | `/servers` | Session |
-| GET | `/servers/:serverId/players` | Session |
+| GET | `/servers` | Нет |
+| GET | `/servers/:serverId/players` | Нет |
 
-**`GET /servers` → Ответ:**
+### `GET /servers`
+
+Возвращает список всех серверов из БД. Для каждого сервера делает запрос к боту (`/server`) и прикладывает живые данные от RCON. Таймаут на запрос к боту — 10 с.
+
+**Ответ (сервер онлайн):**
 ```json
 {
   "servers": [
-    { "id": 1, "name": "#1 INVASION", "botUrl": "http://..." }
-  ]
-}
-```
-
-**`GET /servers/:serverId/players` → Ответ:**
-```json
-{
-  "serverId": 1,
-  "serverName": "#1 INVASION",
-  "playersCount": 72,
-  "squadsCount": 14,
-  "players": [...],
-  "squads": [...],
-  "teams": [
     {
-      "teamId": "1",
-      "squads": [
-        {
-          "squad": { "squadId": "1", "teamId": "1", "name": "CMD" },
-          "players": [...]
-        }
-      ],
-      "unassigned": [...]
+      "id": 1,
+      "name": "#1 INVASION Protocol Squad",
+      "maxPlayers": 100,
+      "publicQueue": 0,
+      "reserveQueue": 0,
+      "playersCount": 72,
+      "currentLayer": "Harju_Invasion_v3",
+      "nextLayer": "Gorodok_AAS_v1"
     }
   ]
 }
 ```
 
-**`GET /servers/:serverId/players` → БД:**
+**Ответ (сервер недоступен / бот не отвечает):**
+```json
+{
+  "servers": [
+    {
+      "id": 1,
+      "name": "#1 INVASION Protocol Squad",
+      "active": false,
+      "reason": "Request timeout"
+    }
+  ]
+}
+```
+
+> Поля из RCON (`maxPlayers`, `currentLayer` и т.д.) зависят от версии Squad и конфигурации сервера — могут отсутствовать или меняться.
+
+### `GET /servers/:serverId/players`
+
+Запрашивает у бота список игроков и отрядов через RCON. Синхронизирует игроков в БД. Возвращает данные, сгруппированные по командам.
+
+**Ответ:**
+```json
+{
+  "serverId": 1,
+  "serverName": "#1 INVASION Protocol Squad",
+  "playersCount": 72,
+  "squadsCount": 14,
+  "maxPlayers": 100,
+  "queueCount": 3,
+  "currentLayer": "Harju_Invasion_v3",
+  "nextLayer": "Gorodok_AAS_v1",
+  "teams": [
+    {
+      "teamId": "1",
+      "squads": [
+        {
+          "squad": {
+            "squadId": "1",
+            "teamId": "1",
+            "name": "CMD",
+            "size": 6,
+            "locked": false
+          },
+          "players": [
+            { "steamId": "76561198000000000", "eosId": "0002...", "name": "PlayerNick" }
+          ]
+        }
+      ],
+      "unassigned": [
+        { "steamId": "76561198000000001", "eosId": "0002...", "name": "LoneWolf" }
+      ]
+    }
+  ]
+}
+```
+
+**Ошибки:**
+
+| Код | Тело | Причина |
+|-----|------|---------|
+| 404 | `{ "error": "SERVER_NOT_FOUND" }` | Сервер с таким `serverId` не найден в БД |
+| 502 | `{ "error": "BOT_REQUEST_FAILED", ... }` | Бот не ответил или вернул ошибку |
+
+**→ БД:**
 - `Player` — upsert по `steamId`
 - `PlayerName` — upsert по `(playerId, nickname)`
 
@@ -118,7 +172,9 @@
 | GET | `/players/known` | Session |
 | GET | `/players/:steamId/profile` | Session |
 
-**`GET /players/known`** — поиск по нику. Query: `?q=строка`
+### `GET /players/known`
+
+Поиск по известным игрокам в БД. Query: `?q=строка` (опционально).
 
 **Ответ:**
 ```json
@@ -126,33 +182,44 @@
   "players": [
     {
       "id": "uuid",
-      "steamId": "...",
+      "steamId": "76561198000000000",
       "lastName": "Nickname",
-      "names": [...],
-      "sessions": [...],
-      "externalProfile": {...},
-      "punishments": [...]
+      "names": [{ "nickname": "Nickname", "seenAt": "ISO" }],
+      "sessions": [{ "serverId": 1, "connectedAt": "ISO", "status": "CLOSED" }],
+      "externalProfile": {
+        "personaName": "...",
+        "avatarUrl": "...",
+        "countryCode": "RU"
+      },
+      "punishments": [{ "type": "WARN", "reason": "...", "createdAt": "ISO" }]
     }
   ]
 }
 ```
 
-**`GET /players/:steamId/profile` → Ответ:**
+### `GET /players/:steamId/profile`
+
+Возвращает профиль игрока из БД и актуальные данные из Steam API.
+
+**→ БД:** `PlayerExternalProfile` — upsert Steam данных.
+
+**Ответ:**
 ```json
 {
-  "player": { ... },
+  "player": {
+    "id": "uuid",
+    "steamId": "76561198000000000",
+    "lastName": "Nickname"
+  },
   "steamProfile": {
-    "personaName": "...",
-    "avatarUrl": "...",
-    "profileUrl": "...",
+    "personaName": "Nickname",
+    "avatarUrl": "https://avatars.steamstatic.com/...",
+    "profileUrl": "https://steamcommunity.com/id/...",
     "countryCode": "RU",
     "isPrivate": false
   }
 }
 ```
-
-**`GET /players/:steamId/profile` → БД:**
-- `PlayerExternalProfile` — upsert Steam данных
 
 ---
 
