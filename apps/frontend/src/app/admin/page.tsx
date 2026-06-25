@@ -3,6 +3,11 @@ import type { LiveTeam } from 'shared/api';
 import { parseKitFromRole } from 'shared/lib';
 import { AdminFractionBlock } from 'widgets/AdminFractionBlock';
 import type { AdminSquad, AdminSquadPlayer } from 'widgets/AdminSquadList';
+import { AdminQueueCard } from 'widgets/AdminQueueCard';
+import { AdminDisconnectedCard } from 'widgets/AdminDisconnectedCard';
+import { AdminWidgetGrid } from 'widgets/AdminWidgetGrid';
+import { AdminChatCard } from 'widgets/AdminChatCard';
+import { AdminMapCard } from 'widgets/AdminMapCard';
 
 function buildAdminSquads(team: LiveTeam | undefined): AdminSquad[] {
     if (!team) return [];
@@ -65,27 +70,59 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     const playerCount2 = squads2.reduce((n, s) => n + s.players.length, 0) + unassigned2.length;
 
     return (
-        <main className="flex flex-col gap-20 px-20 pb-20">
-            {playersData ? (
-                <div className="flex gap-16 min-h-0">
-                    <AdminFractionBlock
-                        teamId={team1?.teamId ?? ''}
-                        playerCount={playerCount1}
-                        squads={squads1}
-                        unassigned={unassigned1}
-                    />
-                    <AdminFractionBlock
-                        teamId={team2?.teamId ?? ''}
-                        playerCount={playerCount2}
-                        squads={squads2}
-                        unassigned={unassigned2}
-                    />
-                </div>
-            ) : (
-                <p className="text-[13px]" style={{ color: 'var(--at-text-section)' }}>
-                    Нет данных о игроках — сервер недоступен или пуст.
-                </p>
-            )}
+        <main className="flex flex-1 gap-16 px-20 pb-20 min-h-0">
+            {/* Левая часть: блоки фракций */}
+            <div className="flex flex-1 gap-16 min-h-0">
+                {playersData ? (
+                    <>
+                        <AdminFractionBlock
+                            teamId={team1?.teamId ?? ''}
+                            playerCount={playerCount1}
+                            squads={squads1}
+                            unassigned={unassigned1}
+                        />
+                        <AdminFractionBlock
+                            teamId={team2?.teamId ?? ''}
+                            playerCount={playerCount2}
+                            squads={squads2}
+                            unassigned={unassigned2}
+                        />
+                    </>
+                ) : (
+                    <p className="text-[13px]" style={{ color: 'var(--at-text-section)' }}>
+                        Нет данных о игроках — сервер недоступен или пуст.
+                    </p>
+                )}
+            </div>
+
+            {/* Правая часть: грид виджетов 2 колонки */}
+            <AdminWidgetGrid
+                slots={[
+                    {
+                        key: 'queue',
+                        node: <AdminQueueCard queueCount={playersData?.queueCount ?? 0} />,
+                    },
+                    {
+                        key: 'disconnected',
+                        node: <AdminDisconnectedCard />,
+                    },
+                    {
+                        key: 'chat',
+                        node: <AdminChatCard />,
+                        fullRow: true,
+                    },
+                    {
+                        key: 'map',
+                        node: (
+                            <AdminMapCard
+                                layerName={playersData?.currentLayer}
+                                nextLayerName={playersData?.nextLayer}
+                            />
+                        ),
+                        fullRow: true,
+                    },
+                ]}
+            />
         </main>
     );
 }

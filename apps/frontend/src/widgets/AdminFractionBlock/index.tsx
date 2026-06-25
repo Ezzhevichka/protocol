@@ -56,15 +56,17 @@ export const AdminFractionBlock = ({
         {/* Разделитель между шапкой и списком сквадов */}
         <div style={{ borderTop: '1px solid var(--at-border-section)' }} />
 
-        {/* Список сквадов — без индивидуальных glass-контейнеров */}
-        <AdminSquadList
-            squads={squads}
-            unassigned={unassigned}
-            embedded
-            onKickFromSquad={onKickFromSquad}
-            onKill={onKill}
-            onBan={onBan}
-            onCopyTeleport={onCopyTeleport}
-        />
+        {/* Список сквадов — прокручивается независимо */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+            <AdminSquadList
+                squads={squads}
+                unassigned={unassigned}
+                embedded
+                onKickFromSquad={onKickFromSquad}
+                onKill={onKill}
+                onBan={onBan}
+                onCopyTeleport={onCopyTeleport}
+            />
+        </div>
     </div>
 );

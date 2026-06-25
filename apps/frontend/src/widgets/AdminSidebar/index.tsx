@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { useAdminTheme, type AdminTheme } from 'shared/providers/AdminThemeProvider';
 
 type NavItem = {
     label: string;
@@ -114,6 +116,50 @@ const IconRoles = () => (
     </svg>
 );
 
+const IconThemeDark = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M12 8.5A5.5 5.5 0 0 1 5.5 2a5.5 5.5 0 1 0 6.5 6.5z" fill="currentColor" opacity="0.9" />
+    </svg>
+);
+
+const IconThemeLight = () => (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="7.5" cy="7.5" r="3" fill="currentColor" />
+        <line x1="7.5" y1="0.5" x2="7.5" y2="2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="7.5" y1="12.5" x2="7.5" y2="14.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="0.5" y1="7.5" x2="2.5" y2="7.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="12.5" y1="7.5" x2="14.5" y2="7.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="2.575" y1="2.575" x2="4" y2="4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="11" y1="11" x2="12.425" y2="12.425" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="11" y1="4" x2="12.425" y2="2.575" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="2.575" y1="12.425" x2="4" y2="11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+);
+
+const IconThemeBlack = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="5" fill="currentColor" opacity="0.9" />
+    </svg>
+);
+
+const THEMES: { value: AdminTheme; label: string; icon: React.ReactNode }[] = [
+    { value: 'dark',  label: 'Тёмная',  icon: <IconThemeDark /> },
+    { value: 'light', label: 'Светлая', icon: <IconThemeLight /> },
+    { value: 'black', label: 'Чёрная',  icon: <IconThemeBlack /> },
+];
+
+const IconChevronLeft = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+const IconChevronRight = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
 const NAV_SECTIONS: NavSection[] = [
     {
         title: 'Основное',
@@ -159,11 +205,18 @@ type AdminSidebarProps = {
 
 export const AdminSidebar = ({ user }: AdminSidebarProps) => {
     const pathname = usePathname();
+    const [collapsed, setCollapsed] = useState(false);
+    const { theme, setTheme } = useAdminTheme();
+
+    const W_EXPANDED  = 220;
+    const W_COLLAPSED = 56;
 
     return (
         <aside
-            className="flex h-full w-[220px] shrink-0 flex-col overflow-y-auto rounded-[16px]"
+            className="flex h-full shrink-0 flex-col overflow-y-auto overflow-x-hidden rounded-[16px]"
             style={{
+                width: collapsed ? W_COLLAPSED : W_EXPANDED,
+                transition: 'width 240ms ease',
                 backgroundColor: 'var(--at-glass-bg)',
                 border: '1px solid var(--at-glass-border)',
                 backdropFilter: 'var(--at-glass-blur)',
@@ -171,27 +224,66 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
                 boxShadow: 'var(--at-glass-shadow)',
             }}
         >
-            {/* Логотип */}
-            <div className="flex h-[70px] shrink-0 items-center gap-10 px-20">
+            {/* Логотип + кнопка свернуть */}
+            <div className="flex h-[70px] shrink-0 items-center px-16" style={{ gap: collapsed ? 0 : 8 }}>
+                {/* Логотип */}
                 <span
-                    className="font-bold tracking-wider text-[20px]"
-                    style={{ color: 'var(--at-text-logo)', fontFamily: 'Oswald, sans-serif' }}
+                    className="font-bold tracking-wider overflow-hidden whitespace-nowrap"
+                    style={{
+                        color: 'var(--at-text-logo)',
+                        fontFamily: 'Oswald, sans-serif',
+                        fontSize: collapsed ? 16 : 20,
+                        maxWidth: collapsed ? 24 : 200,
+                        transition: 'max-width 240ms ease, font-size 240ms ease',
+                        display: 'block',
+                    }}
                 >
-                    PROTOCOL
+                    {collapsed ? 'P' : 'PROTOCOL'}
                 </span>
+
+                {/* Кнопка скрыть/показать */}
+                <button
+                    type="button"
+                    onClick={() => setCollapsed((c) => !c)}
+                    title={collapsed ? 'Показать меню' : 'Скрыть меню'}
+                    className="flex items-center justify-center rounded-[6px] transition-all duration-150"
+                    style={{
+                        marginLeft: 'auto',
+                        width: 24,
+                        height: 24,
+                        flexShrink: 0,
+                        border: '1px solid var(--at-border)',
+                        backgroundColor: 'var(--at-bg-content)',
+                        color: 'var(--at-text-section)',
+                        cursor: 'pointer',
+                        opacity: 0.7,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.7')}
+                >
+                    {collapsed ? <IconChevronRight /> : <IconChevronLeft />}
+                </button>
             </div>
 
             {/* Навигация */}
-            <nav className="flex flex-1 flex-col gap-4 px-12 pb-12">
+            <nav className="flex flex-1 flex-col gap-4 pb-12" style={{ padding: collapsed ? '0 8px 12px' : '0 12px 12px' }}>
                 {NAV_SECTIONS.map((section) => (
                     <div key={section.title}>
                         {/* Заголовок раздела */}
-                        <p
-                            className="mb-4 mt-12 px-8 text-[10px] font-medium uppercase tracking-widest"
-                            style={{ color: 'var(--at-text-section)' }}
+                        <div
+                            style={{
+                                height: collapsed ? 8 : 'auto',
+                                overflow: 'hidden',
+                                transition: 'height 200ms ease',
+                            }}
                         >
-                            {section.title}
-                        </p>
+                            <p
+                                className="mb-4 mt-12 px-8 text-[10px] font-medium uppercase tracking-widest whitespace-nowrap"
+                                style={{ color: 'var(--at-text-section)' }}
+                            >
+                                {section.title}
+                            </p>
+                        </div>
 
                         {/* Пункты меню */}
                         <ul className="flex flex-col gap-2">
@@ -202,8 +294,12 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
                                     <li key={item.href}>
                                         <a
                                             href={item.href}
-                                            className="flex items-center gap-10 rounded-[9px] px-12 py-10 text-[13px] transition-all duration-150"
+                                            title={collapsed ? item.label : undefined}
+                                            className="flex items-center rounded-[9px] transition-all duration-150"
                                             style={{
+                                                gap: collapsed ? 0 : 10,
+                                                padding: collapsed ? '10px 0' : '10px 12px',
+                                                justifyContent: collapsed ? 'center' : 'flex-start',
                                                 color: isActive ? 'var(--at-text-nav-active)' : 'var(--at-text-nav)',
                                                 backgroundColor: isActive ? 'var(--at-bg-active)' : 'transparent',
                                                 border: isActive
@@ -213,11 +309,25 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
                                         >
                                             <span
                                                 className="shrink-0"
-                                                style={{ color: isActive ? 'var(--at-text-icon-active)' : 'var(--at-text-icon)' }}
+                                                style={{
+                                                    color: isActive ? 'var(--at-text-icon-active)' : 'var(--at-text-icon)',
+                                                }}
                                             >
                                                 {item.icon}
                                             </span>
-                                            {item.label}
+
+                                            {/* Лейбл — скрывается плавно */}
+                                            <span
+                                                className="overflow-hidden whitespace-nowrap text-[13px]"
+                                                style={{
+                                                    maxWidth: collapsed ? 0 : 160,
+                                                    opacity: collapsed ? 0 : 1,
+                                                    transition: 'max-width 220ms ease, opacity 180ms ease',
+                                                    display: 'block',
+                                                }}
+                                            >
+                                                {item.label}
+                                            </span>
                                         </a>
                                     </li>
                                 );
@@ -227,16 +337,85 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
                 ))}
             </nav>
 
+            {/* Выбор темы */}
+            <div
+                className="shrink-0"
+                style={{
+                    borderTop: '1px solid var(--at-border-section)',
+                    padding: collapsed ? '10px 8px' : '10px 12px',
+                }}
+            >
+                {collapsed ? (
+                    /* Свёрнуто — только иконка активной темы */
+                    <div
+                        className="flex items-center justify-center rounded-[9px]"
+                        style={{
+                            height: 38,
+                            backgroundColor: 'var(--at-bg-content)',
+                            border: '1px solid var(--at-border)',
+                            color: 'var(--at-text-nav-active)',
+                        }}
+                    >
+                        {THEMES.find((t) => t.value === theme)?.icon}
+                    </div>
+                ) : (
+                    /* Развёрнуто — все три кнопки */
+                    <div
+                        className="flex items-center rounded-[9px]"
+                        style={{
+                            gap: 4,
+                            padding: '4px',
+                            backgroundColor: 'var(--at-bg-content)',
+                            border: '1px solid var(--at-border)',
+                        }}
+                    >
+                        {THEMES.map((t) => {
+                            const isActive = theme === t.value;
+                            return (
+                                <button
+                                    key={t.value}
+                                    type="button"
+                                    title={t.label}
+                                    onClick={() => setTheme(t.value)}
+                                    className="flex items-center justify-center rounded-[6px] transition-all duration-150"
+                                    style={{
+                                        flex: 1,
+                                        height: 30,
+                                        minWidth: 0,
+                                        backgroundColor: isActive ? 'var(--at-bg-active)' : 'transparent',
+                                        border: isActive ? '1px solid var(--at-border-active)' : '1px solid transparent',
+                                        color: isActive ? 'var(--at-text-nav-active)' : 'var(--at-text-icon)',
+                                        cursor: 'pointer',
+                                        opacity: isActive ? 1 : 0.55,
+                                        transition: 'background-color 150ms ease, opacity 150ms ease',
+                                    }}
+                                    onMouseEnter={(e) => !isActive && (e.currentTarget.style.opacity = '0.9')}
+                                    onMouseLeave={(e) => !isActive && (e.currentTarget.style.opacity = '0.55')}
+                                >
+                                    {t.icon}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
+
             {/* Профиль пользователя */}
             <div
-                className="shrink-0 px-12 pb-16"
-                style={{ borderTop: '1px solid var(--at-border-section)' }}
+                className="shrink-0 pb-16"
+                style={{
+                    padding: collapsed ? '0 8px 16px' : '0 12px 16px',
+                }}
             >
                 <div
-                    className="mt-12 flex items-center gap-10 rounded-[9px] px-12 py-10"
+                    className="mt-12 flex items-center rounded-[9px] overflow-hidden"
                     style={{
+                        gap: collapsed ? 0 : 10,
+                        padding: collapsed ? '10px 0' : '10px 12px',
+                        justifyContent: collapsed ? 'center' : 'flex-start',
                         backgroundColor: 'var(--at-bg-user-card)',
                         border: '1px solid var(--at-border)',
+                        transition: 'padding 240ms ease, gap 240ms ease',
                     }}
                 >
                     {user?.avatarUrl ? (
@@ -253,15 +432,24 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
                             style={{ backgroundColor: 'var(--at-bg-avatar)' }}
                         />
                     )}
-                    <div className="min-w-0">
+
+                    {/* Имя и роль */}
+                    <div
+                        className="min-w-0 overflow-hidden"
+                        style={{
+                            maxWidth: collapsed ? 0 : 140,
+                            opacity: collapsed ? 0 : 1,
+                            transition: 'max-width 220ms ease, opacity 180ms ease',
+                        }}
+                    >
                         <p
-                            className="truncate text-[14px] font-bold"
+                            className="truncate text-[14px] font-bold whitespace-nowrap"
                             style={{ color: 'var(--at-text-username)' }}
                         >
                             {user?.displayName ?? 'Admin'}
                         </p>
                         <p
-                            className="text-[11px]"
+                            className="text-[11px] whitespace-nowrap"
                             style={{ color: 'var(--at-text-role)' }}
                         >
                             Суперадмин

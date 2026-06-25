@@ -6,7 +6,6 @@ import { getMe, getServers } from 'shared/api';
 import { AdminThemeProvider } from 'shared/providers/AdminThemeProvider';
 import { AdminNavProvider } from 'shared/providers/AdminNavContext';
 import { AdminSidebar } from 'widgets/AdminSidebar';
-import { AdminTopBar } from 'widgets/AdminTopBar';
 import { AdminServerPanel } from 'widgets/AdminServerTabs';
 import { AdminContentArea } from './AdminContentArea';
 
@@ -34,7 +33,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                             border: '1px solid var(--at-border-content)',
                         }}
                     >
-                        <AdminTopBar user={user} />
                         <div className="flex flex-1 flex-col overflow-y-auto min-h-0 gap-20">
                             <div className="px-20 pt-20">
                                 <Suspense fallback={null}>
