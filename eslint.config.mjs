@@ -22,6 +22,7 @@ const tsProjects = [
   './apps/bot/tsconfig.json',
   './shared/database/tsconfig.json',
   './shared/redis/tsconfig.json',
+  './shared/types/tsconfig.json',
 ];
 
 const tsFiles = ['**/*.{ts,tsx}'];

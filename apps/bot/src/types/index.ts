@@ -1,4 +1,3 @@
-export * from './serversnapshot';
 export * from './baseEvent';
 export * from './chatMessage';
 

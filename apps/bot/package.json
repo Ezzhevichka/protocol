@@ -10,6 +10,7 @@
   "dependencies": {
     "@protocol/database": "workspace:*",
     "@protocol/redis": "workspace:*",
+	"@protocol/types": "workspace:*",
     "fastify": "^5.8.5",
     "ioredis": "^5.11.1",
     "squad-rcon": "^1.1.8"

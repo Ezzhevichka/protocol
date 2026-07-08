@@ -1,12 +1,10 @@
 import { withRcon } from '../rcon';
 import { parseSnapshot } from '@/utils';
-import { ServerSnapshot as ServerSnapshotType } from '@/types';
+import type { Snapshot } from '@protocol/types';
 import { getRedisClient } from '../redis';
 
 type ServerSnapshot = {
-	serverId: string;
-	teams: ServerSnapshotType.Team[];
-	serverInfo: ServerSnapshotType.ServerInfo;
+	snapshot: Snapshot;
 	createdAt: Date;
 };
 
@@ -26,22 +24,18 @@ export async function collectServerSnapshot(): Promise<ServerSnapshot> {
 			const squads = unwrapSettledResult(squadsResult) ?? [];
 			const serverInfoRaw = unwrapSettledResult(serverInfoResult);
 
-			const { teams, serverInfo } = parseSnapshot(players, squads, serverInfoRaw);
-			const serverId = String(process.env.SERVER_INITIAL_NAME);
+			if (!serverInfoRaw) {
+				throw new Error('Failed to collect server info for snapshot');
+			}
+
+			const snapshot = parseSnapshot(players, squads, serverInfoRaw);
 
 			const client = await getRedisClient();
 
-			const data = {
-				serverId: String(process.env.SERVER_ID),
-				teams,
-				serverInfo: { ...serverInfo, initialName: String(process.env.SERVER_INITIAL_NAME) },
-				createdAt: new Date(),
-			};
-
-			await client.set(`server:${serverId}:snapshot`, JSON.stringify(data), { EX: 6000 });
+			await client.set(`server:${snapshot.id}:snapshot`, JSON.stringify(snapshot), { EX: 6000 });
 			console.log('snapshot saved');
 
-			return data;
+			return { snapshot, createdAt: new Date() };
 		}, { resetOnError: true }
 	);
 }

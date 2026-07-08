@@ -1,30 +1,84 @@
+import { Player, ServerId, Snapshot, Squad, Team, TeamId, UnassignedPlayer } from '@protocol/types';
 import { TPlayer, TServerInfo, TSquad } from 'squad-rcon';
-import { ServerSnapshot } from '../types';
 
-const getUnassignedPlayers = (players: TPlayer[], teamId: ServerSnapshot.TeamId) => players.filter((player) => player.teamID === teamId && !player.squadID);
+const mapPlayer = (player: TPlayer): Player => ({
+	playerId: player.playerID,
+	eosId: player.eosID,
+	steamId: player.steamID,
+	name: player.name.trim(),
+	teamId: player.teamID,
+	squadId: player.squadID,
+	isLeader: player.isLeader,
+	role: player.role,
+});
 
-const getSquadsWithPlayers = (squads: TSquad[], players: TPlayer[], teamId: ServerSnapshot.TeamId) => {
-	return squads.reduce((acc: ServerSnapshot.Squad[], current) => {
-		acc.push({ ...current, players: players.map((player) => ({ ...player, name: player.name.trim() })).filter((player) => player.squadID === current.squadID && player.teamID === teamId) });
+const mapUnassignedPlayer = (player: TPlayer): UnassignedPlayer => ({
+	...mapPlayer(player),
+	squadId: null,
+});
+
+const mapSquad = (squad: TSquad, players: Player[]): Squad => ({
+	squadId: squad.squadID,
+	squadName: squad.squadName,
+	size: squad.size,
+	locked: squad.locked.toLowerCase() === 'true',
+	creatorName: squad.creatorName,
+	creatorEosId: squad.creatorEOSID,
+	creatorSteamId: squad.creatorSteamID,
+	teamId: squad.teamID,
+	teamName: squad.teamName,
+	players,
+});
+
+const getUnassignedPlayers = (players: TPlayer[], teamId: TeamId): UnassignedPlayer[] => players.filter((player) => player.teamID === teamId && !player.squadID).map(mapUnassignedPlayer);
+
+const getSquadsWithPlayers = (squads: TSquad[], players: TPlayer[], teamId: TeamId): Squad[] => {
+	const mappedPlayers = players.map(mapPlayer);
+
+	return squads.reduce<Squad[]>((acc, squad) => {
+		acc.push(
+			mapSquad(
+				squad,
+				mappedPlayers.filter(
+					(player) => player.squadId === squad.squadID && player.teamId === teamId
+				)
+			)
+		);
 		return acc;
 	}, []);
 };
 
-export const parseSnapshot = (playersRaw: TPlayer[], squadsRaw: TSquad[], serverInfo: Optional<TServerInfo>) => {
-	const teams = [
+const getTeamPlayersCount = (players: TPlayer[], teamId: TeamId): number => players.filter((player) => player.teamID === teamId).length;
+
+export const parseSnapshot = (playersRaw: TPlayer[], squadsRaw: TSquad[], serverInfoRaw: Optional<TServerInfo>): Snapshot => {
+	const teams: Team[] = [
 		{
-			name: serverInfo?.teamOne ?? 'Team 1',
-			id: ServerSnapshot.TeamId.ONE,
-			unassignedPlayers: getUnassignedPlayers(playersRaw, ServerSnapshot.TeamId.ONE),
-			squads: getSquadsWithPlayers(squadsRaw, playersRaw, ServerSnapshot.TeamId.ONE),
+			name: serverInfoRaw?.teamOne ?? 'Team 1',
+			id: TeamId.ONE,
+			playersCount: getTeamPlayersCount(playersRaw, TeamId.ONE),
+			unassignedPlayers: getUnassignedPlayers(playersRaw, TeamId.ONE),
+			squads: getSquadsWithPlayers(squadsRaw, playersRaw, TeamId.ONE),
 		},
 		{
-			name: serverInfo?.teamTwo ?? 'Team 2',
-			id: ServerSnapshot.TeamId.TWO,
-			unassignedPlayers: getUnassignedPlayers(playersRaw, ServerSnapshot.TeamId.TWO),
-			squads: getSquadsWithPlayers(squadsRaw, playersRaw, ServerSnapshot.TeamId.TWO),
+			name: serverInfoRaw?.teamTwo ?? 'Team 2',
+			id: TeamId.TWO,
+			playersCount: getTeamPlayersCount(playersRaw, TeamId.TWO),
+			unassignedPlayers: getUnassignedPlayers(playersRaw, TeamId.TWO),
+			squads: getSquadsWithPlayers(squadsRaw, playersRaw, TeamId.TWO),
 		},
 	];
 
-	return { teams, serverInfo };
+	return {
+		id: process.env.SERVER_INITIAL_NAME as ServerId,
+		teams,
+		serverName: serverInfoRaw?.serverName ?? '',
+		maxPlayers: serverInfoRaw?.maxPlayers ?? 0,
+		playerCount: serverInfoRaw?.playerCount ?? 0,
+		publicQueue: serverInfoRaw?.publicQueue ?? 0,
+		currentLayer: serverInfoRaw?.currentLayer ?? '',
+		nextLayer: serverInfoRaw?.nextLayer ?? '',
+		matchTimeout: serverInfoRaw?.matchTimeout ?? 0,
+		matchStartTime: serverInfoRaw?.matchStartTime ?? 0,
+		gameVersion: serverInfoRaw?.gameVersion ?? '',
+	};
 };

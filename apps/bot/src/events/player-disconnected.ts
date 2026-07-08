@@ -12,11 +12,11 @@ export interface PlayerDisconnectedEvent extends BaseEvent {
 
 eventBus.subscribe(EventType.PLAYER_DISCONNECTED, async (event: PlayerDisconnectedEvent) => {
 	console.log('DISCONNECTED:', event);
-	const res = await collectServerSnapshotTick();
+	await collectServerSnapshotTick();
 	const redis = await getRedisClient();
-	const streamKey = await redis.get(`server:${res?.serverInfo.initialName}:current_round`);
+	const streamKey = await redis.get(`server:${process.env.SERVER_INITIAL_NAME}:current_round`);
 	if (!streamKey) {
-		console.log('NO CURRENT ROUND FOR SERVER:', res?.serverInfo.initialName);
+		console.log('NO CURRENT ROUND FOR SERVER:', process.env.SERVER_INITIAL_NAME);
 		return;
 	}
 	await redis.xAdd(streamKey, '*',{ data: JSON.stringify(event) });

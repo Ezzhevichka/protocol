@@ -9,15 +9,15 @@ export interface RoundEndedEvent extends BaseEvent {
 
 eventBus.subscribe(EventType.ROUND_ENDED, async (event: RoundEndedEvent) => {
 	console.log('ROUND ENDED:', event);
-	const res = await collectServerSnapshotTick();
+	await collectServerSnapshotTick();
 	const redis = await getRedisClient();
-	const streamKey = await redis.get(`server:${res?.serverInfo.initialName}:current_round`);
+	const streamKey = await redis.get(`server:${process.env.SERVER_INITIAL_NAME}:current_round`);
 	if (!streamKey) {
-		console.log('NO CURRENT ROUND FOR SERVER:', res?.serverInfo.initialName);
+		console.log('NO CURRENT ROUND FOR SERVER:', process.env.SERVER_INITIAL_NAME);
 		return;
 	}
 	await redis.xAdd(streamKey, '*', { data: JSON.stringify(event) });
-	await redis.del(`server:${res?.serverInfo.initialName}:current_round`);
+	await redis.del(`server:${process.env.SERVER_INITIAL_NAME}:current_round`);
 
 	await redis.expire(streamKey, 86400);
 });

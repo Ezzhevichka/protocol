@@ -12,6 +12,7 @@
   "dependencies": {
 	"@protocol/database": "workspace:*",
     "@protocol/redis": "workspace:*",
+	"@protocol/types": "workspace:*",
     "@fastify/cors": "^11.2.0",
     "fastify": "^5.8.5"
   },
