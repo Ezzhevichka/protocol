@@ -1,0 +1,24 @@
+{
+  "name": "@protocol/redis",
+  "private": true,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --ignoreDeprecations 6.0",
+    "typecheck": "tsc -p tsconfig.json --noEmit --ignoreDeprecations 6.0"
+  },
+  "dependencies": {
+    "redis": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^6.0.3"
+  }
+}

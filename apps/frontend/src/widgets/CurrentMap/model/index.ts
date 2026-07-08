@@ -1,7 +1,7 @@
 export type CurrentMapProps = {
-    mapName: string;
-    imageSrc?: string;
-    nextMapName?: string | null;
-    nextImageSrc?: string;
-    className?: string;
+	mapName: string;
+	imageSrc?: string;
+	nextMapName?: string | null;
+	nextImageSrc?: string;
+	className?: string;
 };

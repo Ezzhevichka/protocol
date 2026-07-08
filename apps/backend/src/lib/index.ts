@@ -1,1 +1,0 @@
-export { redisClient } from './redis';
