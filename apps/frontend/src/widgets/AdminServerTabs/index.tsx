@@ -15,9 +15,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 	const searchParams = useSearchParams();
 	const { startNavigation } = useAdminNav();
 
-	const activeIdFromUrl = searchParams.get('server')
-		? Number(searchParams.get('server'))
-		: servers[0]?.id;
+	const activeIdFromUrl = searchParams.get('server') ?? servers[0]?.id;
 
 	const [activeId, setActiveId] = useState<string | number | undefined>(activeIdFromUrl);
 

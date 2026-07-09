@@ -27,18 +27,43 @@ export async function getMe(): Promise<AuthUser | null> {
 	}
 }
 
-type RawServer = {
-	id: number;
+type RawSnapshot = {
+	id: string;
+	serverName: string;
+	maxPlayers: number;
+	playerCount: number;
+	publicQueue: number;
+	currentLayer: string;
+	nextLayer: string;
+	teams: RawSnapshotTeam[];
+};
+
+type RawSnapshotTeam = {
+	id: string;
 	name: string;
-	active?: boolean;
-	currentLayer?: string | null;
-	nextLayer?: string | null;
-	maxPlayers?: number;
-	publicQueue?: number;
-	reserveQueue?: number;
-	playerCount?: number;
-	teamOne?: string;
-	teamTwo?: string;
+	playersCount: number;
+	unassignedPlayers: RawSnapshotPlayer[];
+	squads: RawSnapshotSquad[];
+};
+
+type RawSnapshotSquad = {
+	squadId: string;
+	squadName: string;
+	size: string;
+	locked: boolean;
+	teamId: string | null;
+	players: RawSnapshotPlayer[];
+};
+
+type RawSnapshotPlayer = {
+	playerId: string;
+	eosId: string;
+	steamId: string;
+	name: string;
+	teamId: string;
+	squadId: string | null;
+	isLeader: boolean;
+	role: string;
 };
 
 export async function getServers(): Promise<ServerData[]> {
@@ -49,20 +74,20 @@ export async function getServers(): Promise<ServerData[]> {
 		return [];
 	}
 	if (!res.ok) return [];
-	const data = await res.json() as { servers: RawServer[] };
+	const snapshots = await res.json() as RawSnapshot[];
 
-	return data.servers.map((s) => ({
+	return snapshots.map((s) => ({
 		id: s.id,
 		badge: s.id,
-		name: s.name.replace(/^#\d+\s+/, ''),
-		state: s.active === false ? ('disabled' as const) : ('default' as const),
+		name: s.serverName,
+		state: 'default' as const,
 		playersCount: s.playerCount ?? 0,
 		maxPlayers: s.maxPlayers ?? 100,
-		queueCount: (s.publicQueue ?? 0) + (s.reserveQueue ?? 0),
+		queueCount: s.publicQueue ?? 0,
 		currentLayer: s.currentLayer ?? null,
 		nextLayer: s.nextLayer ?? null,
-		teamOne: s.teamOne,
-		teamTwo: s.teamTwo,
+		teamOne: s.teams[0]?.name,
+		teamTwo: s.teams[1]?.name,
 	}));
 }
 
@@ -98,7 +123,7 @@ export type LiveTeam = {
 };
 
 export type ServerPlayersData = {
-	serverId: number;
+	serverId: string;
 	serverName: string;
 	playersCount: number;
 	squadsCount: number;
@@ -109,11 +134,62 @@ export type ServerPlayersData = {
 	teams: LiveTeam[];
 };
 
-export async function getServerPlayers(serverId: number): Promise<ServerPlayersData | null> {
+function snapshotToServerPlayersData(s: RawSnapshot): ServerPlayersData {
+	const teams: LiveTeam[] = s.teams.map((team) => ({
+		teamId: team.name,
+		squads: team.squads.map((sq) => ({
+			squad: {
+				squadId: sq.squadId,
+				teamId: sq.teamId ?? team.id,
+				name: sq.squadName,
+				size: sq.size ? Number(sq.size) : null,
+				locked: sq.locked,
+			},
+			players: sq.players.map((p) => ({
+				steamId: p.steamId,
+				eosId: p.eosId,
+				name: p.name,
+				raw: {
+					teamID: p.teamId,
+					squadID: p.squadId ?? undefined,
+					isLeader: p.isLeader,
+					role: p.role,
+				},
+			})),
+		})),
+		unassigned: team.unassignedPlayers.map((p) => ({
+			steamId: p.steamId,
+			eosId: p.eosId,
+			name: p.name,
+			raw: {
+				teamID: p.teamId,
+				squadID: undefined,
+				isLeader: p.isLeader,
+				role: p.role,
+			},
+		})),
+	}));
+
+	return {
+		serverId: s.id,
+		serverName: s.serverName,
+		playersCount: s.playerCount,
+		squadsCount: s.teams.reduce((n, t) => n + t.squads.length, 0),
+		maxPlayers: s.maxPlayers,
+		queueCount: s.publicQueue,
+		currentLayer: s.currentLayer ?? null,
+		nextLayer: s.nextLayer ?? null,
+		teams,
+	};
+}
+
+export async function getServerPlayers(serverId: string): Promise<ServerPlayersData | null> {
 	try {
-		const res = await fetch(`${API_URL}/servers/${serverId}/players`, { cache: 'no-store' });
+		const res = await fetch(`${API_URL}/servers/${serverId}`, { cache: 'no-store' });
 		if (!res.ok) return null;
-		return res.json() as Promise<ServerPlayersData>;
+		const snapshot = await res.json() as RawSnapshot | null;
+		if (!snapshot) return null;
+		return snapshotToServerPlayersData(snapshot);
 	} catch {
 		return null;
 	}

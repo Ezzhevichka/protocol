@@ -46,7 +46,7 @@ export default async function Home() {
 	]);
 
 	const firstServer = servers[0];
-	const playersData = firstServer ? await getServerPlayers(firstServer.id as number) : null;
+	const playersData = firstServer?.id ? await getServerPlayers(String(firstServer.id)) : null;
 
 	const fraction1 = buildFraction(firstServer?.teamOne, playersData?.teams[0]);
 	const fraction2 = buildFraction(firstServer?.teamTwo, playersData?.teams[1]);

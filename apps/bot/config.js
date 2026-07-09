@@ -1,4 +1,4 @@
-export const config = {
+const config = {
 	//[RU] Стим IDs получающих преимущество при !roll
 	rollAdvantageSteamIds: [
 		'76561198149706541', // BulletProoff
@@ -282,3 +282,5 @@ export const config = {
 		},
 	],
 };
+
+module.exports = { config };

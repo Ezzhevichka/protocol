@@ -62,7 +62,7 @@ export const AdminThemeProvider = ({ children }: { children: React.ReactNode }) 
 			{/* Анти-мигание: выполняется до гидратации React, читает тему из localStorage */}
 			<script
 				dangerouslySetInnerHTML={{
-					__html: `(function(){try{var t=localStorage.getItem('${STORAGE_KEY_THEME}');if(t&&['dark','light','black'].includes(t)){document.currentScript.parentElement.setAttribute('data-admin-theme',t);}}catch(e){}})()`,
+					__html: `(function(){try{var t=localStorage.getItem('${STORAGE_KEY_THEME}');if(t&&['dark','light','black'].includes(t)){document.currentScript.nextElementSibling.setAttribute('data-admin-theme',t);}}catch(e){}})()`,
 				}}
 			/>
 			<div

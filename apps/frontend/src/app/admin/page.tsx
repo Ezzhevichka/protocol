@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getServers, getServerPlayers } from 'shared/api';
 import type { LiveTeam } from 'shared/api';
 import { parseKitFromRole } from 'shared/lib';
@@ -47,13 +49,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 	const { server: serverParam } = await searchParams;
 
 	// Без явного выбора — берём первый доступный сервер
-	let serverId: number | undefined;
+	let serverId: string | undefined;
 	if (serverParam) {
-		serverId = Number(serverParam);
+		serverId = serverParam;
 	} else {
 		const servers = await getServers();
 		const first = servers.find((s) => s.state !== 'disabled') ?? servers[0];
-		serverId = typeof first?.id === 'number' ? first.id : undefined;
+		serverId = first?.id ? String(first.id) : undefined;
 	}
 
 	const playersData = serverId ? await getServerPlayers(serverId) : null;
