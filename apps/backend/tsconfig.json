@@ -1,17 +1,12 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": false,
-    "sourceMap": false,
-    "removeComments": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "exclude": ["node_modules", "dist", "logs"]
+	"extends": "../../tsconfig.node.build.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "../../global.d.ts"],
+	"exclude": ["node_modules", "dist", "logs"]
 }

@@ -6,13 +6,26 @@ dist
 !.env.example
 *.log
 logs
+.cache
 .DS_Store
+.pnpm-store
 pnpm-lock.yaml
 .turbo
-/packages/database/src/generated/
+shared/database/src/generated
 next-env.d.ts
 *.tsbuildinfo
 .vscode/
+apps/frontend/public/basemaps/*
+apps/frontend/public/flags/*
+
+# pnpm/turbo артефакты
+next
+pm2
+tsx
+turbo
+protocol@*
+squad-admin-monorepo@*
 
 #Нейронки
 CLAUDE.md
+apps/frontend/docs/*

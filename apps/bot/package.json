@@ -1,36 +1,28 @@
 {
-  "name": "@squad-admin/bot",
-  "version": "1.0.0",
+  "name": "@protocol/bot",
+  "private": true,
+  "version": "0.1.0",
   "scripts": {
     "dev": "pm2 start ecosystem.config.cjs",
-    "build": "tsc --outDir dist",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.json --ignoreDeprecations 6.0 && tsc-alias -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit --ignoreDeprecations 6.0"
   },
   "dependencies": {
-    "axios": "^1.16.1",
-    "chokidar": "^5.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "squad-rcon": "^1.1.8",
-    "ssh2": "^1.17.0",
-    "zod": "^3.24.1",
-    "@squad-admin/shared": "workspace:*",
-    "@squad-admin/config": "workspace:*"
+    "@protocol/database": "workspace:*",
+    "@protocol/redis": "workspace:*",
+	"@protocol/types": "workspace:*",
+    "fastify": "^5.8.5",
+    "ioredis": "^5.11.1",
+    "squad-rcon": "^1.1.8"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.10.2",
+    "@types/node": "^24.10.1",
     "@types/ssh2": "^1.15.5",
-    "async-mutex": "0.5.0",
-    "eslint": "^9",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8"
-  },
-  "private": true
+    "chokidar": "^5.0.0",
+    "ftp-tail": "^2.1.1",
+    "ssh2": "^1.17.0",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
 }

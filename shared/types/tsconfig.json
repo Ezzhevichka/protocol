@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.node.build.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"declaration": true,
+		"sourceMap": false,
+		"removeComments": true,
+		"types": [],
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "../../global.d.ts"],
+	"exclude": ["node_modules", "dist"]
+}
