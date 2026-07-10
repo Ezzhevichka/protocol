@@ -1,6 +1,8 @@
+import { banPlayer } from '@/services/punishment';
 import { collectServerSnapshotTick, getRedisClient } from '../services';
 import { BaseEvent, EventType } from '../types';
 import { eventBus } from './eventBus';
+import { prisma } from '@protocol/database';
 
 export interface PlayerConnectedEvent extends BaseEvent {
 	type: EventType.PLAYER_CONNECTED;
@@ -14,6 +16,19 @@ eventBus.subscribe(EventType.PLAYER_CONNECTED, async (event: PlayerConnectedEven
 	console.log('CONNECTED:', event);
 	await collectServerSnapshotTick();
 	const redis = await getRedisClient();
+	const _activeBan = await prisma.punishment.findFirst({
+		where: {
+			victim: event.steamID,
+			type: 'BAN',
+			status: 'ACTIVE',
+		},
+		orderBy: { createdAt: 'desc' },
+	});
+	if (_activeBan) {
+		await banPlayer(event.steamID, _activeBan.reason);
+		console.log('ACTIVE BAN FOR PLAYER:', event.steamID);
+		return;
+	}
 	const streamKey = await redis.get(`server:${process.env.SERVER_INITIAL_NAME}:current_round`);
 	if (!streamKey) {
 		console.log('NO CURRENT ROUND FOR SERVER:', process.env.SERVER_INITIAL_NAME);

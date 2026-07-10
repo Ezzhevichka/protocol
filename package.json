@@ -25,7 +25,8 @@
     "db:migrate:dev": "pnpm --filter @protocol/database db:migrate:dev",
     "db:migrate:deploy": "pnpm --filter @protocol/database db:migrate:deploy",
     "db:studio": "pnpm --filter @protocol/database db:studio",
-	"check:commit": "pnpm lint && pnpm build",
+    "db:import-admins": "pnpm --filter @protocol/database db:import-admins",
+    "check:commit": "pnpm lint && pnpm build",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.1"
   }

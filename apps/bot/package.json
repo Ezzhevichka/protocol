@@ -10,7 +10,7 @@
   "dependencies": {
     "@protocol/database": "workspace:*",
     "@protocol/redis": "workspace:*",
-	"@protocol/types": "workspace:*",
+    "@protocol/types": "workspace:*",
     "fastify": "^5.8.5",
     "ioredis": "^5.11.1",
     "squad-rcon": "^1.1.8"
@@ -18,6 +18,7 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@types/ssh2": "^1.15.5",
+    "axios": "^1.18.1",
     "chokidar": "^5.0.0",
     "ftp-tail": "^2.1.1",
     "ssh2": "^1.17.0",

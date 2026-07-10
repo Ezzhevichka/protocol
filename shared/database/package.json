@@ -20,7 +20,8 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:import-admins": "tsx src/scripts/import-admins.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
@@ -33,6 +34,7 @@
     "@types/pg": "^8.16.0",
     "dotenv": "^17.4.2",
     "prisma": "^7.8.0",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   }
 }

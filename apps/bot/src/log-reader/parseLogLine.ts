@@ -1,4 +1,4 @@
-import { playerWoundedEvent, playerConnectedEvent, playerDisconnectedEvent, roundEndedEvent, newGameEvent, serverTickRateEvent, adminBroadcastEvent, forcedTeamChangeEvent } from '../events';
+import { playerWoundedEvent, playerConnectedEvent, playerDisconnectedEvent, roundEndedEvent, newGameEvent, playerDiedEvent, serverTickRateEvent, adminBroadcastEvent, forcedTeamChangeEvent } from '../events';
 
 const events = [ 
 	playerWoundedEvent, 
@@ -7,7 +7,7 @@ const events = [
 	roundEndedEvent, 
 	newGameEvent, 
 	serverTickRateEvent, 
-	// playerDiedEvent,
+	playerDiedEvent,
 	adminBroadcastEvent,
 	forcedTeamChangeEvent,
 ];

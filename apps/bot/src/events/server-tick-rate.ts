@@ -1,4 +1,4 @@
-import { getRedisClient } from '@/services';
+import { collectServerSnapshotTick, getRedisClient } from '@/services';
 import { BaseEvent, EventType } from '@/types';
 import { eventBus } from './eventBus';
 
@@ -11,6 +11,7 @@ export interface ServerTickRateEvent extends BaseEvent {
 eventBus.subscribe(EventType.SERVER_TICK_RATE, async (event: ServerTickRateEvent) => {
 	console.log('SERVER TICK RATE:', event);
 	const redis = await getRedisClient();
+	await collectServerSnapshotTick();
 	const streamKey = await redis.get(`server:${process.env.SERVER_INITIAL_NAME}:current_round`);
 	if (!streamKey) {
 		console.log('NO CURRENT ROUND FOR SERVER:', process.env.SERVER_INITIAL_NAME);
