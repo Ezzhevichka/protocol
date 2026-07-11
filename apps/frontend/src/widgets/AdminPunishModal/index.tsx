@@ -5,8 +5,22 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { PUNISH_RULES } from 'shared/constants';
 import type { PunishRule } from 'shared/constants';
+import { PunishmentRequest, PunishmentType } from '@protocol/types';
 
-const BAN_DURATIONS = ['1ч', '2ч', '3ч', '4ч', '5ч', '6ч', '12ч', '1д', '2д', '3д', '4д', '7д', '14д', '1м', 'Perm'];
+const BAN_DURATIONS: { value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent'; label: string }[] = [
+	{ value: '1', type: 'hour', label: '1 час' },
+	{ value: '2', type: 'hour', label: '2 часа' },
+	{ value: '3', type: 'hour', label: '3 часа' },
+	{ value: '4', type: 'hour', label: '4 часа' },
+	{ value: '5', type: 'hour', label: '5 часов' },
+	{ value: '6', type: 'hour', label: '6 часов' },
+	{ value: null, type: 'permanent', label: 'Постоянно' },
+];
+
+// type === "hour" => new Date(new Date().getHours() + Number(value))
+// type === "day" => new Date(new Date().setDate(new Date().getDate() + Number(value)))
+// type === "month" => new Date(new Date().setMonth(new Date().getMonth() + Number(value)))
+// type === "permanent" => null
 
 const WARN_INTERVALS: { value: string; label: string }[] = [
 	{ value: '30с', label: '30 сек' },
@@ -35,16 +49,15 @@ const Chip = ({ label, active, onClick }: { label: string; active: boolean; onCl
 );
 
 type AdminPunishModalProps = {
-	playerNick: string;
-	onSubmit: (payload: PunishPayload) => void;
+	nickname: string;
+	serverId: Nullable<string>;
+	victimId: SteamId;
+	authorId: Nullable<SteamId>;
+	onSubmit: (payload: PunishmentRequest) => void;
 	onClose: () => void;
 };
 
-export type PunishPayload =
-	| { type: 'ban'; ruleId: string; banReason: string; duration: string }
-	| { type: 'warn'; ruleId: string; warnText: string; count: number; interval: string };
-
-export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishModalProps) => {
+export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSubmit, onClose }: AdminPunishModalProps) => {
 	const dialogRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -52,8 +65,8 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedRule, setSelectedRule] = useState<PunishRule | null>(null);
 
-	const [mode, setMode] = useState<'ban' | 'warn'>('ban');
-	const [banDuration, setBanDuration] = useState('');
+	const [mode, setMode] = useState<PunishmentType>(PunishmentType.BAN);
+	const [banDuration, setBanDuration] = useState<Nullable<{ value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent', label: string }>>(null);
 	const [customDuration, setCustomDuration] = useState('');
 	const [warnCount, setWarnCount] = useState(1);
 	const [warnInterval, setWarnInterval] = useState('');
@@ -74,8 +87,8 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 		setSelectedRule(rule);
 		setQuery('');
 		setIsOpen(false);
-		if (!rule.warnText && mode === 'warn') setMode('ban');
-		setBanDuration('');
+		if (!rule.warnText && mode === PunishmentType.WARN) setMode(PunishmentType.BAN);
+		setBanDuration(null);
 		setCustomDuration('');
 		setWarnCount(1);
 		setWarnInterval('');
@@ -88,18 +101,16 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 		return r.point.includes(q) || r.ruleName.toLowerCase().includes(q) || r.banReason.toLowerCase().includes(q);
 	});
 
-	const effectiveDuration = customDuration.trim() || banDuration;
-
-	const canSubmit = selectedRule
-		? mode === 'ban' ? effectiveDuration.length > 0 : warnInterval.length > 0
-		: false;
+	const canSubmit = true;
 
 	const handleSubmit = () => {
 		if (!selectedRule || !canSubmit) return;
-		if (mode === 'ban') {
-			onSubmit({ type: 'ban', ruleId: selectedRule.id, banReason: selectedRule.banReason, duration: effectiveDuration });
+		if (mode === PunishmentType.BAN) {
+			if (!authorId || !serverId) return;
+			onSubmit({ punishmentType: PunishmentType.BAN, victimId, authorId, reason: selectedRule.banReason, until: new Date(new Date().getHours() + 3), serverId });
 		} else {
-			onSubmit({ type: 'warn', ruleId: selectedRule.id, warnText: selectedRule.warnText!, count: warnCount, interval: warnInterval });
+			if (!authorId || !serverId) return;
+			onSubmit({ punishmentType: PunishmentType.WARN, victimId, authorId, reason: selectedRule.warnText!, serverId });
 		}
 		onClose();
 	};
@@ -131,7 +142,7 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 					<span className="flex-1 text-[13px] font-semibold" style={{ color: 'var(--at-text-nav)' }}>
 						Наказать:
 						<span className="ml-6 font-normal" style={{ color: 'var(--at-text-section)' }}>
-							{playerNick}
+							{nickname}
 						</span>
 					</span>
 					<button
@@ -208,8 +219,8 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 					{selectedRule && (
 						<>
 							<div className="mt-14 flex overflow-hidden rounded-lg" style={{ border: '1px solid var(--at-border)' }}>
-								{(['ban', 'warn'] as const).map((t) => {
-									const disabled = t === 'warn' && !selectedRule.warnText;
+								{[PunishmentType.BAN, PunishmentType.WARN].map((t) => {
+									const disabled = t === PunishmentType.WARN && !selectedRule.warnText;
 									const active = mode === t;
 									return (
 										<button
@@ -221,36 +232,36 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 											style={{
 												color: active ? 'var(--at-text-nav-active)' : 'var(--at-text-section)',
 												backgroundColor: active ? 'rgba(60,150,230,0.12)' : 'transparent',
-												borderRight: t === 'ban' ? '1px solid var(--at-border)' : undefined,
+												borderRight: t === PunishmentType.BAN ? '1px solid var(--at-border)' : undefined,
 												cursor: disabled ? 'default' : 'pointer',
 												opacity: disabled ? 0.4 : 1,
 											}}
 										>
-											{t === 'ban' ? 'Бан' : 'Варн'}
+											{t === PunishmentType.BAN ? 'Бан' : 'Варн'}
 										</button>
 									);
 								})}
 							</div>
 
-							{mode === 'ban' && (
+							{mode === PunishmentType.BAN && (
 								<div className="mt-14">
 									<p className="mb-8 text-[11px]" style={{ color: 'var(--at-text-section)' }}>
 										Рекомендованный срок:{' '}
 										<span style={{ color: 'var(--at-text-nav)' }}>{selectedRule.recommendedDuration}</span>
 									</p>
 									<div className="flex flex-wrap gap-6">
-										{BAN_DURATIONS.map((d) => (
+										{BAN_DURATIONS.map((banDuration1) => (
 											<Chip
-												key={d}
-												label={d}
-												active={banDuration === d && !customDuration}
-												onClick={() => { setBanDuration(d); setCustomDuration(''); }}
+												key={banDuration1.label}
+												label={banDuration1.label}
+												active={banDuration1.value === banDuration?.value && !customDuration}
+												onClick={() => { setBanDuration(banDuration1); setCustomDuration(''); }}
 											/>
 										))}
 									</div>
 									<input
 										value={customDuration}
-										onChange={(e) => { setCustomDuration(e.target.value); if (e.target.value) setBanDuration(''); }}
+										onChange={(e) => { setCustomDuration(e.target.value); if (e.target.value) setBanDuration(null); }}
 										placeholder="Свой срок..."
 										className="mt-10 w-full rounded-lg px-12 py-8 text-[12px] outline-none"
 										style={{
@@ -263,7 +274,7 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 								</div>
 							)}
 
-							{mode === 'warn' && selectedRule.warnText && (
+							{mode === PunishmentType.WARN && selectedRule.warnText && (
 								<div className="mt-14">
 									<p className="mb-6 text-[11px]" style={{ color: 'var(--at-text-section)' }}>Текст предупреждения:</p>
 									<div

@@ -1,6 +1,4 @@
-export const dynamic = 'force-dynamic';
-
-import { getServers, getServerPlayers } from 'shared/api';
+import { getServers, getServerPlayers, getMe } from 'shared/api';
 import type { LiveTeam } from 'shared/api';
 import { parseKitFromRole } from 'shared/lib';
 import { AdminPlayersSection } from 'widgets/AdminPlayersSection';
@@ -9,6 +7,8 @@ import { AdminQueueCard } from 'widgets/AdminQueueCard';
 import { AdminDisconnectedCard } from 'widgets/AdminDisconnectedCard';
 import { AdminChatCard } from 'widgets/AdminChatCard';
 import { AdminMapCard } from 'widgets/AdminMapCard';
+
+export const dynamic = 'force-dynamic';
 
 function buildAdminSquads(team: LiveTeam | undefined): AdminSquad[] {
 	if (!team) return [];
@@ -50,13 +50,15 @@ type AdminPageProps = {
 export default async function AdminPage({ searchParams }: AdminPageProps) {
 	const { server: serverParam } = await searchParams;
 
-	let serverId: string | undefined;
+	const test = await getMe();
+
+	let serverId: Nullable<string> = null;
 	if (serverParam) {
 		serverId = serverParam;
 	} else {
 		const servers = await getServers();
 		const first = servers.find((s) => s.state !== 'disabled') ?? servers[0];
-		serverId = first?.id ? String(first.id) : undefined;
+		serverId = first?.id ? String(first.id) : null;
 	}
 
 	const playersData = serverId ? await getServerPlayers(serverId) : null;
@@ -78,6 +80,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 			<div className="flex flex-[7] gap-16 min-h-0 min-w-0">
 				{playersData ? (
 					<AdminPlayersSection
+						serverId={serverId}
+						userId={test?.steamId ?? null}
 						team1={{ teamId: team1?.teamId ?? '', playerCount: playerCount1, squads: squads1, unassigned: unassigned1 }}
 						team2={{ teamId: team2?.teamId ?? '', playerCount: playerCount2, squads: squads2, unassigned: unassigned2 }}
 					/>

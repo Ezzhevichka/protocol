@@ -20,8 +20,8 @@ export function buildBotApp() {
 	});
 
 	app.post('/ban', async (request, reply) => {
-		const { steamId, reason } = request.body as { steamId: string, reason: string };
-		const success = await banPlayer(steamId, reason);
+		const { victimId, reason } = request.body as { victimId: string, reason: string };
+		const success = await banPlayer(victimId, reason);
 		if (!success) return reply.status(500).send({ error: 'Failed to ban player' });
 		return reply.status(200).send({ success: true });
 	});

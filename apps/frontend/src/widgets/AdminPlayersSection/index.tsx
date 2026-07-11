@@ -9,8 +9,8 @@ import { AdminDisbandModal } from 'widgets/AdminDisbandModal';
 import { AdminKickModal } from 'widgets/AdminKickModal';
 import { AdminKillModal } from 'widgets/AdminKillModal';
 import { AdminPunishModal } from 'widgets/AdminPunishModal';
-import type { PunishPayload } from 'widgets/AdminPunishModal';
 import type { AdminSquad, AdminSquadPlayer } from 'widgets/AdminSquadList';
+import { PunishmentRequest } from '@protocol/types';
 
 type TeamData = {
 	teamId: string;
@@ -20,6 +20,8 @@ type TeamData = {
 };
 
 type AdminPlayersSectionProps = {
+	serverId: Nullable<string>;
+	userId: Nullable<SteamId>;
 	team1: TeamData;
 	team2: TeamData;
 };
@@ -30,7 +32,7 @@ type ClearNameTarget = { squadId: string | number; squadName: string; squadNumbe
 type DisbandTarget = { squadId: string | number; squadName: string; players: string[] };
 type KickTarget = { playerId: string; playerNick: string; squadName: string };
 type KillTarget = { playerId: string; playerNick: string };
-type PunishTarget = { playerId: string; playerNick: string };
+type PunishTarget = { steamId: string; nickname: string };
 
 const findSquad = (teams: TeamData[], squadId: string | number): AdminSquad | undefined => {
 	for (const team of teams) {
@@ -53,7 +55,7 @@ const findPlayerContext = (teams: TeamData[], playerId: string): { playerNick: s
 	return undefined;
 };
 
-export const AdminPlayersSection = ({ team1, team2 }: AdminPlayersSectionProps) => {
+export const AdminPlayersSection = ({ serverId, userId, team1, team2 }: AdminPlayersSectionProps) => {
 	const [messageTarget, setMessageTarget] = useState<MessageTarget | null>(null);
 	const [switchTarget, setSwitchTarget] = useState<SwitchTarget | null>(null);
 	const [clearNameTarget, setClearNameTarget] = useState<ClearNameTarget | null>(null);
@@ -72,10 +74,10 @@ export const AdminPlayersSection = ({ team1, team2 }: AdminPlayersSectionProps) 
 		if (!ctx) return;
 		setKillTarget({ playerId, playerNick: ctx.playerNick });
 	};
-	const handleBan = (playerId: string) => {
-		const ctx = findPlayerContext([team1, team2], playerId);
+	const handleBan = (steamId: SteamId) => {
+		const ctx = findPlayerContext([team1, team2], steamId);
 		if (!ctx) return;
-		setPunishTarget({ playerId, playerNick: ctx.playerNick });
+		setPunishTarget({ steamId, nickname: ctx.playerNick });
 	};
 	const handleTp     = (playerId: string) => console.log('[teleport]', playerId);
 
@@ -127,8 +129,14 @@ export const AdminPlayersSection = ({ team1, team2 }: AdminPlayersSectionProps) 
 		console.log('[kill]', killTarget?.playerId);
 	};
 
-	const handlePunishSubmit = (payload: PunishPayload) => {
-		console.log('[punish]', punishTarget?.playerId, payload);
+	const handlePunishSubmit = async (payload: PunishmentRequest) => {
+		await fetch ('http://localhost:4000/punishments/ban', {
+			method: 'POST',
+			body: JSON.stringify(payload),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 	};
 
 	return (
@@ -181,7 +189,10 @@ export const AdminPlayersSection = ({ team1, team2 }: AdminPlayersSectionProps) 
 			)}
 			{punishTarget && (
 				<AdminPunishModal
-					playerNick={punishTarget.playerNick}
+					nickname={punishTarget.nickname}
+					serverId={serverId}
+					victimId={punishTarget.steamId}
+					authorId={userId}
 					onSubmit={handlePunishSubmit}
 					onClose={() => setPunishTarget(null)}
 				/>

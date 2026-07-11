@@ -1,3 +1,3 @@
-export { authRoutes } from './auth.routes';
+export { authRoutes } from './auth';
+export { punishmentsRoutes } from './punishments';
 export { serverRoutes } from './servers.routes';
-export { punishmentsRoutes } from './punishments.routes';

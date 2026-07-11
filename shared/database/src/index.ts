@@ -1,1 +1,3 @@
 export { prisma } from './client';
+export * from './generated/enums';
+export * from './generated/models';
