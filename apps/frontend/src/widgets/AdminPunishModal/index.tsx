@@ -114,7 +114,7 @@ export const AdminPunishModal = ({ playerNick, onSubmit, onClose }: AdminPunishM
 		>
 			<div
 				ref={dialogRef}
-				className="flex w-120 flex-col rounded-[14px]"
+				className="flex w-[480px] flex-col rounded-[14px]"
 				style={{
 					backgroundColor: 'var(--at-glass-bg)',
 					border: '1px solid var(--at-glass-border)',
