@@ -16,6 +16,9 @@ const apps = servers.map((server, index) => ({
     env: {
       PORT: 4000 + index + 1,
       SERVER_ID: index + 1,
+      BACKEND_INTERNAL_URL: "http://127.0.0.1:4000",
+	  BOT_TOKEN: "b92482f1-b907-46d5-b480-35f8a0ea165f",
+	  DATABASE_URL: "postgresql://superadmin:superadmin@localhost:5432/protocol_site?schema=public",
       SERVER_INITIAL_NAME: server.name,
       SERVER_PATH: server.path,
       SH_PATH: server.sh,
@@ -26,11 +29,9 @@ const apps = servers.map((server, index) => ({
       BANS_PATH: server.bans_path,
       ADMINS_PATH: server.admins_path,
       STEAM_SH: server.steam_sh,
-      BOT_TOKEN: "5e64e6cf-c0fd-45f3-9d10-08228325c7da",
       RCON_HOST: "195.18.27.195", // "195.18.27.195" for local development | "127.0.0.1" for prod
       RCON_PASSWORD: "s8K#dL9QwPz2Xy!",
       RCON_PORT: server.port,
-      BACKEND_INTERNAL_URL: "http://127.0.0.1:4000",
       LOG_TAIL_MODE: "remote-ssh", // "local-file" | "remote-ssh"
       LOG_FILE_PATH: `${server.path}/SquadGame/Saved/Logs/SquadGame.log`,
       REMOTE_LOG_FILE: `${server.path}/SquadGame/Saved/Logs/SquadGame.log`,

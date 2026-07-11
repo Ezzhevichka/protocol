@@ -31,7 +31,11 @@ export enum KitName {
 	ASSAULT_RIFLEMAN = 'ASSAULT_RIFLEMAN',
 	LAT = 'LAT',
 	HAT = 'HAT',
-	DEFAULT = 'DEFAULT'
+	DEFAULT = 'DEFAULT',
+	AR = 'AR',
+	MACHINEGUNNER = 'MACHINEGUNNER',
+	SLCREWMAN = 'SLCREWMAN',
+	SLPILOT = 'SLPILOT',
 }
 
 const KIT_ICON_BY_NAME: Record<KitName, string> = {
@@ -63,6 +67,10 @@ const KIT_ICON_BY_NAME: Record<KitName, string> = {
 	[KitName.RIFLEMAN]: '/roles/rifleman.webp',
 	[KitName.ASSAULT_RIFLEMAN]: '/roles/rifleman.webp',
 	[KitName.DEFAULT]: '/roles/unarmed.webp',
+	[KitName.AR]: '/roles/automatic_rifleman.webp',
+	[KitName.MACHINEGUNNER]: '/roles/machine_gunner.webp',
+	[KitName.SLCREWMAN]: '/roles/squad_leader.webp',
+	[KitName.SLPILOT]: '/roles/squad_leader.webp',
 };
 
 const DEFAULT_KIT_ICON = '/roles/unarmed.webp';

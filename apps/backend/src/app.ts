@@ -1,39 +1,38 @@
 import cors from '@fastify/cors';
-import Fastify from 'fastify';
-import { getRedisClient } from './redis';
-import type { Snapshot } from '@protocol/types';
+import Fastify, { type FastifyInstance } from 'fastify';
+import { env } from '@/config/env';
+import { cookiePlugin } from '@/plugins/cookie';
+import { redisPlugin } from '@/plugins/redis';
+import { passportPlugin } from '@/plugins/passport';
+import { authRoutes, serverRoutes } from '@/routes';
+import { punishmentsRoutes } from './routes/punishments.routes';
 
-type ServersData = Nullable<Snapshot>;
-
-const parseStoredSnapshot = (raw: string | null): ServersData => {
-	if (!raw) return null;
-	return JSON.parse(raw) as Snapshot;
-};
-
-export function buildBackendApp() {
+export const buildApp = async (): Promise<FastifyInstance> => {
 	const app = Fastify({ logger: true });
 
-	app.register(cors, { origin: true, credentials: true });
-
-	app.get('/health', async () => ({ service: 'backend', status: 'ok' }));
-
-	app.get('/servers', async (_, res) => {
-		const redis = await getRedisClient();
-		const servers = await redis.keys('server:*:snapshot');
-		const serversData = (await Promise.all(
-			servers.map(async (server) => parseStoredSnapshot(await redis.get(server)))
-		))
-			.filter((snapshot): snapshot is Snapshot => snapshot !== null)
-			.sort((a, b) => a.id.localeCompare(b.id));
-		return res.status(200).send(serversData);
+	await app.register(cors, {
+		origin: true,
+		credentials: true,
 	});
 
-	app.get('/servers/:serverId', async (req, res) => {
-		const { serverId } = req.params as { serverId: string };
-		const redis = await getRedisClient();
-		const snapshot = parseStoredSnapshot(await redis.get(`server:${serverId}:snapshot`));
-		return res.status(200).send(snapshot);
+	await app.register(cookiePlugin);
+	await app.register(redisPlugin);
+	await app.register(passportPlugin);
+
+	await app.register(punishmentsRoutes);
+	await app.register(authRoutes);
+	await app.register(serverRoutes);
+
+	return app;
+};
+
+export const startApp = async (): Promise<FastifyInstance> => {
+	const app = await buildApp();
+
+	await app.listen({
+		host: env.apiHost,
+		port: env.apiPort,
 	});
 
 	return app;
-}
+};

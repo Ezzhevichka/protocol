@@ -5,6 +5,28 @@
    inline на обёртке через AdminThemeProvider.
    ──────────────────────────────────────────────────────────────────────── */
 
+/* ── Кастомный скроллбар ────────────────────────────────────────────────── */
+.at-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+.at-scroll::-webkit-scrollbar { width: 3px; }
+.at-scroll::-webkit-scrollbar-track { background: transparent; }
+.at-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
+.at-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* ── Размеры шрифтов ────────────────────────────────────────────────────── */
+[data-admin-theme] {
+    --at-text-xs:   9px;
+    --at-text-sm:   10px;
+    --at-text-base: 11px;
+    --at-text-md:   12px;
+    --at-text-lg:   16px;
+    --at-text-xl:   20px;
+}
+
 /* ── ТЁМНАЯ (по умолчанию) ──────────────────────────────────────────────── */
 [data-admin-theme="dark"] {
     /* ── Общий glass-стиль (используется всеми блоками-поверхностями) ── */
@@ -18,6 +40,7 @@
     --at-bg-gradient:         radial-gradient(ellipse at 20% 50%, rgba(0,60,120,0.18) 0%, transparent 60%), #07111d;
     --at-bg-surface:          var(--at-glass-bg);
     --at-bg-content:          rgba(255, 255, 255, 0.03);
+    --at-bg-tooltip:          #0d1f33;
     --at-bg-topbar:           rgba(5, 15, 30, 0.35);
     --at-bg-active:           rgba(30, 80, 140, 0.4);
     --at-bg-tab-active:       rgba(0, 27, 71, 0.8);
@@ -86,6 +109,7 @@
     --at-bg-gradient:         #000000;
     --at-bg-surface:          var(--at-glass-bg);
     --at-bg-content:          rgba(255, 255, 255, 0.02);
+    --at-bg-tooltip:          #111111;
     --at-bg-topbar:           rgba(0, 0, 0, 0.5);
     --at-bg-active:           rgba(255, 255, 255, 0.08);
     --at-bg-tab-active:       rgba(30, 30, 30, 0.95);
@@ -149,6 +173,7 @@
     --at-bg-gradient:         radial-gradient(ellipse at 20% 50%, rgba(100,150,220,0.1) 0%, transparent 60%), #dde3ea;
     --at-bg-surface:          var(--at-glass-bg);
     --at-bg-content:          rgba(255, 255, 255, 0.4);
+    --at-bg-tooltip:          #1e2a3a;
     --at-bg-topbar:           rgba(255, 255, 255, 0.45);
     --at-bg-active:           rgba(37, 99, 235, 0.12);
     --at-bg-tab-active:       rgba(37, 99, 235, 0.1);

@@ -1,3 +1,6 @@
+import { HugeiconsIcon } from '@hugeicons/react';
+import { UserMinus01Icon } from '@hugeicons/core-free-icons';
+
 export type DisconnectedPlayer = {
 	id: string;
 	nickname: string;
@@ -13,16 +16,6 @@ export type AdminDisconnectedCardProps = {
 	onShowAll?: () => void;
 };
 
-const IconDisconnect = () => (
-	<svg width="10" height="12" viewBox="0 0 10 12" fill="none">
-		<path
-			d="M5 1v5M2.5 3.5A3.5 3.5 0 1 0 7.5 3.5"
-			stroke="currentColor"
-			strokeWidth="1.3"
-			strokeLinecap="round"
-		/>
-	</svg>
-);
 
 export const AdminDisconnectedCard = ({
 	count = 0,
@@ -31,7 +24,7 @@ export const AdminDisconnectedCard = ({
 	onShowAll,
 }: AdminDisconnectedCardProps) => (
 	<div
-		className="flex h-full w-full flex-col overflow-hidden rounded-[6px]"
+		className="flex h-full w-full flex-col overflow-hidden rounded-md"
 		style={{
 			backgroundColor: 'var(--at-glass-bg)',
 			border: '1px solid var(--at-glass-border)',
@@ -43,7 +36,7 @@ export const AdminDisconnectedCard = ({
 		{/* Заголовок */}
 		<div className="flex items-center gap-8 px-14 pt-12 pb-10">
 			<span style={{ color: 'var(--at-text-section)' }}>
-				<IconDisconnect />
+				<HugeiconsIcon icon={UserMinus01Icon} size={18} color="currentColor" strokeWidth={1.5} />
 			</span>
 			<span
 				className="text-[12px] font-semibold uppercase tracking-wider"
@@ -81,12 +74,12 @@ export const AdminDisconnectedCard = ({
 				players.map((player, idx) => (
 					<div
 						key={player.id}
-						className="flex h-[28px] items-center gap-8 px-14"
+						className="flex h-28 items-center gap-8 px-14"
 						style={idx < players.length - 1 ? { borderBottom: '1px solid var(--at-border-content)' } : undefined}
 					>
 						{/* Индикатор фракции */}
 						<span
-							className="size-[7px] shrink-0 rounded-full"
+							className="size-7 shrink-0 rounded-full"
 							style={{ backgroundColor: player.teamColor ?? 'var(--at-text-section)' }}
 						/>
 						{/* Никнейм */}

@@ -19,7 +19,7 @@ eventBus.subscribe(EventType.NEW_GAME, async (event: NewGameEvent) => {
 	await collectServerSnapshotTick();
 	const redis = await getRedisClient();
 	const streamKey = `stream:${process.env.SERVER_INITIAL_NAME}:${event.mapClassname}:${event.layerClassname}:${Date.now()}`;
-	await redis.xAdd(streamKey, '*', { data: JSON.stringify(event) });
+	await redis.xAdd(streamKey, '*', { data: Buffer.from(JSON.stringify(event), 'utf-8') });
 	await redis.set(`server:${process.env.SERVER_INITIAL_NAME}:current_round`, streamKey);
 });
 

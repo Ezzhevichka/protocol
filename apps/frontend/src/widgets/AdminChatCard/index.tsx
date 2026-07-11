@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ChatIcon } from '@hugeicons/core-free-icons';
 
 export type ChatMessage = {
 	id: string;
@@ -15,16 +17,6 @@ export type AdminChatCardProps = {
 	onSend?: (text: string) => void;
 };
 
-const IconChat = () => (
-	<svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-		<path
-			d="M1 1.5A.5.5 0 0 1 1.5 1h7a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5H3L1 9V1.5Z"
-			stroke="currentColor"
-			strokeWidth="1.2"
-			strokeLinejoin="round"
-		/>
-	</svg>
-);
 
 const IconSend = () => (
 	<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -64,7 +56,7 @@ export const AdminChatCard = ({
 
 	return (
 		<div
-			className="flex h-full w-full flex-col overflow-hidden rounded-[6px]"
+			className="flex h-full w-full flex-col overflow-hidden rounded-md"
 			style={{
 				backgroundColor: 'var(--at-glass-bg)',
 				border: '1px solid var(--at-glass-border)',
@@ -76,7 +68,7 @@ export const AdminChatCard = ({
 			{/* Заголовок */}
 			<div className="flex items-center gap-8 px-14 pt-12 pb-10">
 				<span style={{ color: 'var(--at-text-section)' }}>
-					<IconChat />
+					<HugeiconsIcon icon={ChatIcon} size={18} color="currentColor" strokeWidth={1.5} />
 				</span>
 				<span
 					className="text-[12px] font-semibold uppercase tracking-wider"
@@ -100,7 +92,7 @@ export const AdminChatCard = ({
 					messages.map((msg, idx) => (
 						<div
 							key={msg.id}
-							className="flex min-h-[26px] items-baseline gap-6 px-14 py-[4px]"
+							className="flex min-h-26 items-baseline gap-6 px-14 py-4"
 							style={
 								idx < messages.length - 1
 									? { borderBottom: '1px solid var(--at-border-content)' }
@@ -142,7 +134,7 @@ export const AdminChatCard = ({
 					type="button"
 					onClick={handleSend}
 					disabled={!input.trim()}
-					className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] transition-opacity duration-150"
+					className="flex size-22 shrink-0 items-center justify-center rounded-[3px] transition-opacity duration-150"
 					style={{
 						backgroundColor: input.trim() ? 'var(--at-accent)' : 'var(--at-bg-tab-inactive)',
 						border: '1px solid var(--at-border-tab-inactive)',

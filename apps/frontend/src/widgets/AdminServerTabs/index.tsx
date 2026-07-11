@@ -46,7 +46,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 					{activeServer?.name ?? '—'}
 				</h2>
 				<span
-					className="rounded-[6px] px-10 py-3 text-[11px] font-semibold"
+					className="rounded-md px-10 py-3 text-[11px] font-semibold"
 					style={{
 						backgroundColor: isOnline ? 'var(--at-status-online-bg)' : 'var(--at-status-offline-bg)',
 						border: `1px solid ${isOnline ? 'var(--at-status-online-border)' : 'var(--at-status-offline-border)'}`,
@@ -58,7 +58,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 			</div>
 
 			<div
-				className="flex items-center gap-6 rounded-[12px] p-6"
+				className="flex items-center gap-6 rounded-xl p-6"
 				style={{
 					backgroundColor: 'var(--at-glass-bg)',
 					border: '1px solid var(--at-glass-border)',
@@ -98,7 +98,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 							)}
 							{isOffline && (
 								<span
-									className="relative size-[6px] shrink-0 rounded-full"
+									className="relative size-6 shrink-0 rounded-full"
 									style={{ backgroundColor: 'var(--at-status-offline)' }}
 								/>
 							)}
@@ -112,7 +112,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 								{server.name}
 							</span>
 							<span
-								className="relative rounded-[8px] px-7 py-2 text-[10px] leading-tight"
+								className="relative rounded-lg px-7 py-2 text-[10px] leading-tight"
 								style={{
 									backgroundColor: isActive ? 'var(--at-bg-badge-active)' : 'var(--at-bg-badge-inactive)',
 									border: isActive

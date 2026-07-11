@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { MapingIcon } from '@hugeicons/core-free-icons';
 
 export type AdminMapCardProps = {
 	layerName?: string | null;
@@ -6,17 +8,6 @@ export type AdminMapCardProps = {
 	mapImageSrc?: string | null;
 };
 
-const IconMap = () => (
-	<svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-		<path
-			d="M1 2.5 3.5 1.5l3 1.5 2.5-1v6L6.5 9l-3-1.5L1 8.5V2.5Z"
-			stroke="currentColor"
-			strokeWidth="1.2"
-			strokeLinejoin="round"
-		/>
-		<path d="M3.5 1.5v6M6.5 3v6" stroke="currentColor" strokeWidth="1.2" />
-	</svg>
-);
 
 export const AdminMapCard = ({
 	layerName,
@@ -24,7 +15,7 @@ export const AdminMapCard = ({
 	mapImageSrc,
 }: AdminMapCardProps) => (
 	<div
-		className="flex h-full w-full flex-col overflow-hidden rounded-[6px]"
+		className="flex h-full w-full flex-col overflow-hidden rounded-md"
 		style={{
 			backgroundColor: 'var(--at-glass-bg)',
 			border: '1px solid var(--at-glass-border)',
@@ -39,7 +30,7 @@ export const AdminMapCard = ({
 			style={{ borderBottom: '1px solid var(--at-border-content)' }}
 		>
 			<span style={{ color: 'var(--at-text-section)' }}>
-				<IconMap />
+				<HugeiconsIcon icon={MapingIcon} size={18} color="currentColor" strokeWidth={1.5} />
 			</span>
 			<span
 				className="text-[12px] font-semibold uppercase tracking-wider"
@@ -51,7 +42,7 @@ export const AdminMapCard = ({
 			{/* Имя текущего слоя */}
 			{layerName && (
 				<span
-					className="ml-auto max-w-[120px] truncate rounded-[3px] px-8 py-3 text-[9px]"
+					className="ml-auto max-w-120 truncate rounded-[3px] px-8 py-3 text-[9px]"
 					style={{
 						backgroundColor: 'var(--at-bg-tab-inactive)',
 						border: '1px solid var(--at-border-tab-inactive)',
@@ -89,7 +80,7 @@ export const AdminMapCard = ({
 			{/* Следующий слой — плашка поверх изображения */}
 			{nextLayerName && (
 				<div
-					className="absolute bottom-8 right-8 max-w-[130px] truncate rounded-[3px] px-6 py-3 text-[8px]"
+					className="absolute bottom-8 right-8 max-w-130 truncate rounded-[3px] px-6 py-3 text-[8px]"
 					style={{
 						backgroundColor: 'rgba(0,0,0,0.55)',
 						border: '1px solid rgba(255,255,255,0.08)',

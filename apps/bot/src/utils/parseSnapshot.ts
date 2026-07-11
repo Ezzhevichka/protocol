@@ -1,4 +1,4 @@
-import { Player, ServerId, Snapshot, Squad, Team, TeamId, UnassignedPlayer } from '@protocol/types';
+import { Player, ServerId, Snapshot, Squad, Team, TeamId, UnassignedPlayer, sortSquadPlayers, sortSquads } from '@protocol/types';
 import { TPlayer, TServerInfo, TSquad } from 'squad-rcon';
 
 const mapPlayer = (player: TPlayer): Player => ({
@@ -30,55 +30,78 @@ const mapSquad = (squad: TSquad, players: Player[]): Squad => ({
 	players,
 });
 
-const getUnassignedPlayers = (players: TPlayer[], teamId: TeamId): UnassignedPlayer[] => players.filter((player) => player.teamID === teamId && !player.squadID).map(mapUnassignedPlayer);
+const getTeamSquads = (squads: TSquad[], teamId: TeamId): TSquad[] => {
+	const teamSquads = new Map<string, TSquad>();
+
+	for (const squad of squads) {
+		if (squad.teamID !== teamId) continue;
+		teamSquads.set(squad.squadID, squad);
+	}
+
+	return [...teamSquads.values()];
+};
 
 const getSquadsWithPlayers = (squads: TSquad[], players: TPlayer[], teamId: TeamId): Squad[] => {
-	const mappedPlayers = players.map(mapPlayer);
+	const teamSquads = getTeamSquads(squads, teamId);
+	const playersBySquadId = new Map<string, Player[]>();
 
-	return squads.reduce<Squad[]>((acc, squad) => {
-		acc.push(
-			mapSquad(
-				squad,
-				mappedPlayers.filter(
-					(player) => player.squadId === squad.squadID && player.teamId === teamId
-				)
-			)
-		);
-		return acc;
-	}, []);
+	for (const player of players) {
+		if (player.teamID !== teamId || !player.squadID) continue;
+
+		const squadPlayers = playersBySquadId.get(player.squadID) ?? [];
+		squadPlayers.push(mapPlayer(player));
+		playersBySquadId.set(player.squadID, squadPlayers);
+	}
+
+	const squadsWithPlayers = teamSquads.flatMap((squad) => {
+		const squadPlayers = playersBySquadId.get(squad.squadID);
+		if (!squadPlayers?.length) return [];
+
+		return [mapSquad(squad, sortSquadPlayers(squadPlayers))];
+	});
+
+	return sortSquads(squadsWithPlayers);
 };
 
-const getTeamPlayersCount = (players: TPlayer[], teamId: TeamId): number => players.filter((player) => player.teamID === teamId).length;
+const getUnassignedPlayers = (players: TPlayer[], teamId: TeamId): UnassignedPlayer[] =>
+	players
+		.filter((player) => player.teamID === teamId && !player.squadID)
+		.map(mapUnassignedPlayer);
 
-export const parseSnapshot = (playersRaw: TPlayer[], squadsRaw: TSquad[], serverInfoRaw: Optional<TServerInfo>): Snapshot => {
-	const teams: Team[] = [
-		{
-			name: serverInfoRaw?.teamOne ?? 'Team 1',
-			id: TeamId.ONE,
-			playersCount: getTeamPlayersCount(playersRaw, TeamId.ONE),
-			unassignedPlayers: getUnassignedPlayers(playersRaw, TeamId.ONE),
-			squads: getSquadsWithPlayers(squadsRaw, playersRaw, TeamId.ONE),
-		},
-		{
-			name: serverInfoRaw?.teamTwo ?? 'Team 2',
-			id: TeamId.TWO,
-			playersCount: getTeamPlayersCount(playersRaw, TeamId.TWO),
-			unassignedPlayers: getUnassignedPlayers(playersRaw, TeamId.TWO),
-			squads: getSquadsWithPlayers(squadsRaw, playersRaw, TeamId.TWO),
-		},
-	];
+const getTeamPlayersCount = (players: TPlayer[], teamId: TeamId): number =>
+	players.filter((player) => player.teamID === teamId).length;
 
-	return {
-		id: process.env.SERVER_INITIAL_NAME as ServerId,
-		teams,
-		serverName: serverInfoRaw?.serverName ?? '',
-		maxPlayers: serverInfoRaw?.maxPlayers ?? 0,
-		playerCount: serverInfoRaw?.playerCount ?? 0,
-		publicQueue: serverInfoRaw?.publicQueue ?? 0,
-		currentLayer: serverInfoRaw?.currentLayer ?? '',
-		nextLayer: serverInfoRaw?.nextLayer ?? '',
-		matchTimeout: serverInfoRaw?.matchTimeout ?? 0,
-		matchStartTime: serverInfoRaw?.matchStartTime ?? 0,
-		gameVersion: serverInfoRaw?.gameVersion ?? '',
-	};
-};
+const buildTeam = (
+	teamId: TeamId,
+	teamName: string,
+	players: TPlayer[],
+	squads: TSquad[]
+): Team => ({
+	id: teamId,
+	name: teamName,
+	playersCount: getTeamPlayersCount(players, teamId),
+	unassignedPlayers: getUnassignedPlayers(players, teamId),
+	squads: getSquadsWithPlayers(squads, players, teamId),
+});
+
+export const parseSnapshot = (
+	playersRaw: TPlayer[],
+	squadsRaw: TSquad[],
+	serverInfoRaw: Optional<TServerInfo>
+): Snapshot => ({
+	id: process.env.SERVER_INITIAL_NAME as ServerId,
+	teams: [
+		buildTeam(TeamId.ONE, serverInfoRaw?.teamOne ?? 'Team 1', playersRaw, squadsRaw),
+		buildTeam(TeamId.TWO, serverInfoRaw?.teamTwo ?? 'Team 2', playersRaw, squadsRaw),
+	],
+	serverName: serverInfoRaw?.serverName ?? '',
+	serverNumberId: Number(process.env.SERVER_ID ?? 0),
+	maxPlayers: serverInfoRaw?.maxPlayers ?? 0,
+	playerCount: serverInfoRaw?.playerCount ?? 0,
+	publicQueue: serverInfoRaw?.publicQueue ?? 0,
+	currentLayer: serverInfoRaw?.currentLayer ?? '',
+	nextLayer: serverInfoRaw?.nextLayer ?? '',
+	matchTimeout: serverInfoRaw?.matchTimeout ?? 0,
+	matchStartTime: serverInfoRaw?.matchStartTime ?? 0,
+	gameVersion: serverInfoRaw?.gameVersion ?? '',
+});

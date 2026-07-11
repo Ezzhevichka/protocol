@@ -10,14 +10,22 @@
     "lint": "eslint ."
   },
   "dependencies": {
-	"@protocol/database": "workspace:*",
-    "@protocol/redis": "workspace:*",
-	"@protocol/types": "workspace:*",
+    "@fastify/cookie": "^11.1.0",
     "@fastify/cors": "^11.2.0",
-    "fastify": "^5.8.5"
+    "@fastify/passport": "^3.0.2",
+    "@protocol/database": "workspace:*",
+    "@protocol/redis": "workspace:*",
+    "@protocol/types": "workspace:*",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.8.5",
+    "fastify-plugin": "^6.0.0",
+    "passport": "^0.7.0",
+    "passport-steam": "^1.0.18"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
+    "@types/passport": "^1.0.17",
+    "axios": "^1.18.1",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"

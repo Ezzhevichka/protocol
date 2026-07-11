@@ -30,6 +30,7 @@ export async function getMe(): Promise<AuthUser | null> {
 type RawSnapshot = {
 	id: string;
 	serverName: string;
+	serverNumberId: number;
 	maxPlayers: number;
 	playerCount: number;
 	publicQueue: number;
@@ -115,6 +116,7 @@ type RawLiveSquad = {
 
 export type LiveTeam = {
 	teamId: string;
+	playersCount: number;
 	squads: Array<{
 		squad: RawLiveSquad;
 		players: RawLivePlayer[];
@@ -125,6 +127,7 @@ export type LiveTeam = {
 export type ServerPlayersData = {
 	serverId: string;
 	serverName: string;
+	serverNumberId: number;
 	playersCount: number;
 	squadsCount: number;
 	maxPlayers: number;
@@ -137,26 +140,29 @@ export type ServerPlayersData = {
 function snapshotToServerPlayersData(s: RawSnapshot): ServerPlayersData {
 	const teams: LiveTeam[] = s.teams.map((team) => ({
 		teamId: team.name,
-		squads: team.squads.map((sq) => ({
-			squad: {
-				squadId: sq.squadId,
-				teamId: sq.teamId ?? team.id,
-				name: sq.squadName,
-				size: sq.size ? Number(sq.size) : null,
-				locked: sq.locked,
-			},
-			players: sq.players.map((p) => ({
-				steamId: p.steamId,
-				eosId: p.eosId,
-				name: p.name,
-				raw: {
-					teamID: p.teamId,
-					squadID: p.squadId ?? undefined,
-					isLeader: p.isLeader,
-					role: p.role,
+		playersCount: team.playersCount,
+		squads: team.squads
+			.filter((sq) => (sq.teamId ?? team.id) === team.id)
+			.map((sq) => ({
+				squad: {
+					squadId: sq.squadId,
+					teamId: sq.teamId ?? team.id,
+					name: sq.squadName,
+					size: sq.size ? Number(sq.size) : null,
+					locked: sq.locked,
 				},
+				players: sq.players.map((p) => ({
+					steamId: p.steamId,
+					eosId: p.eosId,
+					name: p.name,
+					raw: {
+						teamID: p.teamId,
+						squadID: p.squadId ?? undefined,
+						isLeader: p.isLeader,
+						role: p.role,
+					},
+				})),
 			})),
-		})),
 		unassigned: team.unassignedPlayers.map((p) => ({
 			steamId: p.steamId,
 			eosId: p.eosId,
@@ -173,6 +179,7 @@ function snapshotToServerPlayersData(s: RawSnapshot): ServerPlayersData {
 	return {
 		serverId: s.id,
 		serverName: s.serverName,
+		serverNumberId: s.serverNumberId,
 		playersCount: s.playerCount,
 		squadsCount: s.teams.reduce((n, t) => n + t.squads.length, 0),
 		maxPlayers: s.maxPlayers,
@@ -192,6 +199,29 @@ export async function getServerPlayers(serverId: string): Promise<ServerPlayersD
 		return snapshotToServerPlayersData(snapshot);
 	} catch {
 		return null;
+	}
+}
+
+export async function banPlayer(params: {
+	steamId: string;
+	authorId: string;
+	reason: string;
+	serverNumberId: number;
+}): Promise<boolean> {
+	try {
+		const cookieStore = await cookies();
+		const res = await fetch(`${API_URL}/punishments/ban`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Cookie: cookieStore.toString(),
+			},
+			body: JSON.stringify(params),
+			cache: 'no-store',
+		});
+		return res.ok;
+	} catch {
+		return false;
 	}
 }
 

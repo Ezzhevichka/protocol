@@ -1,5 +1,7 @@
 'use client';
 
+import { HugeiconsIcon } from '@hugeicons/react';
+import { UserQuestion01Icon } from '@hugeicons/core-free-icons';
 import { AdminSquadCard } from 'widgets/AdminSquadCard';
 import type { AdminSquadCardData } from 'widgets/AdminSquadCard';
 import { AdminPlayerRow } from 'widgets/AdminPlayerRow';
@@ -10,23 +12,16 @@ export type { AdminSquadCardData as AdminSquad, AdminPlayerRowData as AdminSquad
 export type AdminSquadListProps = {
 	squads: AdminSquadCardData[];
 	unassigned?: AdminPlayerRowData[];
-	/**
-     * Встроенный режим — убирает glass-обёртку вокруг каждого сквада.
-     * Используется внутри AdminFractionBlock.
-     */
 	embedded?: boolean;
 	onKickFromSquad?: (playerId: string) => void;
 	onKill?: (playerId: string) => void;
 	onBan?: (playerId: string) => void;
 	onCopyTeleport?: (playerId: string) => void;
+	onMessageSquad?: (squadId: string | number) => void;
+	onSwitchSide?: (squadId: string | number) => void;
+	onClearName?: (squadId: string | number) => void;
+	onDisbandSquad?: (squadId: string | number) => void;
 };
-
-const IconUnassigned = () => (
-	<svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-		<circle cx="5.5" cy="5.5" r="4" stroke="currentColor" strokeWidth="1.2" />
-		<path d="M5.5 3v2.5l1.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-	</svg>
-);
 
 type UnassignedSectionProps = {
 	players: AdminPlayerRowData[];
@@ -42,40 +37,44 @@ const UnassignedSection = (
 ) => (
 	<>
 		<div
-			className="flex h-[36px] items-center gap-8 px-12"
+			className="flex h-46 items-center gap-8 px-14"
 			style={{
-				borderBottom: '1px solid var(--at-border-content)',
+				borderBottom: players.length > 0 ? '1px solid var(--at-border-content)' : undefined,
 				backgroundColor: headerBg,
 			}}
 		>
 			<span style={{ color: 'var(--at-text-section)' }}>
-				<IconUnassigned />
+				<HugeiconsIcon icon={UserQuestion01Icon} size={16} color="currentColor" strokeWidth={1.5} />
 			</span>
 			<span className="flex-1 text-[11px]" style={{ color: 'var(--at-text-section)' }}>
 				Нераспределённые игроки
 			</span>
 			<span
-				className="shrink-0 rounded-[6px] px-8 py-3 text-[11px] font-semibold tabular-nums"
+				className="flex items-center justify-center rounded-[7px] px-8 py-4 text-[9px] font-bold tabular-nums"
 				style={{
 					backgroundColor: 'var(--at-bg-tab-active)',
 					border: '1px solid var(--at-border-tab-active)',
 					color: 'var(--at-text-nav-active)',
+					boxShadow: '0 0 8px rgba(0,60,160,0.25)',
 				}}
 			>
 				{players.length}
 			</span>
 		</div>
-		{players.map((player, idx) => (
-			<AdminPlayerRow
-				key={player.id}
-				player={player}
-				showDivider={idx < players.length - 1}
-				onKickFromSquad={() => onKickFromSquad?.(player.id)}
-				onKill={() => onKill?.(player.id)}
-				onBan={() => onBan?.(player.id)}
-				onCopyTeleport={() => onCopyTeleport?.(player.id)}
-			/>
-		))}
+		<ul className="m-0 list-none p-0">
+			{players.map((player, idx) => (
+				<li key={player.id}>
+					<AdminPlayerRow
+						player={player}
+						showDivider={idx < players.length - 1}
+						onKickFromSquad={() => onKickFromSquad?.(player.id)}
+						onKill={() => onKill?.(player.id)}
+						onBan={() => onBan?.(player.id)}
+						onCopyTeleport={() => onCopyTeleport?.(player.id)}
+					/>
+				</li>
+			))}
+		</ul>
 	</>
 );
 
@@ -87,17 +86,18 @@ export const AdminSquadList = ({
 	onKill,
 	onBan,
 	onCopyTeleport,
+	onMessageSquad,
+	onSwitchSide,
+	onClearName,
+	onDisbandSquad,
 }: AdminSquadListProps) => {
 	const hasUnassigned = unassigned.length > 0;
 
 	if (embedded) {
 		return (
-			<div>
-				{squads.map((squad, idx) => (
-					<div
-						key={squad.id}
-						style={idx > 0 ? { borderTop: '1px solid var(--at-border-section)' } : undefined}
-					>
+			<ul className="m-0 flex list-none flex-col gap-8 p-10 pt-32">
+				{squads.map((squad) => (
+					<li key={squad.id}>
 						<AdminSquadCard
 							squad={squad}
 							embedded
@@ -105,39 +105,49 @@ export const AdminSquadList = ({
 							onKill={onKill}
 							onBan={onBan}
 							onCopyTeleport={onCopyTeleport}
+							onMessageSquad={onMessageSquad}
+							onSwitchSide={onSwitchSide}
+							onClearName={onClearName}
+							onDisbandSquad={onDisbandSquad}
 						/>
-					</div>
+					</li>
 				))}
 				{hasUnassigned && (
-					<div style={{ borderTop: '1px solid var(--at-border-section)' }}>
+					<li
+						className="overflow-hidden rounded-[10px]"
+						style={{
+							backgroundColor: 'var(--at-bg-content)',
+							border: '1px solid var(--at-border)',
+						}}
+					>
 						<UnassignedSection
 							players={unassigned}
-							headerBg="rgba(255,255,255,0.015)"
 							onKickFromSquad={onKickFromSquad}
 							onKill={onKill}
 							onBan={onBan}
 							onCopyTeleport={onCopyTeleport}
 						/>
-					</div>
+					</li>
 				)}
-			</div>
+			</ul>
 		);
 	}
 
 	return (
-		<div className="flex flex-col gap-8">
+		<ul className="m-0 flex list-none flex-col gap-8 p-0">
 			{squads.map((squad) => (
-				<AdminSquadCard
-					key={squad.id}
-					squad={squad}
-					onKickFromSquad={onKickFromSquad}
-					onKill={onKill}
-					onBan={onBan}
-					onCopyTeleport={onCopyTeleport}
-				/>
+				<li key={squad.id}>
+					<AdminSquadCard
+						squad={squad}
+						onKickFromSquad={onKickFromSquad}
+						onKill={onKill}
+						onBan={onBan}
+						onCopyTeleport={onCopyTeleport}
+					/>
+				</li>
 			))}
 			{hasUnassigned && (
-				<div
+				<li
 					className="overflow-hidden rounded-[10px]"
 					style={{
 						backgroundColor: 'var(--at-glass-bg)',
@@ -154,8 +164,8 @@ export const AdminSquadList = ({
 						onBan={onBan}
 						onCopyTeleport={onCopyTeleport}
 					/>
-				</div>
+				</li>
 			)}
-		</div>
+		</ul>
 	);
 };

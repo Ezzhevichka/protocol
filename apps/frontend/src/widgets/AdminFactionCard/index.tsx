@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { resolveFactionFlag, resolveFactionName } from 'shared/lib';
+import { resolveFactionFlag } from 'shared/lib';
 
 /* ── Типы ─────────────────────────────────────────────────────────── */
 
@@ -58,7 +58,7 @@ export const AdminFactionCard = ({
 	embedded = false,
 }: AdminFactionCardProps) => {
 	const flagSrc = resolveFactionFlag(teamId);
-	const factionName = resolveFactionName(teamId);
+	const factionName = teamId.replace(/_/g, ' ');
 
 	return (
 		<div
@@ -100,10 +100,10 @@ export const AdminFactionCard = ({
 						<Image
 							src={flagSrc}
 							alt={factionName}
-							width={32}
-							height={22}
-							className="shrink-0 rounded-[3px] object-cover"
-							style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.4)' }}
+							width={52}
+							height={34}
+							className="shrink-0 rounded-[4px] object-cover"
+							style={{ boxShadow: '0 2px 6px rgba(0,0,0,0.5)' }}
 						/>
 					)}
 					<span

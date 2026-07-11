@@ -1,6 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { UserMinus01Icon, UserRemove01Icon, LegalHammerIcon, Location01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 
 import { resolveKitIcon, resolveKitIconSize } from 'shared/constants';
 
@@ -10,9 +13,7 @@ export type AdminPlayerRowData = {
 	id: string;
 	steamId?: string;
 	nickname: string;
-	/** Клановый тег, напр. "[RFA]" */
 	clanTag?: string;
-	/** Название кита/роли */
 	role?: string;
 	kitIcon?: string;
 	isLeader?: boolean;
@@ -27,39 +28,7 @@ export type AdminPlayerRowProps = {
 	onCopyTeleport?: () => void;
 };
 
-/* ── Иконки действий ──────────────────────────────────────────────── */
-
-const IconKick = () => (
-	<svg width="13" height="13" viewBox="0 0 12 12" fill="none">
-		<circle cx="5" cy="3.5" r="2" stroke="currentColor" strokeWidth="1.2" />
-		<path d="M1 10c0-2.21 1.79-4 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-		<path d="M9 7l2 2-2 2M11 9H7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-	</svg>
-);
-
-const IconKill = () => (
-	<svg width="13" height="13" viewBox="0 0 12 12" fill="none">
-		<circle cx="6" cy="5" r="3.5" stroke="currentColor" strokeWidth="1.2" />
-		<path d="M4.5 4.5l3 3M7.5 4.5l-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-		<path d="M4 9.5h4M5 9.5V11M7 9.5V11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-	</svg>
-);
-
-const IconBan = () => (
-	<svg width="13" height="13" viewBox="0 0 12 12" fill="none">
-		<circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" />
-		<path d="M2.8 2.8l6.4 6.4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-	</svg>
-);
-
-const IconTeleport = () => (
-	<svg width="12" height="13" viewBox="0 0 11 12" fill="none">
-		<path d="M5.5 1C3.567 1 2 2.567 2 4.5c0 2.5 3.5 6.5 3.5 6.5s3.5-4 3.5-6.5C9 2.567 7.433 1 5.5 1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-		<circle cx="5.5" cy="4.5" r="1.2" stroke="currentColor" strokeWidth="1.1" />
-	</svg>
-);
-
-/* ── Кнопка действия с тултипом ───────────────────────────────────── */
+/* ── Кнопка действия ─────────────────────────────────────────────── */
 
 type ActionButtonProps = {
 	onClick?: () => void;
@@ -70,43 +39,88 @@ type ActionButtonProps = {
 
 const ActionButton = ({ onClick, label, color, children }: ActionButtonProps) => (
 	<div className="group/btn relative">
-		{/* Тултип над кнопкой */}
-		<span
-			className="pointer-events-none absolute left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[5px] px-6 py-3 text-[9px] font-medium opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100"
+		<button
+			type="button"
+			onClick={onClick}
+			className="flex items-center justify-center rounded-[7px] px-8 py-4 transition-opacity duration-150"
 			style={{
-				bottom: 'calc(100% + 5px)',
-				backgroundColor: 'rgba(5, 12, 22, 0.92)',
-				border: '1px solid rgba(255,255,255,0.08)',
-				color: 'rgba(220, 228, 240, 0.9)',
+				color,
+				backgroundColor: 'var(--at-bg-tab-active)',
+				border: '1px solid var(--at-border-tab-active)',
+				cursor: 'pointer',
+				opacity: 0.75,
+			}}
+			onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+			onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.75'; }}
+		>
+			{children}
+		</button>
+		<span
+			className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-6 -translate-x-1/2 whitespace-nowrap rounded-[5px] px-7 py-3 text-[10px] font-medium opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100"
+			style={{
+				backgroundColor: 'var(--at-bg-tooltip)',
+				border: '1px solid var(--at-border)',
+				color: 'var(--at-text-nav)',
+				boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
 			}}
 		>
 			{label}
 		</span>
-
-		<button
-			type="button"
-			onClick={onClick}
-			className="flex shrink-0 items-center justify-center rounded-[6px] opacity-0 transition-all duration-150 group-hover:opacity-100 group-hover/btn:opacity-100 hover:-translate-y-[2px]"
-			style={{
-				width: 26,
-				height: 26,
-				cursor: 'pointer',
-				backgroundColor: 'rgba(255,255,255,0.04)',
-				border: '1px solid rgba(255,255,255,0.08)',
-				color,
-				boxShadow: 'none',
-			}}
-			onMouseEnter={(e) => {
-				(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
-			}}
-			onMouseLeave={(e) => {
-				(e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-			}}
-		>
-			{children}
-		</button>
 	</div>
 );
+
+/* ── Кнопка телепорта ────────────────────────────────────────────── */
+
+const TeleportButton = ({ onClick }: { onClick?: () => void }) => {
+	const [copied, setCopied] = useState(false);
+
+	const handleClick = () => {
+		if (copied) return;
+		onClick?.();
+		setCopied(true);
+	};
+
+	const handleMouseLeave = () => {
+		setCopied(false);
+	};
+
+	return (
+		<div className="group/btn relative">
+			<button
+				type="button"
+				onClick={handleClick}
+				className="flex items-center justify-center rounded-[7px] px-8 py-4 transition-opacity duration-150"
+				style={{
+					color: copied ? 'rgba(60, 200, 100, 0.9)' : 'rgba(60, 150, 230, 0.9)',
+					backgroundColor: 'var(--at-bg-tab-active)',
+					border: '1px solid var(--at-border-tab-active)',
+					cursor: 'pointer',
+					opacity: 0.75,
+				}}
+				onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+				onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.75'; handleMouseLeave(); }}
+			>
+				<HugeiconsIcon
+					icon={copied ? Tick02Icon : Location01Icon}
+					size={14}
+					color="currentColor"
+					strokeWidth={1.8}
+				/>
+			</button>
+			<span
+				className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-6 -translate-x-1/2 whitespace-nowrap rounded-[5px] px-7 py-3 text-[10px] font-medium opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100"
+				style={{
+					backgroundColor: 'var(--at-bg-tooltip)',
+					border: '1px solid var(--at-border)',
+					color: 'var(--at-text-nav)',
+					boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+				}}
+			>
+				{copied ? 'Скопировано!' : 'Телепорт'}
+			</span>
+		</div>
+	);
+};
 
 /* ── Компонент ────────────────────────────────────────────────────── */
 
@@ -123,70 +137,46 @@ export const AdminPlayerRow = ({
 
 	return (
 		<div
-			className="group flex h-[36px] items-center gap-8 px-12"
+			className="group relative cursor-pointer transition-colors duration-150 hover:bg-white/[0.04]"
 			style={showDivider ? { borderBottom: '1px solid var(--at-border-content)' } : undefined}
 		>
-			{/* Иконка кита */}
-			<span className="flex size-[22px] shrink-0 items-center justify-center">
-				<Image
-					src={resolvedIcon}
-					alt=""
-					aria-hidden="true"
-					width={iconSize.width}
-					height={iconSize.height}
-					unoptimized
-					className="block h-auto w-auto"
-				/>
-			</span>
-
-			{/* Клантег + ник */}
-			<div className="flex min-w-0 flex-1 items-center gap-6">
-				{player.clanTag && (
-					<span
-						className="shrink-0 text-[10px]"
-						style={{ color: 'var(--at-text-section)' }}
-					>
-						{player.clanTag}
-					</span>
-				)}
-				<span
-					className="truncate text-[11px] font-bold"
-					style={{ color: 'var(--at-text-nav)' }}
-				>
-					{player.nickname}
+			<div className="flex h-44 items-center gap-10 px-14">
+				<span className="flex size-22 shrink-0 items-center justify-center">
+					<Image
+						src={resolvedIcon}
+						alt=""
+						aria-hidden="true"
+						width={iconSize.width}
+						height={iconSize.height}
+						unoptimized
+						className="block h-auto w-auto"
+					/>
 				</span>
-			</div>
 
-			{/* Кнопки управления — появляются при наведении на строку */}
-			<div className="flex shrink-0 items-center gap-4">
-				<ActionButton
-					label="Кикнуть из сквада"
-					color="var(--at-text-icon)"
-					onClick={onKickFromSquad}
-				>
-					<IconKick />
-				</ActionButton>
-				<ActionButton
-					label="Убить"
-					color="rgba(220, 70, 70, 0.9)"
-					onClick={onKill}
-				>
-					<IconKill />
-				</ActionButton>
-				<ActionButton
-					label="Забанить"
-					color="rgba(210, 140, 40, 0.9)"
-					onClick={onBan}
-				>
-					<IconBan />
-				</ActionButton>
-				<ActionButton
-					label="Телепорт"
-					color="rgba(60, 150, 230, 0.9)"
-					onClick={onCopyTeleport}
-				>
-					<IconTeleport />
-				</ActionButton>
+				<div className="flex min-w-0 flex-1 items-center gap-6">
+					{player.clanTag && (
+						<span className="shrink-0 text-(--at-text-md)" style={{ color: 'var(--at-text-section)' }}>
+							{player.clanTag}
+						</span>
+					)}
+					<span className="truncate text-(--at-text-base) font-bold" style={{ color: 'var(--at-text-nav)' }}>
+						{player.nickname}
+					</span>
+				</div>
+
+				{/* Кнопки — появляются в строке при наведении */}
+				<div className="flex items-center gap-3 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+					<ActionButton label="Кикнуть" color="var(--at-text-icon)" onClick={onKickFromSquad}>
+						<HugeiconsIcon icon={UserMinus01Icon} size={14} color="currentColor" strokeWidth={1.8} />
+					</ActionButton>
+					<ActionButton label="Убить" color="rgba(220, 70, 70, 0.9)" onClick={onKill}>
+						<HugeiconsIcon icon={UserRemove01Icon} size={14} color="currentColor" strokeWidth={1.8} />
+					</ActionButton>
+					<ActionButton label="Наказать" color="rgba(210, 140, 40, 0.9)" onClick={onBan}>
+						<HugeiconsIcon icon={LegalHammerIcon} size={14} color="currentColor" strokeWidth={1.8} />
+					</ActionButton>
+					<TeleportButton onClick={onCopyTeleport} />
+				</div>
 			</div>
 		</div>
 	);

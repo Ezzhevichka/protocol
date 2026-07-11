@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Queue02Icon } from '@hugeicons/core-free-icons';
 
 import { resolveKitIcon, resolveKitIconSize } from 'shared/constants';
 
@@ -15,14 +17,6 @@ export type AdminQueueCardProps = {
 	onManage?: () => void;
 };
 
-const IconFlame = () => (
-	<svg width="10" height="13" viewBox="0 0 10 13" fill="none">
-		<path
-			d="M5 0C5 0 8.5 3.5 8.5 7a3.5 3.5 0 0 1-7 0C1.5 5 3 3 3 3S2 5.5 3.5 7A1.5 1.5 0 0 0 6 7c0-1.5-1-4-1-7Z"
-			fill="currentColor"
-		/>
-	</svg>
-);
 
 export const AdminQueueCard = ({
 	queueCount = 0,
@@ -31,7 +25,7 @@ export const AdminQueueCard = ({
 	onManage,
 }: AdminQueueCardProps) => (
 	<div
-		className="flex h-full w-full flex-col overflow-hidden rounded-[6px]"
+		className="flex h-full w-full flex-col overflow-hidden rounded-md"
 		style={{
 			backgroundColor: 'var(--at-glass-bg)',
 			border: '1px solid var(--at-glass-border)',
@@ -43,7 +37,7 @@ export const AdminQueueCard = ({
 		{/* Заголовок */}
 		<div className="flex items-center gap-8 px-14 pt-12 pb-10">
 			<span style={{ color: 'var(--at-text-section)' }}>
-				<IconFlame />
+				<HugeiconsIcon icon={Queue02Icon} size={14} color="currentColor" strokeWidth={1.5} />
 			</span>
 			<span
 				className="text-[12px] font-semibold uppercase tracking-wider"
@@ -103,16 +97,16 @@ export const AdminQueueCard = ({
 					return (
 						<div
 							key={player.id}
-							className="flex h-[30px] items-center gap-8 px-14"
+							className="flex h-30 items-center gap-8 px-14"
 							style={idx < players.length - 1 ? { borderBottom: '1px solid var(--at-border-content)' } : undefined}
 						>
 							<span
-								className="w-[14px] shrink-0 text-right text-[9px] tabular-nums"
+								className="w-14 shrink-0 text-right text-[9px] tabular-nums"
 								style={{ color: 'var(--at-text-section)' }}
 							>
 								{idx + 1}.
 							</span>
-							<span className="flex size-[16px] shrink-0 items-center justify-center">
+							<span className="flex size-16 shrink-0 items-center justify-center">
 								{hasIcon && (
 									<Image
 										src={icon}

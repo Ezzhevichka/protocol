@@ -4,9 +4,15 @@
 		"outDir": "./dist",
 		"rootDir": "./src",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@/services/*": ["./src/services/*"],
+			"@/utils/*": ["./src/utils/*"],
+			"@/types/*": ["./src/types/*"],
+			"@/config/*": ["./src/config/*"],
+			"@/middleware/*": ["./src/middleware/*"],
+			"@/routes/*": ["./src/routes/*"],
 		}
 	},
-	"include": ["src/**/*.ts", "../../global.d.ts"],
+	"include": ["src/**/*.ts", "../../global.d.ts", "passport-steam.d.ts", "fastify.d.ts"],
 	"exclude": ["node_modules", "dist", "logs"]
 }

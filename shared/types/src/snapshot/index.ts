@@ -74,4 +74,5 @@ export type Snapshot = {
 	matchTimeout: number;
 	matchStartTime: number;
 	gameVersion: string;
+	serverNumberId: number;
 };

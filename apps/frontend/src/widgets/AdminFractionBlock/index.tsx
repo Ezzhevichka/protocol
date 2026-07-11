@@ -18,6 +18,10 @@ export type AdminFractionBlockProps = {
 	onKill?: (playerId: string) => void;
 	onBan?: (playerId: string) => void;
 	onCopyTeleport?: (playerId: string) => void;
+	onMessageSquad?: (squadId: string | number) => void;
+	onSwitchSide?: (squadId: string | number) => void;
+	onClearName?: (squadId: string | number) => void;
+	onDisbandSquad?: (squadId: string | number) => void;
 };
 
 /* ── Компонент ────────────────────────────────────────────────────── */
@@ -33,6 +37,10 @@ export const AdminFractionBlock = ({
 	onKill,
 	onBan,
 	onCopyTeleport,
+	onMessageSquad,
+	onSwitchSide,
+	onClearName,
+	onDisbandSquad,
 }: AdminFractionBlockProps) => (
 	<div
 		className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-[14px]"
@@ -44,7 +52,6 @@ export const AdminFractionBlock = ({
 			boxShadow: 'var(--at-glass-shadow)',
 		}}
 	>
-		{/* Шапка фракции — без собственного glass */}
 		<AdminFactionCard
 			teamId={teamId}
 			playerCount={playerCount}
@@ -53,11 +60,10 @@ export const AdminFractionBlock = ({
 			embedded
 		/>
 
-		{/* Разделитель между шапкой и списком сквадов */}
 		<div style={{ borderTop: '1px solid var(--at-border-section)' }} />
 
-		{/* Список сквадов — прокручивается независимо */}
-		<div className="flex-1 min-h-0 overflow-y-auto">
+		{/* Список сквадов — кастомный тонкий скроллбар */}
+		<div className="at-scroll flex-1 min-h-0">
 			<AdminSquadList
 				squads={squads}
 				unassigned={unassigned}
@@ -66,6 +72,10 @@ export const AdminFractionBlock = ({
 				onKill={onKill}
 				onBan={onBan}
 				onCopyTeleport={onCopyTeleport}
+				onMessageSquad={onMessageSquad}
+				onSwitchSide={onSwitchSide}
+				onClearName={onClearName}
+				onDisbandSquad={onDisbandSquad}
 			/>
 		</div>
 	</div>

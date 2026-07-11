@@ -114,7 +114,6 @@ export default [
       '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { arguments: false, attributes: false } }],
       '@typescript-eslint/no-shadow': ['warn', { hoist: 'all', ignoreTypeValueShadow: true }],
       '@typescript-eslint/no-unnecessary-condition': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
