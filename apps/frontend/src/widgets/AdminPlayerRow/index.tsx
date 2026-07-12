@@ -59,8 +59,8 @@ const ActionButton = ({ onClick, label, color, children }: ActionButtonProps) =>
 			className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-6 -translate-x-1/2 whitespace-nowrap rounded-[5px] px-7 py-3 text-[10px] font-medium opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100"
 			style={{
 				backgroundColor: 'var(--at-bg-tooltip)',
-				border: '1px solid var(--at-border)',
-				color: 'var(--at-text-nav)',
+				border: '1px solid rgba(255,255,255,0.08)',
+				color: 'rgba(255,255,255,0.85)',
 				boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
 			}}
 		>

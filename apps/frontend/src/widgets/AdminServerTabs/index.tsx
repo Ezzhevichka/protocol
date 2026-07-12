@@ -58,7 +58,7 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 			</div>
 
 			<div
-				className="flex items-center gap-6 rounded-xl p-6"
+				className="flex items-stretch gap-6 rounded-xl p-6"
 				style={{
 					backgroundColor: 'var(--at-glass-bg)',
 					border: '1px solid var(--at-glass-border)',
@@ -78,15 +78,15 @@ export const AdminServerPanel = ({ servers }: AdminServerPanelProps) => {
 							key={server.id}
 							type="button"
 							onClick={() => server.id !== undefined && selectServer(server.id)}
-							className="relative flex items-center gap-10 rounded-[9px] px-14 py-9 transition-all duration-200"
-							style={{
-								cursor: 'pointer',
-								backgroundColor: isActive ? 'var(--at-bg-tab-active)' : 'var(--at-bg-tab-inactive)',
-								border: isActive
-									? '1px solid var(--at-border-tab-active)'
-									: '1px solid var(--at-border-tab-inactive)',
-								boxShadow: isActive ? 'var(--at-shadow-tab-active)' : 'none',
-							}}
+							className="relative flex min-w-0 items-center gap-10 rounded-[9px] px-14 py-9 transition-all duration-200"
+						style={{
+							cursor: 'pointer',
+							backgroundColor: isActive ? 'var(--at-bg-tab-active)' : 'var(--at-bg-tab-inactive)',
+							border: isActive
+								? '1px solid var(--at-border-tab-active)'
+								: '1px solid var(--at-border-tab-inactive)',
+							boxShadow: isActive ? 'var(--at-shadow-tab-active)' : 'none',
+						}}
 						>
 							{isActive && (
 								<span

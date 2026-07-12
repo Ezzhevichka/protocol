@@ -164,51 +164,51 @@
 
 /* ── СВЕТЛАЯ ────────────────────────────────────────────────────────────── */
 [data-admin-theme="light"] {
-    --at-glass-bg:            rgba(255, 255, 255, 0.55);
-    --at-glass-border:        rgba(0, 0, 0, 0.08);
+    --at-glass-bg:            rgba(248, 251, 255, 0.94);
+    --at-glass-border:        rgba(0, 0, 0, 0.13);
     --at-glass-blur:          blur(20px);
-    --at-glass-shadow:        0 2px 16px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --at-glass-shadow:        0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
 
     --at-bg-base:             #dde3ea;
     --at-bg-gradient:         radial-gradient(ellipse at 20% 50%, rgba(100,150,220,0.1) 0%, transparent 60%), #dde3ea;
     --at-bg-surface:          var(--at-glass-bg);
-    --at-bg-content:          rgba(255, 255, 255, 0.4);
+    --at-bg-content:          rgba(0, 0, 0, 0.04);
     --at-bg-tooltip:          #1e2a3a;
-    --at-bg-topbar:           rgba(255, 255, 255, 0.45);
+    --at-bg-topbar:           rgba(248, 251, 255, 0.88);
     --at-bg-active:           rgba(37, 99, 235, 0.12);
-    --at-bg-tab-active:       rgba(37, 99, 235, 0.1);
-    --at-bg-tab-inactive:     rgba(255, 255, 255, 0.5);
+    --at-bg-tab-active:       rgba(218, 228, 248, 0.9);
+    --at-bg-tab-inactive:     rgba(255, 255, 255, 0.6);
     --at-bg-tab-disabled:     rgba(0, 0, 0, 0.03);
-    --at-bg-badge-active:     rgba(37, 99, 235, 0.12);
-    --at-bg-badge-inactive:   rgba(0, 0, 0, 0.05);
+    --at-bg-badge-active:     rgba(37, 99, 235, 0.14);
+    --at-bg-badge-inactive:   rgba(0, 0, 0, 0.06);
     --at-bg-user-card:        rgba(0, 0, 0, 0.04);
     --at-bg-avatar:           #c8d4e0;
 
-    --at-border:              rgba(0, 0, 0, 0.08);
-    --at-border-content:      rgba(0, 0, 0, 0.06);
-    --at-border-topbar:       rgba(0, 0, 0, 0.06);
-    --at-border-divider:      rgba(0, 0, 0, 0.08);
-    --at-border-active:       rgba(37, 99, 235, 0.25);
-    --at-border-tab-active:   rgba(37, 99, 235, 0.3);
-    --at-border-tab-inactive: rgba(0, 0, 0, 0.08);
-    --at-border-badge-active: rgba(37, 99, 235, 0.25);
-    --at-border-badge-inactive: rgba(0, 0, 0, 0.06);
-    --at-border-section:      rgba(0, 0, 0, 0.07);
+    --at-border:              rgba(0, 0, 0, 0.12);
+    --at-border-content:      rgba(0, 0, 0, 0.09);
+    --at-border-topbar:       rgba(0, 0, 0, 0.08);
+    --at-border-divider:      rgba(0, 0, 0, 0.1);
+    --at-border-active:       rgba(37, 99, 235, 0.35);
+    --at-border-tab-active:   rgba(37, 99, 235, 0.45);
+    --at-border-tab-inactive: rgba(0, 0, 0, 0.1);
+    --at-border-badge-active: rgba(37, 99, 235, 0.3);
+    --at-border-badge-inactive: rgba(0, 0, 0, 0.08);
+    --at-border-section:      rgba(0, 0, 0, 0.1);
 
     --at-text-logo:           #1a2332;
-    --at-text-section:        #7a8fa6;
+    --at-text-section:        #5a6d82;
     --at-text-nav-active:     #1e3a6e;
-    --at-text-nav:            #4a5568;
-    --at-text-icon:           #7a8fa6;
+    --at-text-nav:            #2d3e52;
+    --at-text-icon:           #6a7d94;
     --at-text-icon-active:    #1e3a6e;
     --at-text-username:       #2d3748;
     --at-text-role:           #1a7a2a;
-    --at-text-label:          #718096;
+    --at-text-label:          #5a6d82;
     --at-text-server:         #1a2332;
     --at-text-tab-active:     #1e3a6e;
-    --at-text-tab:            #718096;
+    --at-text-tab:            #5a6d82;
     --at-text-badge-active:   #1e3a6e;
-    --at-text-badge:          #718096;
+    --at-text-badge:          #5a6d82;
 
     --at-accent:              rgba(37, 99, 235, 1);
     --at-accent-glow:         rgba(37, 99, 235, 0.2);

@@ -6,8 +6,8 @@ import { getMe, getServers } from 'shared/api';
 import { AdminThemeProvider } from 'shared/providers/AdminThemeProvider';
 import { AdminNavProvider } from 'shared/providers/AdminNavContext';
 import { AdminSidebar } from 'widgets/AdminSidebar';
-import { AdminServerPanel } from 'widgets/AdminServerTabs';
 import { AdminContentArea } from './AdminContentArea';
+import { AdminServerPanelWrapper } from './AdminServerPanelWrapper';
 
 import './admin-theme.css';
 
@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 						<div className="flex flex-1 flex-col overflow-y-auto min-h-0 gap-20">
 							<div className="px-20 pt-20">
 								<Suspense fallback={null}>
-									<AdminServerPanel servers={servers} />
+									<AdminServerPanelWrapper servers={servers} />
 								</Suspense>
 							</div>
 							<AdminContentArea>

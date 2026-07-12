@@ -27,7 +27,7 @@ export type AdminSquadCardProps = {
 	onDisbandSquad?: (squadId: string | number) => void;
 };
 
-/* ── Кнопка действия ──────────────────────────────────────────────── */
+// Кнопка действия отряда
 
 type ActionButtonProps = {
 	onClick?: () => void;
@@ -58,8 +58,8 @@ const ActionButton = ({ onClick, label, color, children }: ActionButtonProps) =>
 			className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-6 -translate-x-1/2 whitespace-nowrap rounded-[5px] px-7 py-3 text-[10px] font-medium opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100"
 			style={{
 				backgroundColor: 'var(--at-bg-tooltip)',
-				border: '1px solid var(--at-border)',
-				color: 'var(--at-text-nav)',
+				border: '1px solid rgba(255,255,255,0.08)',
+				color: 'rgba(255,255,255,0.85)',
 				boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
 			}}
 		>
@@ -68,7 +68,7 @@ const ActionButton = ({ onClick, label, color, children }: ActionButtonProps) =>
 	</div>
 );
 
-/* ── Компонент ────────────────────────────────────────────────────── */
+// Карточка отряда
 
 export const AdminSquadCard = ({
 	squad,
@@ -98,7 +98,7 @@ export const AdminSquadCard = ({
 					{squad.name}
 				</span>
 
-				{/* Кнопки действий — появляются при наведении */}
+				{/* Кнопки действий */}
 				<div className="flex items-center gap-3 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
 					<ActionButton label="Сообщение" color="var(--at-text-icon)" onClick={() => onMessageSquad?.(squad.id)}>
 						<HugeiconsIcon icon={Mail01Icon} size={16} color="currentColor" strokeWidth={1.8} />
@@ -164,12 +164,12 @@ export const AdminSquadCard = ({
 			className="relative z-0 rounded-[10px] transition-[transform,box-shadow] duration-200 hover:-translate-y-[3px] hover:z-10 hover:shadow-[0_8px_24px_rgba(0,60,160,0.28),0_0_0_1px_var(--at-border-active)]"
 			style={{ border: '1px solid var(--at-border)' }}
 		>
-			{/* Фоновый слой — клипает углы, не мешает тултипам */}
+			{/* Фон — обрезает углы, не перекрывает тултипы */}
 			<div
 				className="pointer-events-none absolute inset-0 overflow-hidden rounded-[9px]"
 				style={{ backgroundColor: 'var(--at-bg-content)' }}
 			/>
-			{/* Контент — без overflow-hidden, тултипы свободно вылезают */}
+			{/* Контент */}
 			<div className="relative">
 				{header}
 				{players}

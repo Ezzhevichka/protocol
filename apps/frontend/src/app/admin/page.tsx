@@ -7,6 +7,8 @@ import { AdminQueueCard } from 'widgets/AdminQueueCard';
 import { AdminDisconnectedCard } from 'widgets/AdminDisconnectedCard';
 import { AdminChatCard } from 'widgets/AdminChatCard';
 import { AdminMapCard } from 'widgets/AdminMapCard';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Leaf03Icon } from '@hugeicons/core-free-icons';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,7 +80,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 		<main className="flex flex-1 gap-16 px-20 pb-20 min-h-0">
 			{/* Левая часть: блоки фракций */}
 			<div className="flex flex-[7] gap-16 min-h-0 min-w-0">
-				{playersData ? (
+				{playersData && playersData.playersCount > 0 ? (
 					<AdminPlayersSection
 						serverId={serverId}
 						userId={test?.steamId ?? null}
@@ -86,9 +88,34 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 						team2={{ teamId: team2?.teamId ?? '', playerCount: playerCount2, squads: squads2, unassigned: unassigned2 }}
 					/>
 				) : (
-					<p className="text-[13px]" style={{ color: 'var(--at-text-section)' }}>
-						Нет данных о игроках — сервер недоступен или пуст.
-					</p>
+					<div
+						className="flex flex-1 flex-col items-center justify-center gap-14 rounded-2xl"
+						style={{
+							backgroundColor: 'var(--at-glass-bg)',
+							border: '1px solid var(--at-glass-border)',
+							backdropFilter: 'var(--at-glass-blur)',
+							WebkitBackdropFilter: 'var(--at-glass-blur)',
+							boxShadow: 'var(--at-glass-shadow)',
+						}}
+					>
+						<div
+							className="flex size-56 items-center justify-center rounded-2xl"
+							style={{
+								backgroundColor: 'rgba(40, 160, 80, 0.1)',
+								border: '1px solid rgba(40, 160, 80, 0.2)',
+							}}
+						>
+							<HugeiconsIcon icon={Leaf03Icon} size={26} color="rgba(40,180,90,0.85)" strokeWidth={1.5} />
+						</div>
+						<div className="flex flex-col items-center gap-4">
+							<p className="text-[14px] font-semibold" style={{ color: 'var(--at-text-nav)' }}>
+								На сервере сейчас пусто
+							</p>
+							<p className="text-[12px]" style={{ color: 'var(--at-text-section)' }}>
+								Идёт SEED
+							</p>
+						</div>
+					</div>
 				)}
 			</div>
 

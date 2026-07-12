@@ -96,10 +96,11 @@ model Punishment {
 
 model Rule {
   id              String  @id @default(uuid())
-  name            String
-  description     String
+  name            String  @unique
+  description     String?
   publicName      String
   warnDescription String?
+  duration        String?
 
   @@map("Rules")
 }

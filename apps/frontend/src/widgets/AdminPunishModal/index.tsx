@@ -5,32 +5,40 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { PUNISH_RULES } from 'shared/constants';
 import type { PunishRule } from 'shared/constants';
-import { PunishmentRequest, PunishmentType } from '@protocol/types';
+import { PunishmentRequest, PunishmentType, WarnIntervalType } from '@protocol/types';
 
 const BAN_DURATIONS: { value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent'; label: string }[] = [
-	{ value: '1', type: 'hour', label: '1 час' },
-	{ value: '2', type: 'hour', label: '2 часа' },
-	{ value: '3', type: 'hour', label: '3 часа' },
-	{ value: '4', type: 'hour', label: '4 часа' },
-	{ value: '5', type: 'hour', label: '5 часов' },
-	{ value: '6', type: 'hour', label: '6 часов' },
+	{ value: '1',  type: 'hour',      label: '1 час' },
+	{ value: '2',  type: 'hour',      label: '2 часа' },
+	{ value: '3',  type: 'hour',      label: '3 часа' },
+	{ value: '6',  type: 'hour',      label: '6 часов' },
+	{ value: '12', type: 'hour',      label: '12 часов' },
+	{ value: '1',  type: 'day',       label: '1 день' },
+	{ value: '2',  type: 'day',       label: '2 дня' },
+	{ value: '3',  type: 'day',       label: '3 дня' },
+	{ value: '4',  type: 'day',       label: '4 дня' },
+	{ value: '7',  type: 'day',       label: '7 дней' },
+	{ value: '14', type: 'day',       label: '14 дней' },
+	{ value: '1',  type: 'month',     label: '1 месяц' },
 	{ value: null, type: 'permanent', label: 'Постоянно' },
 ];
 
-// type === "hour" => new Date(new Date().getHours() + Number(value))
-// type === "day" => new Date(new Date().setDate(new Date().getDate() + Number(value)))
-// type === "month" => new Date(new Date().setMonth(new Date().getMonth() + Number(value)))
-// type === "permanent" => null
+const computeUntil = (duration: Nullable<{ value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent' }>): Date | null => {
+	if (!duration || duration.type === 'permanent') return null;
+	const n = Number(duration.value);
+	const now = new Date();
+	if (duration.type === 'hour')  { now.setHours(now.getHours() + n); return now; }
+	if (duration.type === 'day')   { now.setDate(now.getDate() + n); return now; }
+	if (duration.type === 'month') { now.setMonth(now.getMonth() + n); return now; }
+	return null;
+};
 
-const WARN_INTERVALS: { value: string; label: string }[] = [
-	{ value: '30с', label: '30 сек' },
-	{ value: '40с', label: '40 сек' },
-	{ value: '1м', label: '1 мин' },
-	{ value: '1м30с', label: '1 мин 30 с' },
-	{ value: '2м', label: '2 мин' },
+const WARN_INTERVALS: { value: number; type: WarnIntervalType; label: string }[] = [
+	{ value: 1,  type: 'once',   label: '1 раз' },
+	{ value: 30, type: 'second', label: '30 сек' },
+	{ value: 40, type: 'second', label: '40 сек' },
+	{ value: 1,  type: 'minute', label: '1 мин' },
 ];
-
-const WARN_COUNTS = [1, 2, 3];
 
 const Chip = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
 	<button
@@ -66,10 +74,8 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 	const [selectedRule, setSelectedRule] = useState<PunishRule | null>(null);
 
 	const [mode, setMode] = useState<PunishmentType>(PunishmentType.BAN);
-	const [banDuration, setBanDuration] = useState<Nullable<{ value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent', label: string }>>(null);
-	const [customDuration, setCustomDuration] = useState('');
-	const [warnCount, setWarnCount] = useState(1);
-	const [warnInterval, setWarnInterval] = useState('');
+	const [banDuration, setBanDuration] = useState<Nullable<{ value: Nullable<string>; type: 'hour' | 'day' | 'month' | 'permanent'; label: string }>>(null);
+	const [warnInterval, setWarnInterval] = useState<Nullable<{ value: number; type: WarnIntervalType; label: string }>>(null);
 
 	useEffect(() => {
 		const handler = (e: KeyboardEvent) => {
@@ -89,9 +95,7 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 		setIsOpen(false);
 		if (!rule.warnText && mode === PunishmentType.WARN) setMode(PunishmentType.BAN);
 		setBanDuration(null);
-		setCustomDuration('');
-		setWarnCount(1);
-		setWarnInterval('');
+		setWarnInterval(null);
 		inputRef.current?.blur();
 	};
 
@@ -101,16 +105,16 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 		return r.point.includes(q) || r.ruleName.toLowerCase().includes(q) || r.banReason.toLowerCase().includes(q);
 	});
 
-	const canSubmit = true;
+	const canSubmit = !!selectedRule && (
+		mode === PunishmentType.BAN ? banDuration !== null : warnInterval !== null
+	);
 
 	const handleSubmit = () => {
-		if (!selectedRule || !canSubmit) return;
+		if (!selectedRule || !canSubmit || !authorId || !serverId) return;
 		if (mode === PunishmentType.BAN) {
-			if (!authorId || !serverId) return;
-			onSubmit({ punishmentType: PunishmentType.BAN, victimId, authorId, reason: selectedRule.banReason, until: new Date(new Date().getHours() + 3), serverId });
+			onSubmit({ punishmentType: PunishmentType.BAN, victimId, authorId, reason: selectedRule.banReason, until: computeUntil(banDuration), serverId });
 		} else {
-			if (!authorId || !serverId) return;
-			onSubmit({ punishmentType: PunishmentType.WARN, victimId, authorId, reason: selectedRule.warnText!, serverId });
+			onSubmit({ punishmentType: PunishmentType.WARN, victimId, authorId, reason: selectedRule.warnText!, serverId, warnInterval: warnInterval! });
 		}
 		onClose();
 	};
@@ -125,7 +129,7 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 		>
 			<div
 				ref={dialogRef}
-				className="flex w-[480px] flex-col rounded-[14px]"
+				className="flex w-480 flex-col rounded-[14px]"
 				style={{
 					backgroundColor: 'var(--at-glass-bg)',
 					border: '1px solid var(--at-glass-border)',
@@ -250,27 +254,15 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 										<span style={{ color: 'var(--at-text-nav)' }}>{selectedRule.recommendedDuration}</span>
 									</p>
 									<div className="flex flex-wrap gap-6">
-										{BAN_DURATIONS.map((banDuration1) => (
+										{BAN_DURATIONS.map((d) => (
 											<Chip
-												key={banDuration1.label}
-												label={banDuration1.label}
-												active={banDuration1.value === banDuration?.value && !customDuration}
-												onClick={() => { setBanDuration(banDuration1); setCustomDuration(''); }}
+												key={d.label}
+												label={d.label}
+												active={d.label === banDuration?.label}
+												onClick={() => setBanDuration(d)}
 											/>
 										))}
 									</div>
-									<input
-										value={customDuration}
-										onChange={(e) => { setCustomDuration(e.target.value); if (e.target.value) setBanDuration(null); }}
-										placeholder="Свой срок..."
-										className="mt-10 w-full rounded-lg px-12 py-8 text-[12px] outline-none"
-										style={{
-											backgroundColor: 'var(--at-bg-content)',
-											border: `1px solid ${customDuration ? 'rgba(60,150,230,0.45)' : 'var(--at-border)'}`,
-											color: 'var(--at-text-nav)',
-											caretColor: 'var(--at-text-nav-active)',
-										}}
-									/>
 								</div>
 							)}
 
@@ -288,17 +280,10 @@ export const AdminPunishModal = ({ nickname, victimId, authorId, serverId, onSub
 										{selectedRule.warnText}
 									</div>
 
-									<p className="mb-8 mt-14 text-[11px]" style={{ color: 'var(--at-text-section)' }}>Сколько раз отправить:</p>
-									<div className="flex gap-6">
-										{WARN_COUNTS.map((c) => (
-											<Chip key={c} label={`${c}×`} active={warnCount === c} onClick={() => setWarnCount(c)} />
-										))}
-									</div>
-
-									<p className="mb-8 mt-12 text-[11px]" style={{ color: 'var(--at-text-section)' }}>Интервал:</p>
+									<p className="mb-8 mt-14 text-[11px]" style={{ color: 'var(--at-text-section)' }}>Интервал:</p>
 									<div className="flex flex-wrap gap-6">
 										{WARN_INTERVALS.map((i) => (
-											<Chip key={i.value} label={i.label} active={warnInterval === i.value} onClick={() => setWarnInterval(i.value)} />
+											<Chip key={i.label} label={i.label} active={warnInterval?.label === i.label} onClick={() => setWarnInterval(i)} />
 										))}
 									</div>
 								</div>

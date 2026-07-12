@@ -1,105 +1,89 @@
-// import { readFile } from 'node:fs/promises';
-// import { resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { config as loadEnv } from 'dotenv';
+import type { RoleType, SitePermissions } from '../generated/enums';
+import { SitePermissions as SP } from '../generated/enums';
+import { buildRoleDefinitions, buildUserRoleAssignments, parseAdminsCfg } from '../lib/parse-admins-cfg';
 
-// import { config as loadEnv } from 'dotenv';
+loadEnv({ path: resolve(process.cwd(), '.env') });
 
-// loadEnv({ path: resolve(process.cwd(), '.env') });
+const ROLE_TYPE_MAP: Record<string, RoleType> = {
+	Admin:         'ADMIN',
+	Moderator:     'MODERATOR',
+	QueuePriority: 'VIP',
+	Cameraman:     'CAMERA',
+	Intern:        'INTERN',
+};
 
-// const main = async () => {
-// 	const { prisma } = await import('../client');
-// 	const {
-// 		buildRoleDefinitions,
-// 		buildUserRoleAssignments,
-// 		parseAdminsCfg,
-// 	} = await import('../lib/parse-admins-cfg');
+const SITE_PERMISSIONS_MAP: Record<string, SitePermissions[]> = {
+	Admin:         [SP.punish, SP.perm, SP.kick],
+	Moderator:     [SP.punish, SP.kick],
+	QueuePriority: [],
+	Cameraman:     [],
+	Intern:        [],
+};
 
-// 	const filePath = process.argv[2] ?? resolve(process.cwd(), '../../config/Admins.cfg');
-// 	const content = await readFile(filePath, 'utf8');
-// 	const parsed = parseAdminsCfg(content);
-// 	const roleDefinitions = buildRoleDefinitions(parsed);
-// 	const userAssignments = buildUserRoleAssignments(parsed);
+const main = async () => {
+	const { prisma } = await import('../client');
 
-// 	if (userAssignments.length === 0) {
-// 		console.log('No admin entries found in file:', filePath);
-// 		return;
-// 	}
+	const filePath = process.argv[2] ?? resolve(process.cwd(), '../../config/Admins.cfg');
+	const content = await readFile(filePath, 'utf8');
+	const parsed = parseAdminsCfg(content);
+	const roleDefinitions = buildRoleDefinitions(parsed);
+	const assignments = buildUserRoleAssignments(parsed);
 
-// 	let rolesCreated = 0;
-// 	let rolesUpdated = 0;
-// 	const roleIdsByName = new Map<string, string>();
+	console.log(`Upserting ${roleDefinitions.length} roles...`);
 
-// 	for (const roleDefinition of roleDefinitions) {
-// 		const existing = await prisma.role.findUnique({
-// 			where: { name: roleDefinition.name },
-// 			select: { id: true },
-// 		});
+	const roleIdByName: Record<string, string> = {};
 
-// 		const role = await prisma.role.upsert({
-// 			where: { name: roleDefinition.name },
-// 			create: {
-// 				name: roleDefinition.name,
-// 				squadPermissions: roleDefinition.squadPermissions,
-// 				sitePermissions: roleDefinition.sitePermissions,
-// 			},
-// 			update: {
-// 				squadPermissions: roleDefinition.squadPermissions,
-// 				sitePermissions: roleDefinition.sitePermissions,
-// 			},
-// 		});
+	for (const role of roleDefinitions) {
+		const type = ROLE_TYPE_MAP[role.name];
+		if (!type) {
+			console.warn(`  Skipping unknown group "${role.name}"`);
+			continue;
+		}
 
-// 		roleIdsByName.set(role.name, role.id);
+		const record = await prisma.role.upsert({
+			where: { label: role.name },
+			update: {
+				squadPermissions: role.squadPermissions,
+				sitePermissions: SITE_PERMISSIONS_MAP[role.name] ?? [],
+			},
+			create: {
+				label: role.name,
+				type,
+				squadPermissions: role.squadPermissions,
+				sitePermissions: SITE_PERMISSIONS_MAP[role.name] ?? [],
+			},
+		});
 
-// 		if (existing) {
-// 			rolesUpdated += 1;
-// 		} else {
-// 			rolesCreated += 1;
-// 		}
-// 	}
+		roleIdByName[role.name] = record.id;
+		console.log(`  Role "${role.name}" → ${record.id}`);
+	}
 
-// 	let usersCreated = 0;
-// 	let usersUpdated = 0;
+	console.log(`\nUpserting ${assignments.length} users...`);
 
-// 	for (const assignment of userAssignments) {
-// 		const roleId = roleIdsByName.get(assignment.roleName);
+	for (const { steamId, roleName } of assignments) {
+		const roleId = roleIdByName[roleName];
+		if (!roleId) continue;
 
-// 		if (!roleId) {
-// 			throw new Error(`Role "${assignment.roleName}" was not created`);
-// 		}
+		await prisma.user.upsert({
+			where:  { steamId },
+			update: { roleId },
+			create: {
+				steamId,
+				name:      '',
+				avatarUrl: '',
+				roleId,
+			},
+		});
+	}
 
-// 		const existing = await prisma.user.findUnique({
-// 			where: { steamId: assignment.steamId },
-// 			select: { id: true },
-// 		});
+	console.log('Done.');
+	await prisma.$disconnect();
+};
 
-// 		await prisma.user.upsert({
-// 			where: { steamId: assignment.steamId },
-// 			create: {
-// 				steamId: assignment.steamId,
-// 				roleId,
-// 			},
-// 			update: {
-// 				roleId,
-// 			},
-// 		});
-
-// 		if (existing) {
-// 			usersUpdated += 1;
-// 		} else {
-// 			usersCreated += 1;
-// 		}
-// 	}
-
-// 	console.log(`Imported from ${filePath}`);
-// 	console.log(`Roles — total: ${roleDefinitions.length}, created: ${rolesCreated}, updated: ${rolesUpdated}`);
-// 	console.log(`Users — total: ${userAssignments.length}, created: ${usersCreated}, updated: ${usersUpdated}`);
-// };
-
-// main()
-// 	.catch((error) => {
-// 		console.error(error);
-// 		process.exit(1);
-// 	})
-// 	.finally(async () => {
-// 		const { prisma } = await import('../client');
-// 		await prisma.$disconnect();
-// 	});
+main().catch((e) => {
+	console.error(e);
+	process.exit(1);
+});

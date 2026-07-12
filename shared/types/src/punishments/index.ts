@@ -1,3 +1,5 @@
+export type WarnIntervalType = 'once' | 'second' | 'minute';
+
 export interface PunishmentRequest {
 	victimId: SteamId;
 	authorId: SteamId;
@@ -6,6 +8,7 @@ export interface PunishmentRequest {
 	until?: Nullable<Date>;
 	serverId: string;
 	punishmentType: PunishmentType;
+	warnInterval?: { value: number; type: WarnIntervalType };
 }
 
 export enum PunishmentType {

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
@@ -164,7 +165,7 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
 								const isActive = pathname === item.href;
 								return (
 									<li key={item.href}>
-										<a
+										<Link
 											href={item.href}
 											title={collapsed ? item.label : undefined}
 											className="flex items-center rounded-[9px] transition-all duration-150"
@@ -191,7 +192,7 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
 											>
 												{item.label}
 											</span>
-										</a>
+										</Link>
 									</li>
 								);
 							})}

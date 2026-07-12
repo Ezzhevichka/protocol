@@ -21,7 +21,8 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "db:import-admins": "tsx src/scripts/import-admins.ts"
+    "db:import-admins": "tsx src/scripts/import-admins.ts",
+    "db:seed-rules": "tsx src/scripts/seed-rules.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

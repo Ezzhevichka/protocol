@@ -28,12 +28,9 @@ export const AdminThemeProvider = ({ children }: { children: React.ReactNode }) 
 	const [accentColor, setAccentColorState] = useState<string | null>(null);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
-	// Читаем сохранённую тему из localStorage при монтировании
 	useEffect(() => {
 		const saved = localStorage.getItem(STORAGE_KEY_THEME) as AdminTheme | null;
-		if (saved && ['dark', 'light', 'black'].includes(saved)) {
-			setThemeState(saved);
-		}
+		if (saved && ['dark', 'light', 'black'].includes(saved)) setThemeState(saved);
 		const savedAccent = localStorage.getItem(STORAGE_KEY_ACCENT);
 		if (savedAccent) setAccentColorState(savedAccent);
 	}, []);
@@ -70,6 +67,7 @@ export const AdminThemeProvider = ({ children }: { children: React.ReactNode }) 
 				data-admin-theme={theme}
 				style={accentVars}
 				className="contents"
+				suppressHydrationWarning
 			>
 				{children}
 			</div>

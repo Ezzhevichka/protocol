@@ -7,3 +7,4 @@ export {
 	Text,
 	Logo,
 } from './atoms';
+export { AdminLoadingOverlay } from './AdminLoadingOverlay';
