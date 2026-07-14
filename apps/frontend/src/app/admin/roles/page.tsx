@@ -1,48 +1,64 @@
-import { AdminRolesTable } from 'widgets/AdminRolesTable';
+import { AdminRoleManager, type RoleData } from 'widgets/AdminRoleManager';
 
 export const dynamic = 'force-dynamic';
 
-// TODO: заменить на fetch из БД
-const MOCK_ROLES = [
-	{
-		id: 'admin',
-		label: 'Admin',
-		permissions: [
-			'startvote','changemap','pause','cheat','private','balance','chat',
-			'kick','ban','config','cameraman','manageserver','featuretest',
-			'reserve','demos','clientdemos','debug','teamchange','forceteamchange',
-			'canseeadminchat','punish','perm',
-		],
-	},
-	{
-		id: 'moderator',
-		label: 'Moderator',
-		permissions: [
-			'startvote','cheat','private','balance','chat','kick','ban',
-			'cameraman','reserve','teamchange','canseeadminchat','punish',
-		],
-	},
-	{
-		id: 'intern',
-		label: 'Intern',
-		permissions: ['balance','chat','cameraman','reserve','teamchange','forceteamchange','canseeadminchat'],
-	},
-	{
-		id: 'cameraman',
-		label: 'Cameraman',
-		permissions: ['balance','cameraman','reserve','teamchange'],
-	},
-	{
-		id: 'vip',
-		label: 'VIP',
-		permissions: ['reserve','teamchange'],
-	},
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
-export default function RolesPage() {
+type ApiRole = {
+	id: string;
+	label: string;
+	type: string;
+	color: string | null;
+	squadPermissions: string[];
+	sitePermissions: string[];
+};
+
+type PermissionsData = {
+	squad: string[];
+	site: string[];
+	roleTypes: string[];
+};
+
+async function getRoles(): Promise<ApiRole[]> {
+	try {
+		const res = await fetch(`${API_URL}/roles`, { cache: 'no-store' });
+		if (!res.ok) return [];
+		return res.json() as Promise<ApiRole[]>;
+	} catch {
+		return [];
+	}
+}
+
+async function getPermissions(): Promise<PermissionsData> {
+	try {
+		const res = await fetch(`${API_URL}/permissions`, { cache: 'no-store' });
+		if (!res.ok) return { squad: [], site: [], roleTypes: [] };
+		return res.json() as Promise<PermissionsData>;
+	} catch {
+		return { squad: [], site: [], roleTypes: [] };
+	}
+}
+
+export default async function RolesPage() {
+	const [roles, permissions] = await Promise.all([getRoles(), getPermissions()]);
+
+	const roleData: RoleData[] = roles.map((r) => ({
+		id: r.id,
+		label: r.label,
+		type: r.type,
+		color: r.color,
+		squadPermissions: r.squadPermissions,
+		sitePermissions: r.sitePermissions,
+	}));
+
 	return (
-		<main className="flex flex-1 flex-col min-h-0">
-			<AdminRolesTable initialRoles={MOCK_ROLES} />
+		<main className="flex flex-1 flex-col min-h-0 overflow-y-auto">
+			<AdminRoleManager
+				initialRoles={roleData}
+				roleTypes={permissions.roleTypes}
+				squadPermissions={permissions.squad}
+				sitePermissions={permissions.site}
+			/>
 		</main>
 	);
 }

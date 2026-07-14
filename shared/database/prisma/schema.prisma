@@ -61,6 +61,7 @@ model Role {
   id               String             @id @default(uuid())
   label            String             @unique
   type             RoleType           @map("type")
+  color            String?            @map("color")
   createdAt        DateTime           @default(now()) @map("created_at")
   squadPermissions SquadPermissions[] @map("squad_permissions")
   sitePermissions  SitePermissions[]  @map("site_permissions")
@@ -131,7 +132,7 @@ model Player {
   @@map("Players")
 }
 
-enum Event {
+enum EventType {
 	PLAYER_WOUNDED
 	PLAYER_DIED
 	PLAYER_CONNECTED
