@@ -15,7 +15,7 @@ export type AdminSquadListProps = {
 	embedded?: boolean;
 	onKickFromSquad?: (playerId: string) => void;
 	onKill?: (playerId: string) => void;
-	onBan?: (playerId: string) => void;
+	onBan?: (steamId: SteamId, nickname: string) => void;
 	onCopyTeleport?: (playerId: string) => void;
 	onMessageSquad?: (squadId: string | number) => void;
 	onSwitchSide?: (squadId: string | number) => void;
@@ -28,7 +28,7 @@ type UnassignedSectionProps = {
 	headerBg?: string;
 	onKickFromSquad?: (playerId: string) => void;
 	onKill?: (playerId: string) => void;
-	onBan?: (playerId: string) => void;
+	onBan?: (steamId: SteamId, nickname: string) => void;
 	onCopyTeleport?: (playerId: string) => void;
 };
 
@@ -69,7 +69,7 @@ const UnassignedSection = (
 						showDivider={idx < players.length - 1}
 						onKickFromSquad={() => onKickFromSquad?.(player.id)}
 						onKill={() => onKill?.(player.id)}
-						onBan={() => onBan?.(player.id)}
+						onBan={() => onBan?.(player.steamId, player.nickname)}
 						onCopyTeleport={() => onCopyTeleport?.(player.id)}
 					/>
 				</li>

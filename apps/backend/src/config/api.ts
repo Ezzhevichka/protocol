@@ -9,3 +9,7 @@ export enum ApiRoutes {
 export enum InternalApiRoutes {
 	BAN = '/ban'
 }
+
+export enum RolesApiRoutes {
+	GET_ALL_ROLES = '/roles'
+}

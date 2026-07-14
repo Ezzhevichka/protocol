@@ -16,7 +16,7 @@ export type AdminFractionBlockProps = {
 	unassigned?: AdminSquadPlayer[];
 	onKickFromSquad?: (playerId: string) => void;
 	onKill?: (playerId: string) => void;
-	onBan?: (playerId: string) => void;
+	onBan?: (steamId: SteamId, nickname: string) => void;
 	onCopyTeleport?: (playerId: string) => void;
 	onMessageSquad?: (squadId: string | number) => void;
 	onSwitchSide?: (squadId: string | number) => void;

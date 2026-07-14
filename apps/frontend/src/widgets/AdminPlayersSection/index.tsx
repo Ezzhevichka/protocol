@@ -45,14 +45,12 @@ const findSquad = (teams: TeamData[], squadId: string | number): AdminSquad | un
 const findSquadName = (teams: TeamData[], squadId: string | number): string =>
 	findSquad(teams, squadId)?.name ?? String(squadId);
 
-const findPlayerContext = (teams: TeamData[], playerId: string): { playerNick: string; squadName: string } | undefined => {
-	for (const team of teams) {
-		for (const squad of team.squads) {
-			const player = squad.players.find((p) => p.id === playerId);
-			if (player) return { playerNick: player.nickname, squadName: squad.name };
-		}
-	}
-	return undefined;
+const findPlayerContext = (teams: TeamData[], steamId: string): { playerNick: string; squadName: string } | undefined => {
+	const [team1, team2] = teams;
+	const players = [...team1.squads.flatMap((s) => s.players), ...team2.squads.flatMap((s) => s.players), ...team1.unassigned, ...team2.unassigned];
+	const player = players.find((p) => p.steamId === steamId);
+	if (!player) return undefined;
+	return { playerNick: player.nickname, squadName: player.nickname };
 };
 
 export const AdminPlayersSection = ({ serverId, userId, team1, team2 }: AdminPlayersSectionProps) => {
@@ -74,10 +72,8 @@ export const AdminPlayersSection = ({ serverId, userId, team1, team2 }: AdminPla
 		if (!ctx) return;
 		setKillTarget({ playerId, playerNick: ctx.playerNick });
 	};
-	const handleBan = (steamId: SteamId) => {
-		const ctx = findPlayerContext([team1, team2], steamId);
-		if (!ctx) return;
-		setPunishTarget({ steamId, nickname: ctx.playerNick });
+	const handleBan = (steamId: SteamId, nickname: string) => {
+		setPunishTarget({ steamId, nickname });
 	};
 	const handleTp     = (playerId: string) => console.log('[teleport]', playerId);
 

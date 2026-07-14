@@ -71,6 +71,7 @@ model Role {
 model User {
   id         String   @id @default(uuid())
   steamId    String   @unique @map("steam_id")
+  discord    String?  @unique
   name       String
   avatarUrl  String
   profileUrl String?
@@ -85,6 +86,7 @@ model Punishment {
   type        PunishmentType @map("punishment_type")
   createdAt   DateTime       @default(now()) @map("created_at")
   until       DateTime?      @map("issued_until")
+  updatedAt   DateTime?
   description String?        @map("description")
   reason      String         @map("reason")
   author      String         @map("author")
@@ -103,4 +105,49 @@ model Rule {
   duration        String?
 
   @@map("Rules")
+}
+
+model Nickname {
+  id       String  @id @default(uuid())
+  nickname String
+  steamId  String  @unique
+  banned   Boolean
+  createdAt DateTime
+
+  @@map("Nicknames")
+}
+
+model Player {
+  id          String    @id @default(uuid())
+  nickname    String
+  steamId     String    @unique
+  eosId       String    @unique
+  playedHours String?
+  ip          String?
+  createdAt   DateTime
+  updatedAt   DateTime?
+  lastLogin   DateTime
+
+  @@map("Players")
+}
+
+enum Event {
+	PLAYER_WOUNDED
+	PLAYER_DIED
+	PLAYER_CONNECTED
+	PLAYER_DISCONNECTED
+	ROUND_ENDED
+	NEW_GAME
+	SERVER_TICK_RATE
+	PLAYER_POSSESS_CAMERA
+	PLAYER_UNPOSSESS_CAMERA
+	ADMIN_BROADCAST
+	FORCED_TEAM_CHANGE
+	CHAT_MESSAGE
+}
+
+model Event {
+	id String @id @default(uuid())
+	createdAt DateTime
+	event String
 }

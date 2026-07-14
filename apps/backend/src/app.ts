@@ -4,7 +4,7 @@ import { env } from '@/config/env';
 import { cookiePlugin } from '@/plugins/cookie';
 import { redisPlugin } from '@/plugins/redis';
 import { passportPlugin } from '@/plugins/passport';
-import { authRoutes, punishmentsRoutes, serverRoutes } from '@/routes';
+import { authRoutes, punishmentsRoutes, rolesRoutes, serverRoutes } from '@/routes';
 
 export const buildApp = async (): Promise<FastifyInstance> => {
 	const app = Fastify({ logger: true });
@@ -16,6 +16,7 @@ export const buildApp = async (): Promise<FastifyInstance> => {
 
 	await app.register(authRoutes);
 	await app.register(punishmentsRoutes);
+	await app.register(rolesRoutes);
 
 	await app.register(cookiePlugin);
 	await app.register(redisPlugin);

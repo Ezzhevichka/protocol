@@ -11,7 +11,7 @@ import { resolveKitIcon, resolveKitIconSize } from 'shared/constants';
 
 export type AdminPlayerRowData = {
 	id: string;
-	steamId?: string;
+	steamId: string;
 	nickname: string;
 	clanTag?: string;
 	role?: string;
