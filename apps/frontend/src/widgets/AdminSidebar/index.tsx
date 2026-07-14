@@ -12,6 +12,7 @@ import {
 	Crown03Icon,
 	AlertCircleIcon,
 	UserSettings01Icon,
+	SkullIcon,
 	ServerStack01Icon,
 	Configuration01Icon,
 	ChartLineData01Icon,
@@ -67,6 +68,7 @@ const NAV_SECTIONS: NavSection[] = [
 			{ label: 'VIP',          href: '/admin/vip',        icon: <NavIcon icon={Crown03Icon} /> },
 			{ label: 'Наказания',    href: '/admin/punishments', icon: <NavIcon icon={AlertCircleIcon} /> },
 			{ label: 'Роли и права', href: '/admin/roles',      icon: <NavIcon icon={UserSettings01Icon} /> },
+			{ label: 'Килфид',       href: '/admin/killfeed',   icon: <NavIcon icon={SkullIcon} /> },
 		],
 	},
 	{
